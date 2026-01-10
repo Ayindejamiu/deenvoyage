@@ -13,7 +13,9 @@ app.use(cors({
     'https://deenvoyage.com', 
     'https://www.deenvoyage.com',
     'https://deenvoyage-f065a.web.app',
-    'https://deenvoyage-f065a.firebaseapp.com'
+    'https://deenvoyage-f065a.firebaseapp.com',
+    'https://deenvoyage-com.web.app',
+    'https://deenvoyage-com.firebaseapp.com'
   ]
 }));
 
