@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard - Registrations</title>
+ <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container mt-5">
+
+  <!-- Login Form -->
+  <div id="login-section">
+    <h3>Admin Login</h3>
+    <input id="email" class="form-control mb-2" type="email" placeholder="Email">
+    <input id="password" class="form-control mb-2" type="password" placeholder="Password">
+    <button class="btn btn-primary" onclick="manualLogin()">Login</button>
+    <p id="login-error" class="text-danger mt-2"></p>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dashboard-section" class="d-none">
+    <h3>All Registrations</h3>
+    <button class="btn btn-danger mb-3" onclick="manualLogout()">Logout</button>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Travel Type</th>
+          <th>Passport</th>
+          <th>Room Type</th>
+          <th>Requirements</th>
+        </tr>
+      </thead>
+      <tbody id="registrations-table-body"></tbody>
+    </table>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

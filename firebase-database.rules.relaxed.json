@@ -1,0 +1,19 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "public": {
+      ".read": true,
+      ".write": false
+    },
+
+    "registrations": {
+      ".read": false,
+      ".write": true,
+      "$id": {
+        ".validate": "newData.hasChildren(['fname','lname','email','travelType','createdAt']) && newData.child('fname').isString() && newData.child('fname').val().length <= 100 && newData.child('lname').isString() && newData.child('lname').val().length <= 100 && newData.child('email').isString() && newData.child('email').val().matches(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/) && newData.child('travelType').isString() && newData.child('travelType').val().length <= 50 && newData.child('createdAt').isNumber() && newData.child('createdAt').val() <= now && newData.child('createdAt').val() > now - 1000 * 60 * 60"
+      }
+    }
+  }
+}

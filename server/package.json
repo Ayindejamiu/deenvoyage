@@ -1,0 +1,18 @@
+{
+  "name": "deenvoyage-email-server",
+  "version": "1.0.0",
+  "description": "Email server for Deen Voyage lecture registrations",
+  "main": "send-email.js",
+  "scripts": {
+    "start": "node send-email.js",
+    "dev": "nodemon send-email.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "resend": "^3.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

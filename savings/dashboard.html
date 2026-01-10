@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Savings Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container my-5">
+<h3>Welcome! <span id="userName"></span> (<span id="userEmail"></span>)</h3>
+<button class="btn btn-danger mb-3" id="signOutBtn">Sign Out</button>
+
+    <div class="mb-3">
+      <input type="number" id="goalAmount" class="form-control" placeholder="Enter savings goal (₦)" />
+      <button class="btn btn-success mt-2" onclick="setGoal()">Set Goal</button>
+    </div>
+
+    <div class="mb-3">
+      <input type="number" id="savingsAmount" class="form-control" placeholder="Add savings amount (₦)" />
+      <button class="btn btn-primary mt-2" onclick="addSavings()">Add Savings</button>
+    </div>
+
+    <div class="card p-3">
+      <h5>Total Saved: ₦<span id="totalSaved">0</span></h5>
+      <h5>Goal: ₦<span id="goalDisplay">0</span></h5>
+      <div class="progress mt-2">
+        <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%">0%</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script type="module" src="../app.js"></script>
+</body>
+</html>

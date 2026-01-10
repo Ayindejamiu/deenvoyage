@@ -1,0 +1,17 @@
+{
+  "name": "deenvoyage-functions",
+  "description": "Cloud Functions for Deen Voyage: notify on new registrations",
+  "engines": {
+    "node": "18"
+  },
+  "scripts": {
+    "lint": "eslint . || true",
+    "start": "firebase emulators:start --only functions",
+    "deploy": "firebase deploy --only functions"
+  },
+  "dependencies": {
+    "firebase-admin": "^11.0.0",
+    "firebase-functions": "^4.0.0",
+    "resend": "^3.2.0"
+  }
+}

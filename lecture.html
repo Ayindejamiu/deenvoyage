@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="Deen Voyage">
+	<link rel="shortcut icon" href="favicon.png">
+
+	<meta name="description" content="Ramadan Lecture Registration - Calgary" />
+	<meta name="keywords" content="ramadan, lecture, calgary, islamic" />
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Source+Serif+Pro:wght@400;700&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/owl.carousel.min.css">
+	<link rel="stylesheet" href="css/owl.theme.default.min.css">
+	<link rel="stylesheet" href="css/jquery.fancybox.min.css">
+	<link rel="stylesheet" href="fonts/icomoon/style.css">
+	<link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
+	<link rel="stylesheet" href="css/daterangepicker.css">
+	<link rel="stylesheet" href="css/aos.css">
+	<link rel="stylesheet" href="css/style.css">
+	<title>Ramadan Lecture Registration - Calgary | Deen Voyage</title>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-QY6WP2QBQY"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-QY6WP2QBQY');
+	</script>
+
+	<style>
+		.lecture-hero {
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			color: white;
+			padding: 80px 0;
+			text-align: center;
+		}
+		.lecture-hero h1 {
+			font-size: 3rem;
+			font-weight: 700;
+			margin-bottom: 20px;
+		}
+		.lecture-hero p {
+			font-size: 1.2rem;
+			margin-bottom: 0;
+		}
+		.registration-section {
+			padding: 80px 0;
+			background-color: #f8f9fa;
+		}
+		.registration-card {
+			background: white;
+			border-radius: 15px;
+			box-shadow: 0 5px 30px rgba(0,0,0,0.1);
+			padding: 50px;
+			margin-top: -100px;
+			position: relative;
+			z-index: 10;
+		}
+		.form-section-title {
+			font-size: 1.5rem;
+			font-weight: 700;
+			margin-bottom: 30px;
+			color: #333;
+		}
+		.form-group label {
+			font-weight: 600;
+			color: #555;
+			margin-bottom: 10px;
+		}
+		.form-control {
+			border: 2px solid #e0e0e0;
+			border-radius: 8px;
+			padding: 12px 15px;
+			font-size: 1rem;
+			transition: all 0.3s ease;
+		}
+		.form-control:focus {
+			border-color: #667eea;
+			box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+		}
+		.btn-primary-custom {
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			border: none;
+			color: white;
+			padding: 12px 40px;
+			font-weight: 600;
+			border-radius: 8px;
+			transition: all 0.3s ease;
+			font-size: 1.05rem;
+		}
+		.btn-primary-custom:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+			color: white;
+		}
+		.btn-primary-custom:active {
+			transform: translateY(0);
+		}
+		.btn-primary-custom:disabled {
+			opacity: 0.6;
+			cursor: not-allowed;
+		}
+		.success-message {
+			display: none;
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			color: white;
+			padding: 40px;
+			border-radius: 15px;
+			text-align: center;
+			margin-top: 30px;
+		}
+		.success-message.show {
+			display: block;
+			animation: slideUp 0.5s ease;
+		}
+		@keyframes slideUp {
+			from {
+				opacity: 0;
+				transform: translateY(20px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+		.registration-code {
+			font-size: 1.8rem;
+			font-weight: 700;
+			font-family: 'Courier New', monospace;
+			letter-spacing: 3px;
+			word-break: break-all;
+			padding: 20px;
+			background: rgba(255,255,255,0.1);
+			border-radius: 8px;
+			margin: 20px 0;
+		}
+		.form-info {
+			background: #e7f3ff;
+			border-left: 4px solid #667eea;
+			padding: 15px;
+			border-radius: 5px;
+			margin-bottom: 30px;
+		}
+		.form-info p {
+			margin: 0;
+			color: #333;
+		}
+		.loading-spinner {
+			display: none;
+			text-align: center;
+		}
+		.spinner {
+			border: 3px solid rgba(255, 255, 255, 0.3);
+			border-radius: 50%;
+			border-top: 3px solid white;
+			width: 40px;
+			height: 40px;
+			animation: spin 1s linear infinite;
+			margin: 0 auto 15px;
+		}
+		@keyframes spin {
+			0% { transform: rotate(0deg); }
+			100% { transform: rotate(360deg); }
+		}
+		.error-alert {
+			display: none;
+			background: #f8d7da;
+			border: 1px solid #f5c6cb;
+			color: #721c24;
+			padding: 15px;
+			border-radius: 8px;
+			margin-bottom: 20px;
+		}
+		.error-alert.show {
+			display: block;
+		}
+		.copy-btn {
+			background: white;
+			color: #667eea;
+			border: 2px solid white;
+			padding: 10px 20px;
+			border-radius: 5px;
+			font-weight: 600;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			margin-top: 15px;
+		}
+		.copy-btn:hover {
+			background: rgba(255,255,255,0.1);
+			color: white;
+		}
+		.event-details {
+			background: white;
+			padding: 40px;
+			border-radius: 15px;
+			margin-bottom: 50px;
+		}
+		.event-details h2 {
+			font-size: 2rem;
+			font-weight: 700;
+			margin-bottom: 30px;
+			color: #333;
+		}
+		.event-item {
+			display: flex;
+			align-items: center;
+			margin-bottom: 20px;
+			font-size: 1.1rem;
+		}
+		.event-item i {
+			font-size: 1.5rem;
+			color: #667eea;
+			margin-right: 20px;
+			min-width: 30px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="site-mobile-menu site-navbar-target">
+		<div class="site-mobile-menu-header">
+			<div class="site-mobile-menu-close">
+				<span class="icofont-close js-menu-toggle"></span>
+			</div>
+		</div>
+		<div class="site-mobile-menu-body"></div>
+	</div>
+
+	<nav class="site-nav">
+		<div class="container">
+			<div class="site-navigation">
+				<a href="/" class="logo m-0"><img src="images/deen..png" alt="Deen Voyage Logo"></a>
+
+				<ul class="js-clone-nav d-none d-lg-inline-block text-left site-menu float-right">
+					<li><a href="/">Home</a></li>
+					<li class="has-children">
+						<a href="#">Services</a>
+						<ul class="dropdown">
+							<li><a href="/hajj">Hajj</a></li>
+							<li><a href="/ramadan">Ramadan</a></li>
+							<li><a href="/decumrah">December</a></li>
+							<li><a href="/umrah">Umrah</a></li>
+							<li><a href="#">Vacations</a></li>
+						</ul>
+					</li>
+					<li><a href="/about">About Us</a></li>
+					<li><a href="/register">Register</a></li>
+					<li><a href="/contact">Contact Us</a></li>
+				</ul>
+
+				<a href="#" class="burger ml-auto float-right site-menu-toggle js-menu-toggle d-inline-block d-lg-none light" data-toggle="collapse" data-target="#main-navbar">
+					<span></span>
+				</a>
+
+			</div>
+		</div>
+	</nav>
+
+	<div class="hero hero-inner">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col-lg-6 mx-auto text-center">
+					<div class="intro-wrap">
+						<h1 class="mb-0">Ramadan Lecture</h1>
+						<p class="text-white">Spiritual Enlightenment & Community Connection in Calgary</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Main Content -->
+	<div class="registration-section">
+		<div class="container">
+			<!-- Event Details -->
+			<div class="event-details">
+				<h2>Event Details</h2>
+				<div class="event-item">
+					<i class="icon-location"></i>
+					<div>
+						<strong>Location:</strong> NCAC Hall, Calgary, Alberta, Canada
+					</div>
+				</div>
+				<div class="event-item">
+					<i class="icon-calendar"></i>
+					<div>
+						<strong>When:</strong> 28th February, 2026
+					</div>
+				</div>
+				<div class="event-item">
+					<i class="icon-clock"></i>
+					<div>
+						<strong>Time:</strong> 10am - 2pm 
+					</div>
+				</div>
+				<div class="event-item">
+					<i class="icon-group"></i>
+					<div>
+						<strong>Community:</strong> Open to all interested individuals
+					</div>
+				</div>
+			</div>
+
+			<!-- Registration Card -->
+			<div class="registration-card">
+				<h2 class="form-section-title">Register for the Lecture</h2>
+				
+				<div class="form-info">
+				<p><i class="icon-info"></i> Fill out the form below to register. You'll receive a unique registration number via email that you can use to check in at the event.</p>
+
+				<div id="error-alert" class="error-alert"></div>
+
+				<!-- Registration Form -->
+				<form id="lecture-registration-form">
+					<div class="form-row">
+						<div class="form-group col-md-6">
+							<label for="fname">First Name *</label>
+							<input type="text" class="form-control" id="fname" name="fname" required>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="lname">Last Name *</label>
+							<input type="text" class="form-control" id="lname" name="lname" required>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="email">Email Address *</label>
+						<input type="email" class="form-control" id="email" name="email" required>
+					</div>
+
+					<div class="form-group">
+						<label for="phone">Phone Number *</label>
+						<input type="tel" class="form-control" id="phone" name="phone" placeholder="+1 (XXX) XXX-XXXX" required>
+					</div>
+
+					<div class="form-group">
+						<label for="attendance">How many people will be attending? *</label>
+						<select class="form-control" id="attendance" name="attendance" required>
+							<option value="">Select number of attendees</option>
+							<option value="1">Just me (1 person)</option>
+							<option value="2">2 people</option>
+							<option value="3">3 people</option>
+							<option value="4">4 people</option>
+							<option value="5">5+ people</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label>
+							<input type="checkbox" id="newsletter" name="newsletter">
+							Subscribe to our newsletter for future events
+						</label>
+					</div>
+
+					<button type="submit" class="btn btn-primary-custom btn-lg w-100">
+						Register Now
+					</button>
+				</form>
+
+				<!-- Loading Spinner -->
+				<div id="loading-spinner" class="loading-spinner">
+					<div class="spinner"></div>
+					<p>Processing your registration...</p>
+				</div>
+
+				<!-- Success Message -->
+				<div id="success-message" class="success-message">
+					<h3 style="margin-bottom: 20px;">✓ Registration Successful!</h3>
+					<p style="font-size: 1.1rem; margin-bottom: 20px;">Thank you for registering for the Ramadan Lecture in Calgary</p>
+					
+					<p style="font-size: 0.95rem; margin-bottom: 15px;">Your unique registration number has been sent to your email address. Please save it for check-in.</p>
+					
+					<div style="margin: 30px 0;">
+						<p style="font-size: 0.9rem; margin-bottom: 10px;">Your Registration Number:</p>
+						<div class="registration-code" id="display-code"></div>
+					</div>
+					
+					<button type="button" class="copy-btn" onclick="copyToClipboard()">Copy Registration Number</button>
+					
+					<p style="margin-top: 30px; font-size: 0.95rem;">You should receive a confirmation email shortly. Please check your spam folder if you don't see it.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="site-footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 col-lg-4">
+					<div class="widget">
+						<h3 class="heading">About Us</h3>
+						<ul class="links list-unstyled">
+							<li><a href="#">About</a></li>
+							<li><a href="#">Blog</a></li>
+							<li><a href="#">Team</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-2 pl-lg-5">
+					<div class="widget">
+						<h3 class="heading">Pages</h3>
+						<ul class="links list-unstyled">
+							<li><a href="#">Blog</a></li>
+							<li><a href="#">About</a></li>
+							<li><a href="#">Contact</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-2">
+					<div class="widget">
+						<h3 class="heading">Resources</h3>
+						<ul class="links list-unstyled">
+							<li><a href="#">Blog</a></li>
+							<li><a href="#">About</a></li>
+							<li><a href="#">Contact</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-4">
+					<div class="widget">
+						<h3 class="heading">Contact</h3>
+						<ul class="list-unstyled quick-info links">
+							<li class="email"><a href="#">hello@deenvoyage.com</a></li>
+							<li class="phone"><a href="#">+1 403 837 8813</a></li>
+							<li class="address"><a href="#">305 Redstone Boulevard, NE, Calgary, AB, Canada</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="inner dark">
+		<div class="container">
+			<div class="row text-center">
+				<div class="col-md-8 mb-3 mb-md-0 mx-auto">
+					<p>Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash; Designed with by <a href="https://prolific.com.ng" class="link-highlight">Prolific Limited</a> 
+					</p>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+
+	<!-- Scripts -->
+	<script src="js/jquery-3.4.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/aos.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js"></script>
+	<script type="module" src="js/lecture-registration.js"></script>
+</body>
+
+</html>

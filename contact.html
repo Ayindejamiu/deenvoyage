@@ -47,20 +47,21 @@
 	<nav class="site-nav">
 		<div class="container">
 			<div class="site-navigation">
-				<a href="index.html" class="logo m-0"> </span><img src="images/deen..png"></a>
+				<a href="/" class="logo m-0"><img src="images/deen..png" alt="Deen Voyage Logo"></a>
 
 				<ul class="js-clone-nav d-none d-lg-inline-block text-left site-menu float-right">
-					<li><a href="index.html">Home</a></li>
+					<li><a href="/">Home</a></li>
 					<li class="has-children">
 						<a href="#">Services</a>
 						<ul class="dropdown">
-							<li><a href="#">Hajj</a></li>
-							<li><a href="#">Umrah</a></li>
+							<li><a href="/hajj">Hajj</a></li>
+							<li><a href="/umrah">Umrah</a></li>
 							<li><a href="#">Vacations</a></li>
 						</ul>
 					</li>
-					<li><a href="#">About Us </a></li>
-					<li class="active"><a href="/contact.html">Contact Us</a></li>
+					<li><a href="/about">About Us </a></li>
+					<li><a href="/register">Register</a></li>
+					<li><a href="/contact">Contact Us</a></li>
 				</ul>
 
 				<a href="#" class="burger ml-auto float-right site-menu-toggle js-menu-toggle d-inline-block d-lg-none light" data-toggle="collapse" data-target="#main-navbar">
@@ -91,7 +92,8 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-6 mb-5 mb-lg-0">
-          <form class="contact-form" data-aos="fade-up" data-aos-delay="200">
+          <form id="contact-form" data-aos="fade-up" data-aos-delay="200">
+			
             <div class="row">
               <div class="col-6">
                 <div class="form-group">
@@ -116,6 +118,15 @@
               <textarea name="" class="form-control" id="message" cols="30" rows="5"></textarea>
             </div>
 
+						<!-- Honeypot field: real users won't fill this. Bots often will. -->
+						<div style="display:none;" aria-hidden="true">
+							<label for="website">Website</label>
+							<input type="text" id="hp_field" name="website" autocomplete="off" tabindex="-1">
+						</div>
+
+						<!-- Hidden timestamp: used for simple time-on-page checks -->
+						<input type="hidden" id="cf_page_ts" value="">
+			<div id="form-status"></div>
             <button type="submit" class="btn btn-primary">Send Message</button>
           </form>
         </div>
@@ -123,19 +134,19 @@
           <div class="quick-contact-item d-flex align-items-center mb-4">
             <span class="flaticon-house"></span>
             <address class="text">
-              155 Market St #101, Paterson, NJ 07505, United States
+              305 Redstone Boulevard, NE, Calgary, Canada.
             </address>
           </div>
           <div class="quick-contact-item d-flex align-items-center mb-4">
             <span class="flaticon-phone-call"></span>
             <address class="text">
-              +1 202 2020 200
+              +1 403 683 1777
             </address>
           </div>
           <div class="quick-contact-item d-flex align-items-center mb-4">
             <span class="flaticon-mail"></span>
             <address class="text">
-              @info@mydomain.com
+              hello@deenvoyage.com
             </address>
           </div>
         </div>
@@ -145,7 +156,7 @@
 
   
 
-  <div class="untree_co-section testimonial-section mt-5 bg-white">
+  <!-- <div class="untree_co-section testimonial-section mt-5 bg-white">
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-lg-7 text-center">
@@ -187,10 +198,11 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
 
-
+  <script src="https://static.elfsight.com/platform/platform.js" async></script>
+  <div class="elfsight-app-bd1badfd-3123-4d50-bf51-7f5226ce9c92" data-elfsight-app-lazy></div>
   <div class="site-footer">
 		<div class="inner first">
 			<div class="container">
@@ -239,7 +251,7 @@
 							<ul class="list-unstyled quick-info links">
 								<li class="email"><a href="#">hello@deenvoyage.com</a></li>
 								<li class="phone"><a href="#">+1 403 837 8813</a></li>
-								<li class="address"><a href="#">1387 Cornerstone Boulevard, NE, Calgary, AB, Canada</a></li>
+								<li class="address"><a href="#">305 Redstone Boulevard, NE, Calgary, AB, Canada</a></li>
 							</ul>
 						</div>
 					</div>
@@ -268,6 +280,13 @@
 			<span class="sr-only">Loading...</span>
 		</div>
 	</div>
+	<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script>
+  (function(){
+    emailjs.init("1-AO8OyMPjjMVZ7RH"); // Replace with your EmailJS public key
+  })();
+</script>
+
 
 	<script src="js/jquery-3.4.1.min.js"></script>
 	<script src="js/popper.min.js"></script>
@@ -308,9 +327,14 @@
 			});
 		})
 	</script>
-
 	<script src="js/custom.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js"></script>
+<script type="module" src="app.js"></script>
 
+
+
+	
 </body>
 
 </html>
