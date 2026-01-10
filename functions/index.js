@@ -5,8 +5,8 @@ const { Resend } = require('resend');
 // Initialize the Admin SDK
 admin.initializeApp();
 
-// Initialize Resend with your API key
-const resend = new Resend('re_Jg47oJUA_KMbDpEpHiaQ7U3EAKuB525Lf');
+// Initialize Resend with API key from environment variable
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 /**
  * Trigger: Realtime Database onCreate for /registrations/{id}

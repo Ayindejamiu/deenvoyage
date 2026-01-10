@@ -3,7 +3,7 @@ const cors = require('cors');
 const { Resend } = require('resend');
 
 const app = express();
-const resend = new Resend('re_Jg47oJUA_KMbDpEpHiaQ7U3EAKuB525Lf');
+const resend = new Resend(process.env.RESEND_API_KEY || 'your-api-key-here');
 
 // Enable CORS for your domain
 app.use(cors({
