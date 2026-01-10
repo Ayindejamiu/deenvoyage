@@ -7,7 +7,14 @@ const resend = new Resend(process.env.RESEND_API_KEY || 'your-api-key-here');
 
 // Enable CORS for your domain
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:5000', 'https://deenvoyage.com', 'https://www.deenvoyage.com']
+  origin: [
+    'http://localhost:3000', 
+    'http://localhost:5000', 
+    'https://deenvoyage.com', 
+    'https://www.deenvoyage.com',
+    'https://deenvoyage-f065a.web.app',
+    'https://deenvoyage-f065a.firebaseapp.com'
+  ]
 }));
 
 app.use(express.json());
