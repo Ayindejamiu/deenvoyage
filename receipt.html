@@ -1,0 +1,954 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Receipt & Payments — Deen Voyage</title>
+  <link rel="shortcut icon" href="favicon.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <style>
+    :root {
+      --navy: #0a3d62;
+      --gold:  #d4af37;
+      --green: #1e8449;
+      --red:   #c0392b;
+    }
+    body { background:#f0f2f5; font-family:'Segoe UI',sans-serif; min-height:100vh; margin:0; }
+
+    /* ── Top bar ── */
+    .top-bar { background:var(--navy); color:#fff; padding:14px 24px; display:flex; align-items:center; gap:14px; box-shadow:0 2px 8px rgba(0,0,0,.2); }
+    .top-bar img { height:36px; }
+    .top-bar h1 { font-size:1.1rem; margin:0; font-weight:700; }
+    .top-bar .top-bar-right { margin-left:auto; display:flex; gap:10px; }
+    .top-bar .tab-btn { background:transparent; border:1.5px solid rgba(255,255,255,.4); color:#fff; border-radius:6px; padding:6px 16px; font-size:.85rem; font-weight:600; cursor:pointer; transition:.2s; }
+    .top-bar .tab-btn.active, .top-bar .tab-btn:hover { background:rgba(255,255,255,.15); border-color:#fff; }
+
+    /* ── Page sections ── */
+    .page-section { display:none; }
+    .page-section.active { display:block; }
+
+    /* ══════════════════════════════════════════
+       ISSUE RECEIPT / ADD PAYMENT SECTION
+    ══════════════════════════════════════════ */
+    .workspace {
+      display:grid;
+      grid-template-columns:400px 1fr;
+      gap:24px;
+      padding:24px;
+      max-width:1240px;
+      margin:0 auto;
+    }
+    @media(max-width:920px){ .workspace{ grid-template-columns:1fr; } }
+
+    .form-panel { background:#fff; border-radius:12px; padding:28px; box-shadow:0 2px 12px rgba(0,0,0,.08); align-self:start; }
+
+    /* mode tabs */
+    .mode-tabs { display:flex; gap:0; border:1.5px solid #d0d7de; border-radius:8px; overflow:hidden; margin-bottom:22px; }
+    .mode-tab { flex:1; padding:8px; font-size:.84rem; font-weight:700; border:none; background:#f6f8fa; color:#666; cursor:pointer; transition:.2s; }
+    .mode-tab.active { background:var(--navy); color:#fff; }
+
+    .form-label { font-size:.84rem; font-weight:600; color:#444; margin-bottom:4px; }
+    .form-control, .form-select { border-radius:8px; border:1.5px solid #d0d7de; font-size:.92rem; padding:.5rem .75rem; width:100%; }
+    .form-control:focus, .form-select:focus { border-color:var(--navy); box-shadow:0 0 0 3px rgba(10,61,98,.12); outline:none; }
+
+    /* search box */
+    .search-wrap { position:relative; }
+    .search-results { position:absolute; top:100%; left:0; right:0; background:#fff; border:1.5px solid #d0d7de; border-radius:0 0 8px 8px; z-index:50; max-height:220px; overflow-y:auto; display:none; }
+    .search-results.open { display:block; }
+    .search-result-item { padding:10px 14px; cursor:pointer; font-size:.88rem; border-bottom:1px solid #f0f0f0; }
+    .search-result-item:hover { background:#f6f8fa; }
+    .search-result-item .sri-name { font-weight:700; color:#1a1a2e; }
+    .search-result-item .sri-meta { font-size:.76rem; color:#888; margin-top:2px; }
+
+    /* loaded client card */
+    .client-card { background:#f6f8fa; border:1.5px solid #d0d7de; border-radius:8px; padding:14px 16px; margin-bottom:18px; position:relative; }
+    .client-card .cc-name { font-weight:700; font-size:.98rem; color:var(--navy); }
+    .client-card .cc-meta { font-size:.78rem; color:#666; margin-top:3px; line-height:1.6; }
+    .client-card .cc-clear { position:absolute; top:10px; right:12px; background:none; border:none; color:#aaa; font-size:1rem; cursor:pointer; }
+    .client-card .cc-clear:hover { color:var(--red); }
+
+    .balance-pill {
+      display:inline-block; border-radius:999px; padding:4px 12px;
+      font-size:.82rem; font-weight:700;
+    }
+    .balance-pill.owing { background:#fff3cd; color:#856404; border:1px solid #ffc107; }
+    .balance-pill.paid  { background:#eafaf1; color:var(--green); border:1px solid #a9dfbf; }
+
+    .balance-display { background:#e8f4fd; border:1.5px solid #b3d9f5; border-radius:8px; padding:10px 14px; font-size:1.1rem; font-weight:700; color:var(--navy); }
+    .balance-display.paid { background:#eafaf1; border-color:#a9dfbf; color:var(--green); }
+
+    .btn-action { width:100%; border-radius:8px; font-weight:700; font-size:.95rem; padding:.65rem; border:none; cursor:pointer; }
+    .btn-navy { background:var(--navy); color:#fff; }
+    .btn-navy:hover { background:#083350; }
+    .btn-gold { background:var(--gold); color:#fff; }
+    .btn-gold:hover { background:#b8962f; }
+    .btn-green { background:var(--green); color:#fff; }
+    .btn-green:hover { background:#196f3d; }
+
+    .status-box { font-size:.85rem; border-radius:8px; padding:8px 12px; display:none; margin-top:12px; }
+    .status-box.show { display:block; }
+    .status-box.success { background:#eafaf1; color:var(--green); border:1px solid #a9dfbf; }
+    .status-box.error   { background:#fff0f0; color:var(--red);   border:1px solid #ffb3b3; }
+    .status-box.info    { background:#e8f4fd; color:var(--navy);  border:1px solid #b3d9f5; }
+
+    /* ══════════════════════════════════════════
+       RECEIPT PREVIEW
+    ══════════════════════════════════════════ */
+    .preview-panel { background:#fff; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,.08); overflow:hidden; }
+    .preview-toolbar { background:#f6f8fa; border-bottom:1px solid #e1e8ed; padding:12px 20px; font-size:.82rem; color:#666; display:flex; align-items:center; gap:8px; }
+    .preview-toolbar strong { color:var(--navy); }
+
+    #receipt-preview { padding:40px 48px; min-height:600px; }
+
+    .receipt-header { display:flex; justify-content:space-between; align-items:flex-start; border-bottom:3px solid var(--navy); padding-bottom:20px; margin-bottom:28px; }
+    .receipt-logo { height:50px; }
+    .receipt-brand h2 { font-size:1.05rem; font-weight:700; color:var(--navy); margin:6px 0 2px; }
+    .receipt-brand p  { font-size:.76rem; color:#888; margin:0; line-height:1.5; }
+    .receipt-title-block { text-align:right; }
+    .receipt-title-block h3 { font-size:1.5rem; font-weight:800; color:var(--navy); text-transform:uppercase; letter-spacing:.08em; margin:0 0 4px; }
+    .receipt-number { font-size:.82rem; color:#888; font-family:monospace; }
+    .receipt-date   { font-size:.88rem; color:#555; margin-top:4px; }
+
+    .receipt-client { background:#f6f8fa; border-left:4px solid var(--gold); border-radius:0 8px 8px 0; padding:14px 18px; margin-bottom:24px; }
+    .receipt-client .label { font-size:.7rem; text-transform:uppercase; letter-spacing:.08em; color:#888; font-weight:700; }
+    .receipt-client .value { font-size:1.05rem; font-weight:700; color:#1a1a2e; }
+    .receipt-client .sub   { font-size:.8rem; color:#666; margin-top:2px; }
+
+    .receipt-table { width:100%; border-collapse:collapse; margin-bottom:24px; }
+    .receipt-table th { background:var(--navy); color:#fff; font-size:.76rem; text-transform:uppercase; letter-spacing:.06em; padding:10px 14px; text-align:left; }
+    .receipt-table th:last-child, .receipt-table td:last-child { text-align:right; }
+    .receipt-table td { padding:11px 14px; font-size:.9rem; border-bottom:1px solid #eef0f3; color:#333; vertical-align:top; }
+    .receipt-table tbody tr:last-child td { border-bottom:none; }
+    .receipt-table .sub-row td { background:#fafbfc; font-size:.82rem; color:#555; padding:8px 14px; }
+    .receipt-table .sub-row td:first-child { padding-left:28px; }
+    .receipt-table .this-payment td { background:#fff8e6; font-weight:700; }
+
+    .receipt-totals { margin-left:auto; width:290px; }
+    .receipt-totals table { width:100%; border-collapse:collapse; }
+    .receipt-totals td { padding:7px 10px; font-size:.9rem; color:#555; }
+    .receipt-totals td:last-child { text-align:right; font-weight:600; color:#222; }
+    .receipt-totals .sep td { border-top:1px solid #e1e8ed; }
+    .receipt-totals .balance-row td { font-size:1rem; font-weight:800; color:var(--navy); padding-top:8px; }
+    .receipt-totals .balance-row.paid td { color:var(--green); }
+
+    .balance-badge { display:inline-block; font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; padding:3px 10px; border-radius:999px; margin-left:6px; }
+    .badge-paid  { background:#eafaf1; color:var(--green); border:1px solid #a9dfbf; }
+    .badge-owing { background:#fff3cd; color:#856404; border:1px solid #ffc107; }
+
+    .receipt-footer { border-top:1px solid #e1e8ed; margin-top:28px; padding-top:16px; display:flex; justify-content:space-between; align-items:flex-end; }
+    .receipt-footer .note { font-size:.75rem; color:#aaa; max-width:320px; line-height:1.5; }
+    .receipt-footer .brand-mark { font-size:.8rem; color:var(--navy); font-weight:700; text-align:right; }
+    .receipt-footer .brand-mark span { display:block; font-weight:400; color:#aaa; font-size:.72rem; }
+
+    /* ══════════════════════════════════════════
+       REGISTRATIONS LIST SECTION
+    ══════════════════════════════════════════ */
+    .reg-section { max-width:1100px; margin:0 auto; padding:24px; }
+    .reg-section h2 { font-size:1.1rem; font-weight:700; color:var(--navy); margin-bottom:18px; }
+
+    .filters-bar { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px; }
+    .filters-bar input, .filters-bar select { border-radius:8px; border:1.5px solid #d0d7de; font-size:.88rem; padding:.45rem .75rem; }
+    .filters-bar input { flex:1; min-width:180px; }
+
+    .reg-table-wrap { background:#fff; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,.08); overflow:hidden; }
+    .reg-table { width:100%; border-collapse:collapse; font-size:.88rem; }
+    .reg-table th { background:var(--navy); color:#fff; padding:11px 14px; text-align:left; font-size:.76rem; text-transform:uppercase; letter-spacing:.05em; white-space:nowrap; }
+    .reg-table td { padding:12px 14px; border-bottom:1px solid #eef0f3; color:#333; vertical-align:middle; }
+    .reg-table tbody tr:last-child td { border-bottom:none; }
+    .reg-table tbody tr:hover td { background:#f9f9ff; }
+    .reg-empty { text-align:center; padding:40px; color:#aaa; font-size:.9rem; }
+
+    .action-btn { border:none; border-radius:6px; padding:5px 12px; font-size:.78rem; font-weight:700; cursor:pointer; white-space:nowrap; }
+    .action-btn.add { background:#e8f4fd; color:var(--navy); }
+    .action-btn.add:hover { background:#cce4f7; }
+    .action-btn.view { background:#f6f8fa; color:#555; }
+    .action-btn.view:hover { background:#e9ecef; }
+
+    .pkg-badge { display:inline-block; background:#e8f4fd; color:var(--navy); border-radius:999px; padding:3px 10px; font-size:.76rem; font-weight:700; }
+
+    /* ── Print ── */
+    @media print {
+      body * { visibility:hidden; }
+      #receipt-preview, #receipt-preview * { visibility:visible; }
+      #receipt-preview { position:fixed; top:0; left:0; width:100%; padding:32px 48px; background:#fff; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Top bar ── -->
+<div class="top-bar">
+  <img src="images/deen..png" alt="Deen Voyage">
+  <h1>Receipt &amp; Payments</h1>
+  <div class="top-bar-right">
+    <button class="tab-btn active" onclick="showSection('issue')">Issue Receipt</button>
+    <button class="tab-btn" onclick="showSection('registrations')">All Registrations</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 1 — Issue / Add Payment
+══════════════════════════════════════════ -->
+<div class="page-section active" id="section-issue">
+  <div class="workspace">
+
+    <!-- Left: Form -->
+    <div class="form-panel">
+
+      <!-- Mode tabs -->
+      <div class="mode-tabs">
+        <button class="mode-tab active" id="tab-new" onclick="switchMode('new')">New Registration</button>
+        <button class="mode-tab" id="tab-add" onclick="switchMode('add')">Add Payment</button>
+      </div>
+
+      <!-- ── NEW REGISTRATION form ── -->
+      <div id="form-new">
+        <div class="mb-3">
+          <label class="form-label">Client Name</label>
+          <input type="text" class="form-control" id="n-name" placeholder="e.g. Fatima Al-Hassan">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Client Email</label>
+          <input type="email" class="form-control" id="n-email" placeholder="client@email.com">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Package</label>
+          <select class="form-select" id="n-package" onchange="onPackageChange('new')">
+            <option value="">— Select package —</option>
+            <option value="August Umrah 2026">August Umrah 2026</option>
+            <option value="November Umrah 2026">November Umrah 2026</option>
+            <option value="December Umrah 2026">December Umrah 2026</option>
+            <option value="Hajj 2027">Hajj 2027</option>
+            <option value="Other">Other (specify below)</option>
+          </select>
+        </div>
+        <div class="mb-3" id="n-custom-wrap" style="display:none;">
+          <label class="form-label">Custom Package / Description</label>
+          <input type="text" class="form-control" id="n-custom" placeholder="e.g. Private Umrah Group">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Currency</label>
+          <select class="form-select" id="n-currency" onchange="updatePreview()">
+            <option value="CAD">CAD — Canadian Dollar (CA$)</option>
+            <option value="USD">USD — US Dollar ($)</option>
+            <option value="NGN">NGN — Nigerian Naira (₦)</option>
+            <option value="GBP">GBP — British Pound (£)</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Total Package Amount</label>
+          <input type="number" class="form-control" id="n-total" placeholder="0.00" min="0" step="0.01" oninput="updatePreview()">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Date of Payment</label>
+          <input type="date" class="form-control" id="n-date">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Amount Paid Now</label>
+          <input type="number" class="form-control" id="n-paid" placeholder="0.00" min="0" step="0.01" oninput="updatePreview()">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Payment Note <span style="font-weight:400;color:#999;">(optional)</span></label>
+          <input type="text" class="form-control" id="n-note" placeholder="e.g. Initial deposit">
+        </div>
+        <div class="mb-4">
+          <label class="form-label">Balance Remaining</label>
+          <div class="balance-display" id="n-balance-display">—</div>
+        </div>
+
+        <div class="d-grid gap-2">
+          <button class="btn-action btn-navy" onclick="saveNewRegistration()">Save &amp; Issue Receipt</button>
+          <button class="btn-action btn-gold mt-1" onclick="sendCurrentEmail()">✉ Send to Client</button>
+          <button class="btn-action btn-action mt-1" style="background:#f6f8fa;color:#555;border:1.5px solid #d0d7de;" onclick="window.print()">⬇ Download PDF</button>
+        </div>
+        <div class="status-box" id="n-status"></div>
+      </div>
+
+      <!-- ── ADD PAYMENT form ── -->
+      <div id="form-add" style="display:none;">
+        <div class="mb-3">
+          <label class="form-label">Search Client</label>
+          <div class="search-wrap">
+            <input type="text" class="form-control" id="a-search" placeholder="Type name or receipt number…" oninput="searchClients(this.value)" autocomplete="off">
+            <div class="search-results" id="a-results"></div>
+          </div>
+        </div>
+
+        <!-- Loaded client card -->
+        <div id="a-client-card" style="display:none;">
+          <div class="client-card" id="a-client-info">
+            <button class="cc-clear" onclick="clearClient()">✕</button>
+            <div class="cc-name" id="a-cc-name">—</div>
+            <div class="cc-meta" id="a-cc-meta">—</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Date of Payment</label>
+            <input type="date" class="form-control" id="a-date">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Amount Paid Now</label>
+            <input type="number" class="form-control" id="a-paid" placeholder="0.00" min="0" step="0.01" oninput="updateAddPreview()">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Payment Note <span style="font-weight:400;color:#999;">(optional)</span></label>
+            <input type="text" class="form-control" id="a-note" placeholder="e.g. Second instalment">
+          </div>
+          <div class="mb-4">
+            <label class="form-label">New Balance After This Payment</label>
+            <div class="balance-display" id="a-balance-display">—</div>
+          </div>
+
+          <div class="d-grid gap-2">
+            <button class="btn-action btn-green" onclick="addPayment()">Add Payment &amp; Issue Receipt</button>
+            <button class="btn-action btn-gold mt-1" onclick="sendCurrentEmail()">✉ Send to Client</button>
+            <button class="btn-action mt-1" style="background:#f6f8fa;color:#555;border:1.5px solid #d0d7de;" onclick="window.print()">⬇ Download PDF</button>
+          </div>
+          <div class="status-box" id="a-status"></div>
+        </div>
+        <div id="a-no-client" style="text-align:center;padding:28px 0;color:#aaa;font-size:.9rem;">
+          Search for a client above to load their record.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right: Receipt Preview -->
+    <div class="preview-panel">
+      <div class="preview-toolbar">
+        Receipt Preview &nbsp;·&nbsp; <strong id="preview-num">—</strong>
+      </div>
+      <div id="receipt-preview">
+        <div class="receipt-header">
+          <div class="receipt-brand">
+            <img src="images/deen..png" alt="Deen Voyage" class="receipt-logo">
+            <h2>Deen Voyage</h2>
+            <p>Calgary, Alberta, Canada<br>hello@deenvoyage.com<br>www.deenvoyage.com</p>
+          </div>
+          <div class="receipt-title-block">
+            <h3>Receipt</h3>
+            <div class="receipt-number" id="rv-number">Receipt #: —</div>
+            <div class="receipt-date"   id="rv-date">Date: —</div>
+          </div>
+        </div>
+
+        <div class="receipt-client">
+          <div class="label">Issued To</div>
+          <div class="value" id="rv-name">—</div>
+          <div class="sub"  id="rv-email"></div>
+        </div>
+
+        <table class="receipt-table">
+          <thead>
+            <tr>
+              <th style="width:55%;text-align:left;">Description</th>
+              <th style="text-align:left;">Date</th>
+              <th style="text-align:right;">Amount</th>
+            </tr>
+          </thead>
+          <tbody id="rv-payments-body">
+            <tr><td colspan="3" style="color:#aaa;text-align:center;padding:20px;">Fill in the form to preview.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="receipt-totals">
+          <table>
+            <tr><td>Total Package</td><td id="rv-pkg-total">—</td></tr>
+            <tr><td style="color:var(--green)">Total Paid</td><td id="rv-total-paid" style="color:var(--green)">—</td></tr>
+            <tr class="sep"><td></td><td></td></tr>
+            <tr class="balance-row" id="rv-balance-row">
+              <td>Balance Due <span class="balance-badge" id="rv-badge"></span></td>
+              <td id="rv-balance">—</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="receipt-footer">
+          <div class="note">This receipt is issued by Deen Voyage as confirmation of payment received.<br>For queries contact hello@deenvoyage.com</div>
+          <div class="brand-mark">Deen Voyage<span>Travel with Value</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 2 — All Registrations
+══════════════════════════════════════════ -->
+<div class="page-section" id="section-registrations">
+  <div class="reg-section">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+      <h2 style="margin:0;">All Registrations</h2>
+      <button class="btn-action btn-navy" style="width:auto;padding:8px 20px;font-size:.88rem;" onclick="showSection('issue');switchMode('new')">+ New Registration</button>
+    </div>
+
+    <div class="filters-bar">
+      <input type="text" id="reg-search" placeholder="Search name or receipt #…" oninput="renderRegistrations()">
+      <select id="reg-pkg-filter" onchange="renderRegistrations()">
+        <option value="">All Packages</option>
+        <option value="August Umrah 2026">August Umrah 2026</option>
+        <option value="November Umrah 2026">November Umrah 2026</option>
+        <option value="December Umrah 2026">December Umrah 2026</option>
+        <option value="Hajj 2027">Hajj 2027</option>
+        <option value="Other">Other</option>
+      </select>
+      <select id="reg-status-filter" onchange="renderRegistrations()">
+        <option value="">All Statuses</option>
+        <option value="owing">Balance Owing</option>
+        <option value="paid">Paid in Full</option>
+      </select>
+    </div>
+
+    <div class="reg-table-wrap">
+      <table class="reg-table">
+        <thead>
+          <tr>
+            <th>Receipt #</th>
+            <th>Client</th>
+            <th>Package</th>
+            <th>Total</th>
+            <th>Paid</th>
+            <th>Balance</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="reg-tbody">
+          <tr><td colspan="8" class="reg-empty">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  // ══════════════════════════════════════════════════════════════
+  //  Firebase init
+  // ══════════════════════════════════════════════════════════════
+  const firebaseConfig = {
+    apiKey: "AIzaSyDK3r2QlBbErNqs0L4DIuzrJi_ue-4z0MA",
+    authDomain: "deenvoyage-f065a.firebaseapp.com",
+    databaseURL: "https://deenvoyage-f065a-default-rtdb.firebaseio.com",
+    projectId: "deenvoyage-f065a",
+    storageBucket: "deenvoyage-f065a.appspot.com",
+    messagingSenderId: "76816405729",
+    appId: "1:76816405729:web:d1db037c0a7c27c6f613a0"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  // ══════════════════════════════════════════════════════════════
+  //  State
+  // ══════════════════════════════════════════════════════════════
+  let allRegistrations = {};   // key → registration object
+  let activeReg = null;        // the currently loaded registration (add-payment mode)
+  let activeRegKey = null;
+  let currentReceiptData = null;  // used for email sending
+  let currentMode = 'new';
+
+  const SERVER_URL = 'https://deenvoyage-email-server.onrender.com';
+
+  const CURRENCY_SYMBOLS = { CAD: 'CA$', USD: '$', NGN: '₦', GBP: '£' };
+  function fmt(val, cur) {
+    const sym = CURRENCY_SYMBOLS[cur] || cur + ' ';
+    if (val === null || val === undefined || isNaN(val)) return '—';
+    return sym + Number(val).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  function fmtDate(iso) {
+    if (!iso) return '—';
+    return new Date(iso + 'T12:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+  // Incremental receipt number using Firebase atomic counter
+  async function genReceiptNum() {
+    const counterRef = db.ref('receiptCounter');
+    const snap = await counterRef.transaction(current => (current || 0) + 1);
+    const n = String(snap.snapshot.val()).padStart(4, '0');
+    return 'DV-' + new Date().getFullYear() + '-' + n;
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  //  Navigation
+  // ══════════════════════════════════════════════════════════════
+  function showSection(name) {
+    document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+    document.getElementById('section-' + name).classList.add('active');
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    event && event.target && event.target.classList.add('active');
+    if (name === 'registrations') renderRegistrations();
+  }
+
+  function switchMode(mode) {
+    currentMode = mode;
+    document.getElementById('tab-new').classList.toggle('active', mode === 'new');
+    document.getElementById('tab-add').classList.toggle('active', mode === 'add');
+    document.getElementById('form-new').style.display = mode === 'new' ? '' : 'none';
+    document.getElementById('form-add').style.display = mode === 'add' ? '' : 'none';
+    if (mode === 'new') resetNewForm();
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  //  Package dropdown helper
+  // ══════════════════════════════════════════════════════════════
+  function onPackageChange(mode) {
+    const sel = document.getElementById(mode === 'new' ? 'n-package' : 'n-package');
+    const wrap = document.getElementById('n-custom-wrap');
+    if (sel.value === 'Other') { wrap.style.display = ''; }
+    else { wrap.style.display = 'none'; }
+    updatePreview();
+  }
+
+  function getPackageLabel(mode) {
+    if (mode === 'new') {
+      const sel = document.getElementById('n-package').value;
+      if (sel === 'Other') return document.getElementById('n-custom').value.trim() || 'Other';
+      return sel;
+    }
+    return activeReg ? activeReg.package : '—';
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  //  NEW REGISTRATION — preview update
+  // ══════════════════════════════════════════════════════════════
+  function updatePreview() {
+    if (currentMode !== 'new') return;
+    const name     = document.getElementById('n-name').value.trim();
+    const email    = document.getElementById('n-email').value.trim();
+    const pkg      = getPackageLabel('new');
+    const currency = document.getElementById('n-currency').value;
+    const total    = parseFloat(document.getElementById('n-total').value) || 0;
+    const paid     = parseFloat(document.getElementById('n-paid').value) || 0;
+    const date     = document.getElementById('n-date').value;
+    const balance  = total - paid;
+
+    // Balance display
+    const disp = document.getElementById('n-balance-display');
+    disp.classList.toggle('paid', paid >= total && total > 0);
+    disp.textContent = (total || paid) ? fmt(balance, currency) : '—';
+
+    // Build a receipt-like data object and render (use placeholder until saved)
+    const receiptNum = currentReceiptData ? currentReceiptData.receiptNumber : 'DV-' + new Date().getFullYear() + '-XXXX';
+    const payments = paid > 0 ? [{ date, amount: paid, note: document.getElementById('n-note').value.trim() || 'Initial payment' }] : [];
+    renderReceiptPreview({ name, email, pkg, currency, total, payments, receiptNumber: receiptNum, date });
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  //  ADD PAYMENT — preview update
+  // ══════════════════════════════════════════════════════════════
+  function updateAddPreview() {
+    if (!activeReg) return;
+    const newPaid    = parseFloat(document.getElementById('a-paid').value) || 0;
+    const totalPaid  = (activeReg.totalPaid || 0) + newPaid;
+    const balance    = activeReg.totalAmount - totalPaid;
+    const currency   = activeReg.currency;
+    const date       = document.getElementById('a-date').value;
+    const note       = document.getElementById('a-note').value.trim();
+
+    const disp = document.getElementById('a-balance-display');
+    disp.classList.toggle('paid', balance <= 0 && activeReg.totalAmount > 0);
+    disp.textContent = fmt(balance, currency);
+
+    // Build preview payments list: existing + this new one
+    const existingPayments = Array.isArray(activeReg.payments)
+      ? activeReg.payments
+      : Object.values(activeReg.payments || {});
+    const payments = [...existingPayments];
+    if (newPaid > 0) payments.push({ date, amount: newPaid, note: note || 'Payment' });
+
+    renderReceiptPreview({
+      name: activeReg.clientName,
+      email: activeReg.clientEmail,
+      pkg: activeReg.package,
+      currency,
+      total: activeReg.totalAmount,
+      payments,
+      receiptNumber: activeReg.registrationId,
+      date
+    });
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  //  Render receipt preview
+  // ══════════════════════════════════════════════════════════════
+  function renderReceiptPreview({ name, email, pkg, currency, total, payments, receiptNumber, date }) {
+    // Store for email
+    const totalPaid = payments.reduce((s, p) => s + (p.amount || 0), 0);
+    const balance   = total - totalPaid;
+    currentReceiptData = { name, email, pkg, currency, total, payments, receiptNumber, date, totalPaid, balance };
+
+    document.getElementById('preview-num').textContent   = receiptNumber;
+    document.getElementById('rv-number').textContent     = 'Receipt #: ' + receiptNumber;
+    document.getElementById('rv-date').textContent       = 'Date: ' + fmtDate(date);
+    document.getElementById('rv-name').textContent       = name || '—';
+    document.getElementById('rv-email').textContent      = email;
+    document.getElementById('rv-pkg-total').textContent  = fmt(total, currency);
+    document.getElementById('rv-total-paid').textContent = fmt(totalPaid, currency);
+    document.getElementById('rv-balance').textContent    = fmt(balance, currency);
+
+    // Badge
+    const row   = document.getElementById('rv-balance-row');
+    const badge = document.getElementById('rv-badge');
+    row.classList.toggle('paid', balance <= 0 && total > 0);
+    badge.className = 'balance-badge ' + (balance <= 0 && total > 0 ? 'badge-paid' : 'badge-owing');
+    badge.textContent = balance <= 0 && total > 0 ? 'Paid in Full' : 'Owing';
+
+    // Payments rows
+    const tbody = document.getElementById('rv-payments-body');
+    if (!payments.length) {
+      tbody.innerHTML = `<tr><td>${pkg || '—'}</td><td>—</td><td>—</td></tr>`;
+      return;
+    }
+    let rows = `<tr><td colspan="3" style="background:#f6f8fa;font-size:.78rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.06em;padding:8px 14px;">${pkg || '—'}</td></tr>`;
+    payments.forEach(p => {
+      rows += `<tr class="sub-row">
+        <td style="padding-left:24px;">${p.note || 'Payment'}</td>
+        <td style="white-space:nowrap;">${fmtDate(p.date)}</td>
+        <td>${fmt(p.amount, currency)}</td>
+      </tr>`;
+    });
+    tbody.innerHTML = rows;
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  //  Wire new-form inputs to live preview
+  // ══════════════════════════════════════════════════════════════
+  ['n-name','n-email','n-package','n-custom','n-currency','n-total','n-date','n-paid','n-note'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.addEventListener('input', updatePreview); el.addEventListener('change', updatePreview); }
+  });
+
+  // Set today's date
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('n-date').value = today;
+  document.getElementById('a-date').value = today;
+  updatePreview();
+
+  // ══════════════════════════════════════════════════════════════
+  //  Save New Registration
+  // ══════════════════════════════════════════════════════════════
+  async function saveNewRegistration() {
+    const name     = document.getElementById('n-name').value.trim();
+    const email    = document.getElementById('n-email').value.trim();
+    const pkg      = getPackageLabel('new');
+    const currency = document.getElementById('n-currency').value;
+    const total    = parseFloat(document.getElementById('n-total').value) || 0;
+    const paid     = parseFloat(document.getElementById('n-paid').value) || 0;
+    const date     = document.getElementById('n-date').value;
+    const note     = document.getElementById('n-note').value.trim();
+    const status   = document.getElementById('n-status');
+
+    if (!name || !pkg || !total) {
+      showStatus(status, 'Please fill in client name, package and total amount.', 'error');
+      return;
+    }
+
+    showStatus(status, 'Generating receipt number…', 'info');
+    const receiptNum = await genReceiptNum();
+    const payment = { receiptNumber: receiptNum, date, amount: paid, note: note || 'Initial payment', timestamp: Date.now() };
+    const reg = {
+      registrationId: receiptNum,
+      clientName: name,
+      clientEmail: email,
+      package: pkg,
+      currency,
+      totalAmount: total,
+      payments: paid > 0 ? [payment] : [],
+      totalPaid: paid,
+      balance: total - paid,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    showStatus(status, 'Saving…', 'info');
+    try {
+      await db.ref('receipts').push(reg);
+      currentReceiptData = { ...currentReceiptData, receiptNumber: receiptNum };
+      renderReceiptPreview({ name, email, pkg, currency, total, payments: reg.payments, receiptNumber: receiptNum, date });
+      showStatus(status, 'Registration saved! Receipt is ready to download or send.', 'success');
+    } catch (e) {
+      showStatus(status, 'Error saving: ' + e.message, 'error');
+    }
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  //  Search clients (for Add Payment mode)
+  // ══════════════════════════════════════════════════════════════
+  function searchClients(query) {
+    const q = query.toLowerCase().trim();
+    const results = document.getElementById('a-results');
+    if (!q) { results.classList.remove('open'); return; }
+
+    const matches = Object.entries(allRegistrations).filter(([k, r]) =>
+      r.clientName.toLowerCase().includes(q) || (r.registrationId || '').toLowerCase().includes(q)
+    );
+
+    if (!matches.length) {
+      results.innerHTML = '<div class="search-result-item" style="color:#aaa;">No matches found.</div>';
+    } else {
+      results.innerHTML = matches.map(([k, r]) => `
+        <div class="search-result-item" onclick="loadClient('${k}')">
+          <div class="sri-name">${r.clientName}</div>
+          <div class="sri-meta">${r.package} · ${r.registrationId} · Balance: ${fmt(r.balance, r.currency)}</div>
+        </div>
+      `).join('');
+    }
+    results.classList.add('open');
+  }
+
+  function loadClient(key) {
+    activeReg    = allRegistrations[key];
+    activeRegKey = key;
+    document.getElementById('a-results').classList.remove('open');
+    document.getElementById('a-search').value = '';
+
+    const totalPaid = activeReg.totalPaid || 0;
+    document.getElementById('a-cc-name').textContent = activeReg.clientName;
+    document.getElementById('a-cc-meta').innerHTML =
+      `${activeReg.package} &nbsp;·&nbsp; ${activeReg.currency}<br>
+       Total: ${fmt(activeReg.totalAmount, activeReg.currency)} &nbsp;·&nbsp;
+       Paid: ${fmt(totalPaid, activeReg.currency)} &nbsp;·&nbsp;
+       Balance: <strong>${fmt(activeReg.balance, activeReg.currency)}</strong> &nbsp;
+       <span class="balance-pill ${activeReg.balance <= 0 ? 'paid' : 'owing'}">${activeReg.balance <= 0 ? 'Paid in Full' : 'Owing'}</span>`;
+
+    document.getElementById('a-client-card').style.display = '';
+    document.getElementById('a-no-client').style.display   = 'none';
+    document.getElementById('a-paid').value = '';
+    document.getElementById('a-balance-display').textContent = fmt(activeReg.balance, activeReg.currency);
+    document.getElementById('a-balance-display').classList.toggle('paid', activeReg.balance <= 0);
+
+    // Render existing receipt for this client
+    renderReceiptPreview({
+      name: activeReg.clientName,
+      email: activeReg.clientEmail,
+      pkg: activeReg.package,
+      currency: activeReg.currency,
+      total: activeReg.totalAmount,
+      payments: activeReg.payments || [],
+      receiptNumber: activeReg.registrationId,
+      date: today
+    });
+  }
+
+  function clearClient() {
+    activeReg = null; activeRegKey = null;
+    document.getElementById('a-client-card').style.display = 'none';
+    document.getElementById('a-no-client').style.display   = '';
+    document.getElementById('a-search').value = '';
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  //  Add Payment to existing registration
+  // ══════════════════════════════════════════════════════════════
+  async function addPayment() {
+    if (!activeReg || !activeRegKey) return;
+    const paid   = parseFloat(document.getElementById('a-paid').value) || 0;
+    const date   = document.getElementById('a-date').value;
+    const note   = document.getElementById('a-note').value.trim();
+    const status = document.getElementById('a-status');
+
+    if (!paid || paid <= 0) {
+      showStatus(status, 'Please enter a payment amount.', 'error');
+      return;
+    }
+
+    const existingPayments = Array.isArray(activeReg.payments)
+      ? activeReg.payments
+      : Object.values(activeReg.payments || {});
+    const newPayment = { date, amount: paid, note: note || 'Payment', timestamp: Date.now() };
+
+    const updatedPayments  = [...existingPayments, newPayment];
+    const updatedTotalPaid = (activeReg.totalPaid || 0) + paid;
+    const updatedBalance   = activeReg.totalAmount - updatedTotalPaid;
+
+    showStatus(status, 'Saving payment…', 'info');
+    try {
+      await db.ref('receipts/' + activeRegKey).update({
+        payments: updatedPayments,
+        totalPaid: updatedTotalPaid,
+        balance: updatedBalance,
+        updatedAt: new Date().toISOString()
+      });
+
+      // Update local state
+      activeReg = { ...activeReg, payments: updatedPayments, totalPaid: updatedTotalPaid, balance: updatedBalance };
+      allRegistrations[activeRegKey] = activeReg;
+
+      // Refresh client card
+      loadClient(activeRegKey);
+      document.getElementById('a-paid').value = '';
+      document.getElementById('a-note').value = '';
+
+      // Re-render the receipt using the same registration ID
+      renderReceiptPreview({
+        name: activeReg.clientName,
+        email: activeReg.clientEmail,
+        pkg: activeReg.package,
+        currency: activeReg.currency,
+        total: activeReg.totalAmount,
+        payments: updatedPayments,
+        receiptNumber: activeReg.registrationId,
+        date
+      });
+
+      showStatus(status, 'Payment added! Receipt ready to download or send.', 'success');
+    } catch (e) {
+      showStatus(status, 'Error: ' + e.message, 'error');
+    }
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  //  Send email
+  // ══════════════════════════════════════════════════════════════
+  async function sendCurrentEmail() {
+    if (!currentReceiptData) {
+      alert('Generate a receipt first.'); return;
+    }
+    const { name, email, pkg, currency, total, totalPaid, balance, receiptNumber, date, payments } = currentReceiptData;
+    if (!email) { alert('No email address on this receipt. Add the client\'s email first.'); return; }
+
+    const statusId = currentMode === 'new' ? 'n-status' : 'a-status';
+    const status   = document.getElementById(statusId);
+
+    try {
+      // Wake up the server first (Render free tier sleeps after inactivity)
+      showStatus(status, 'Connecting to email server…', 'info');
+      await fetch(`${SERVER_URL}/health`);
+
+      showStatus(status, 'Sending receipt to ' + email + '…', 'info');
+      const res = await fetch(`${SERVER_URL}/send-receipt`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          receiptNumber,
+          date,
+          clientName: name,
+          clientEmail: email,
+          purpose: pkg,
+          currency,
+          amount: total,
+          amountPaid: totalPaid,
+          balance,
+          payments
+        })
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Server error ${res.status}: ${text}`);
+      }
+
+      const data = await res.json();
+      if (data.success) {
+        showStatus(status, `Receipt sent to ${email}`, 'success');
+      } else {
+        throw new Error(data.error || 'Server returned failure');
+      }
+    } catch (e) {
+      if (e.message === 'Failed to fetch') {
+        showStatus(status, 'Cannot reach the email server. Check that the server is deployed and running on Render.', 'error');
+      } else {
+        showStatus(status, 'Failed: ' + e.message, 'error');
+      }
+    }
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  //  All Registrations list
+  // ══════════════════════════════════════════════════════════════
+  function renderRegistrations() {
+    const search    = (document.getElementById('reg-search').value || '').toLowerCase();
+    const pkgFilter = document.getElementById('reg-pkg-filter').value;
+    const stFilter  = document.getElementById('reg-status-filter').value;
+    const tbody = document.getElementById('reg-tbody');
+
+    let rows = Object.entries(allRegistrations).filter(([k, r]) => {
+      if (search && !r.clientName.toLowerCase().includes(search) && !(r.registrationId || '').toLowerCase().includes(search)) return false;
+      if (pkgFilter && r.package !== pkgFilter) return false;
+      if (stFilter === 'paid'  && r.balance > 0)   return false;
+      if (stFilter === 'owing' && r.balance <= 0)  return false;
+      return true;
+    });
+
+    if (!rows.length) {
+      tbody.innerHTML = `<tr><td colspan="8" class="reg-empty">No registrations found.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = rows.map(([k, r]) => {
+      const isPaid = r.balance <= 0;
+      const badge  = isPaid
+        ? `<span class="balance-pill paid">Paid</span>`
+        : `<span class="balance-pill owing">Owing</span>`;
+      return `<tr>
+        <td style="font-family:monospace;font-size:.8rem;">${r.registrationId || '—'}</td>
+        <td><strong>${r.clientName}</strong><br><span style="font-size:.76rem;color:#888;">${r.clientEmail || ''}</span></td>
+        <td><span class="pkg-badge">${r.package}</span></td>
+        <td>${fmt(r.totalAmount, r.currency)}</td>
+        <td style="color:var(--green);">${fmt(r.totalPaid || 0, r.currency)}</td>
+        <td style="color:${isPaid ? 'var(--green)' : 'var(--red)'};">${fmt(r.balance, r.currency)}</td>
+        <td>${badge}</td>
+        <td style="white-space:nowrap;">
+          <button class="action-btn add" onclick="openAddPayment('${k}')">+ Payment</button>
+        </td>
+      </tr>`;
+    }).join('');
+  }
+
+  function openAddPayment(key) {
+    showSection('issue');
+    switchMode('add');
+    document.querySelectorAll('.tab-btn')[0].classList.remove('active');
+    loadClient(key);
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  //  Firebase — load all registrations
+  // ══════════════════════════════════════════════════════════════
+  db.ref('receipts').on('value', snap => {
+    allRegistrations = snap.val() || {};
+    renderRegistrations();
+  });
+
+  // ══════════════════════════════════════════════════════════════
+  //  Helpers
+  // ══════════════════════════════════════════════════════════════
+  function showStatus(el, msg, type) {
+    el.textContent = msg;
+    el.className   = 'status-box show ' + type;
+  }
+
+  function resetNewForm() {
+    ['n-name','n-email','n-total','n-paid','n-note','n-custom'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    document.getElementById('n-package').value = '';
+    document.getElementById('n-date').value = today;
+    document.getElementById('n-custom-wrap').style.display = 'none';
+    document.getElementById('n-balance-display').textContent = '—';
+    document.getElementById('n-balance-display').classList.remove('paid');
+    document.getElementById('n-status').className = 'status-box';
+    currentReceiptData = null;
+    document.getElementById('rv-payments-body').innerHTML = `<tr><td colspan="3" style="color:#aaa;text-align:center;padding:20px;">Fill in the form to preview.</td></tr>`;
+    ['rv-number','rv-date','rv-name','rv-email','rv-pkg-total','rv-total-paid','rv-balance'].forEach(id => {
+      document.getElementById(id).textContent = id === 'rv-number' ? 'Receipt #: —' : id === 'rv-date' ? 'Date: —' : '—';
+    });
+    document.getElementById('preview-num').textContent = '—';
+  }
+
+  // Close search dropdown when clicking outside
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.search-wrap')) {
+      document.getElementById('a-results').classList.remove('open');
+    }
+  });
+</script>
+
+</body>
+</html>

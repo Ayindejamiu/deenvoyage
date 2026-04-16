@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { Resend } = require('resend');
@@ -5,19 +6,33 @@ const { Resend } = require('resend');
 const app = express();
 const resend = new Resend(process.env.RESEND_API_KEY || 'your-api-key-here');
 
-// Enable CORS for your domain
+// Enable CORS
 app.use(cors({
-  origin: [
-    'http://localhost:3000', 
-    'http://localhost:5000', 
-    'https://deenvoyage.com', 
-    'https://www.deenvoyage.com',
-    'https://deenvoyage-f065a.web.app',
-    'https://deenvoyage-f065a.firebaseapp.com',
-    'https://deenvoyage-com.web.app',
-    'https://deenvoyage-com.firebaseapp.com'
-  ]
+  origin: function (origin, callback) {
+    const allowed = [
+      'https://deenvoyage.com',
+      'https://www.deenvoyage.com',
+      'https://deenvoyage-f065a.web.app',
+      'https://deenvoyage-f065a.firebaseapp.com',
+      'https://deenvoyage-com.web.app',
+      'https://deenvoyage-com.firebaseapp.com'
+    ];
+    // Allow: no origin (curl/Postman), file:// pages, any localhost port
+    if (
+      !origin ||
+      origin === 'null' ||
+      /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin) ||
+      allowed.includes(origin)
+    ) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS: origin not allowed — ' + origin));
+    }
+  }
 }));
+
+// Health check — used by the client to wake up the server before sending
+app.get('/health', (_req, res) => res.json({ ok: true }));
 
 app.use(express.json());
 
@@ -126,6 +141,152 @@ app.post('/send-lecture-emails', async (req, res) => {
       success: false,
       error: error.message
     });
+  }
+});
+
+app.post('/send-receipt', async (req, res) => {
+  const {
+    receiptNumber,
+    date,
+    clientName,
+    clientEmail,
+    purpose,
+    currency,
+    amount,
+    amountPaid,
+    balance,
+    payments   // array of { receiptNumber, date, amount, note }
+  } = req.body;
+
+  const CURRENCY_SYMBOLS = { CAD: 'CA$', USD: '$', NGN: '₦', GBP: '£' };
+  const sym = CURRENCY_SYMBOLS[currency] || currency + ' ';
+
+  function fmt(val) {
+    return sym + Number(val).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  function fmtDate(iso) {
+    if (!iso) return '—';
+    return new Date(iso + 'T12:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  const dateLabel   = fmtDate(date);
+  const isPaid      = balance <= 0;
+  const statusLabel = isPaid ? 'Paid in Full' : 'Balance Owing';
+  const statusColor = isPaid ? '#1e8449' : '#b8960c';
+  const balanceColor = isPaid ? '#1e8449' : '#c0392b';
+
+  // Build payment rows for the table
+  const paymentRows = (Array.isArray(payments) && payments.length > 0)
+    ? payments.map((p, i) => `
+        <tr style="background:${i % 2 === 0 ? '#fafbfc' : '#fff'};">
+          <td style="padding-left:20px;font-size:.86rem;color:#555;">${p.note || 'Payment'}</td>
+          <td style="font-size:.86rem;color:#555;">${fmtDate(p.date)}</td>
+          <td style="text-align:right;font-weight:700;">${fmt(p.amount)}</td>
+        </tr>`).join('')
+    : `<tr><td colspan="3">${purpose || '—'}</td></tr>`;
+
+  const receiptHtml = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 24px; color: #333; }
+    .card { max-width: 640px; margin: 0 auto; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+    .card-header { background: #0a3d62; color: #fff; padding: 28px 36px; }
+    .card-header h1 { margin: 0 0 4px; font-size: 1.5rem; letter-spacing: .04em; }
+    .card-header p { margin: 0; opacity: .75; font-size: .88rem; }
+    .card-body { padding: 32px 36px; }
+    .meta { display: flex; justify-content: space-between; margin-bottom: 24px; }
+    .meta-item .label { font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; color: #999; font-weight: 700; }
+    .meta-item .value { font-size: .95rem; font-weight: 700; color: #1a1a2e; margin-top: 2px; }
+    .issued-to { background: #f6f8fa; border-left: 4px solid #d4af37; border-radius: 0 8px 8px 0; padding: 14px 18px; margin-bottom: 24px; }
+    .issued-to .label { font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; color: #999; font-weight: 700; }
+    .issued-to .name { font-size: 1.1rem; font-weight: 700; color: #1a1a2e; margin-top: 2px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    thead th { background: #0a3d62; color: #fff; padding: 10px 14px; font-size: .76rem; text-transform: uppercase; letter-spacing: .06em; text-align: left; }
+    thead th:last-child { text-align: right; }
+    .pkg-row td { background: #f6f8fa; font-size: .78rem; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: .05em; padding: 8px 14px; }
+    tbody td { padding: 10px 14px; font-size: .9rem; border-bottom: 1px solid #eef0f3; }
+    tbody td:last-child { text-align: right; }
+    .totals { margin-left: auto; width: 270px; }
+    .totals table { width: 100%; margin-bottom: 0; }
+    .totals td { padding: 6px 8px; font-size: .88rem; border-bottom: none; }
+    .totals td:last-child { text-align: right; font-weight: 600; }
+    .totals .sep td { border-top: 1px solid #e1e8ed; padding-top: 10px; }
+    .totals .total-row td { font-size: 1.05rem; font-weight: 800; color: ${balanceColor}; padding-top: 8px; }
+    .badge { display: inline-block; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; padding: 3px 10px; border-radius: 999px; background: ${isPaid ? '#eafaf1' : '#fff3cd'}; color: ${statusColor}; border: 1px solid ${isPaid ? '#a9dfbf' : '#ffc107'}; }
+    .footer { border-top: 1px solid #eef0f3; margin-top: 28px; padding-top: 18px; font-size: .78rem; color: #aaa; line-height: 1.6; }
+    .brand { color: #0a3d62; font-weight: 700; font-size: .88rem; }
+  </style>
+</head>
+<body>
+<div class="card">
+  <div class="card-header">
+    <h1>RECEIPT</h1>
+    <p>Deen Voyage &nbsp;·&nbsp; Calgary, Alberta, Canada</p>
+  </div>
+  <div class="card-body">
+    <div class="meta">
+      <div class="meta-item">
+        <div class="label">Receipt Number</div>
+        <div class="value" style="font-family:monospace;">${receiptNumber}</div>
+      </div>
+      <div class="meta-item" style="text-align:right;">
+        <div class="label">Date</div>
+        <div class="value">${dateLabel}</div>
+      </div>
+    </div>
+
+    <div class="issued-to">
+      <div class="label">Issued To</div>
+      <div class="name">${clientName}</div>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th style="width:50%;">Description</th><th>Date</th><th>Amount</th></tr>
+      </thead>
+      <tbody>
+        <tr class="pkg-row"><td colspan="3">${purpose || '—'}</td></tr>
+        ${paymentRows}
+      </tbody>
+    </table>
+
+    <div class="totals">
+      <table>
+        <tr><td>Total Package</td><td>${fmt(amount)}</td></tr>
+        <tr><td style="color:#1e8449;">Total Paid</td><td style="color:#1e8449;">${fmt(amountPaid)}</td></tr>
+        <tr class="sep"><td></td><td></td></tr>
+        <tr class="total-row">
+          <td>Balance Due &nbsp;<span class="badge">${statusLabel}</span></td>
+          <td>${fmt(balance)}</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="footer">
+      <p>This receipt is issued by <span class="brand">Deen Voyage</span> as confirmation of payment received.<br>
+      For queries, contact <a href="mailto:hello@deenvoyage.com" style="color:#0a3d62;">hello@deenvoyage.com</a></p>
+      <p style="margin-top:16px;"><strong class="brand">Deen Voyage</strong> &nbsp;·&nbsp; Travel with Value</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>`;
+
+  try {
+    const result = await resend.emails.send({
+      from: 'Deen Voyage <hello@deenvoyage.com>',
+      to: [clientEmail],
+      subject: `Your Receipt ${receiptNumber} — Deen Voyage`,
+      html: receiptHtml
+    });
+
+    res.json({ success: true, emailId: result.data.id });
+  } catch (error) {
+    console.error('Error sending receipt email:', error);
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
