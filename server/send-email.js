@@ -81,13 +81,17 @@ app.post('/send-otp', async (req, res) => {
 </html>`;
 
   try {
-    await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: 'Deen Voyage <hello@deenvoyage.com>',
       to: [email],
       subject: `${otp} — Your Deen Voyage verification code`,
       html
     });
-    res.json({ success: true });
+    if (error) {
+      console.error('OTP Resend error:', error);
+      return res.status(500).json({ success: false, error: error.message });
+    }
+    res.json({ success: true, id: data.id });
   } catch (error) {
     console.error('OTP send error:', error);
     res.status(500).json({ success: false, error: error.message });
