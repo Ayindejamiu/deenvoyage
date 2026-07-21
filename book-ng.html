@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="author" content="Deen Voyage">
+  <link rel="shortcut icon" href="favicon.png">
+  <meta name="description" content="Book your Umrah or Hajj journey with Deen Voyage Nigeria. Premium packages from Nigeria in Naira.">
+  <meta name="keywords" content="Deen Voyage Nigeria, Book Umrah Nigeria, Hajj Nigeria, Umrah packages Nigeria, Naira">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Source+Serif+Pro:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/owl.carousel.min.css">
+  <link rel="stylesheet" href="css/owl.theme.default.min.css">
+  <link rel="stylesheet" href="css/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="fonts/icomoon/style.css">
+  <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
+  <link rel="stylesheet" href="css/aos.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  <title>Book Now (Nigeria) | Deen Voyage</title>
+
+  <style>
+    :root {
+      --dv-primary: #0a3d62;
+      --dv-accent:  #d4af37;
+      --dv-soft:    #f7f9fc;
+      --dv-border:  #dfe6ee;
+      --dv-success: #1f8a4c;
+      --dv-text:    #1d2939;
+      --dv-muted:   #667085;
+    }
+
+    body { background: linear-gradient(180deg,#f2f6fa 0%,#f8fafc 40%,#ffffff 100%); color:var(--dv-text); }
+
+    .ng-banner {
+      background: linear-gradient(90deg, #008751 0%, #008751 33%, #fff 33%, #fff 66%, #393939 66%);
+      height: 5px;
+    }
+    .ng-notice {
+      background: #eafaf1;
+      border-bottom: 1px solid #a9dfbf;
+      text-align: center;
+      padding: 9px 16px;
+      font-size: .86rem;
+      color: #1e8449;
+      font-weight: 600;
+    }
+    .ng-notice a { color: var(--dv-primary); font-weight: 700; text-decoration: underline; }
+
+    .book-shell { max-width:900px; margin:40px auto 80px; padding:0 16px; }
+    .book-card  { background:#fff; border:1px solid var(--dv-border); border-radius:16px; padding:28px; box-shadow:0 20px 38px rgba(16,24,40,.08); }
+    .step-label { margin:0 0 12px; font-size:.75rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--dv-muted); }
+
+    .pkg-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin-bottom:24px; }
+    .pkg-card { border:1.5px solid var(--dv-border); border-radius:12px; padding:14px; cursor:pointer; transition:all .2s ease; background:#fff; }
+    .pkg-card:hover { border-color:var(--dv-primary); transform:translateY(-1px); }
+    .pkg-card.selected { border-color:var(--dv-primary); background:#f1f6fb; box-shadow:inset 0 0 0 1px var(--dv-primary); }
+
+    .pkg-badge { display:inline-block; border-radius:999px; padding:3px 10px; font-size:.7rem; font-weight:700; margin-bottom:8px; text-transform:uppercase; letter-spacing:.05em; }
+    .pkg-badge.umrah { background:#e7f2ff; color:#0a3d62; }
+    .pkg-badge.hajj  { background:#fff6e0; color:#7a5a0d; }
+
+    .pkg-name  { font-family:"Source Serif Pro",serif; font-size:1.15rem; font-weight:700; margin-bottom:4px; color:#0f172a; }
+    .pkg-price { font-size:.88rem; color:var(--dv-muted); }
+    .pkg-price strong { color:#111827; font-size:1.05rem; }
+
+    .occ-group { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:24px; }
+    .occ-btn { border:1.5px solid var(--dv-border); background:#fff; color:#1f2937; border-radius:10px; padding:9px 15px; font-size:.92rem; font-weight:500; transition:all .2s ease; cursor:pointer; }
+    .occ-btn:hover { border-color:var(--dv-primary); }
+    .occ-btn.selected { border-color:var(--dv-primary); background:#eef5fc; color:var(--dv-primary); box-shadow:inset 0 0 0 1px var(--dv-primary); }
+
+    .book-divider { border:none; border-top:1px solid var(--dv-border); margin:22px 0; }
+
+    .form-row-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .form-group label { font-size:.83rem; color:var(--dv-muted); margin-bottom:6px; font-weight:600; display:block; }
+    .form-group input, .form-group select, .form-group textarea {
+      border:1.5px solid var(--dv-border); border-radius:10px; padding:10px 12px;
+      font-size:.95rem; width:100%; color:#111827; background:#fff;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color:var(--dv-primary); outline:none; box-shadow:0 0 0 3px rgba(10,61,98,.12);
+    }
+
+    .summary-box { background:#f4f9ff; border:1px solid #d4e5f8; border-radius:12px; padding:14px 16px; margin-bottom:18px; }
+    .summary-title { margin:0 0 10px; font-size:.76rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--dv-primary); }
+    .summary-row { display:flex; justify-content:space-between; gap:8px; font-size:.92rem; padding:6px 0; border-bottom:1px dashed #cadcf0; }
+    .summary-row:last-child { border-bottom:none; }
+    .summary-row .lbl { color:var(--dv-muted); }
+    .summary-row .val { color:#111827; font-weight:600; text-align:right; }
+
+    .submit-btn { width:100%; border:none; border-radius:12px; padding:13px 16px; background:linear-gradient(135deg,#0a3d62 0%,#1e5a82 100%); color:#fff; font-weight:700; font-size:.98rem; transition:all .2s ease; cursor:pointer; }
+    .submit-btn:hover { transform:translateY(-1px); box-shadow:0 10px 24px rgba(10,61,98,.2); }
+
+    .status-msg { display:none; margin-bottom:14px; border-radius:10px; padding:10px 12px; font-size:.9rem; border:1px solid transparent; }
+    .status-msg.show { display:block; }
+    .status-msg.success { background:#ecfdf3; color:#0f5132; border-color:#abefc6; }
+    .status-msg.error   { background:#fef3f2; color:#912018; border-color:#fecdca; }
+
+    @media (max-width:767px) {
+      .book-card { padding:20px; }
+      .form-row-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nigerian flag stripe -->
+  <div class="ng-banner"></div>
+  <div class="ng-notice">
+    🇳🇬 Viewing Nigeria prices in Naira &nbsp;·&nbsp; <a href="book.html" onclick="sessionStorage.setItem('dv_force_cad','1')">Switch to CAD pricing</a>
+  </div>
+
+  <div class="site-mobile-menu site-navbar-target">
+    <div class="site-mobile-menu-header">
+      <div class="site-mobile-menu-close">
+        <span class="icofont-close js-menu-toggle"></span>
+      </div>
+    </div>
+    <div class="site-mobile-menu-body"></div>
+  </div>
+
+  <nav class="site-nav">
+    <div class="container">
+      <div class="site-navigation">
+        <a href="/" class="logo m-0"><img src="images/deen..png" alt="Deen Voyage Logo"></a>
+        <ul class="js-clone-nav d-none d-lg-inline-block text-left site-menu float-right">
+          <li><a href="/">Home</a></li>
+          <li class="has-children">
+            <a href="#">Services</a>
+            <ul class="dropdown">
+              <li><a href="/hajj">Hajj</a></li>
+              <li><a href="/umrah">Umrah</a></li>
+              <li><a href="/ramadan">Ramadan</a></li>
+              <li><a href="/novumrah">November</a></li>
+						<li><a href="/decumrah">December</a></li>
+              <li><a href="#">Vacations</a></li>
+            </ul>
+          </li>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/register">Register</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/contact">Contact Us</a></li>
+        </ul>
+        <a href="#" class="burger ml-auto float-right site-menu-toggle js-menu-toggle d-inline-block d-lg-none light" data-toggle="collapse" data-target="#main-navbar">
+          <span></span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="hero hero-inner">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mx-auto text-center">
+          <div class="intro-wrap">
+            <h1 class="mb-0">Book Your Journey</h1>
+            <p class="text-white">Premium Umrah &amp; Hajj packages — prices shown in Nigerian Naira.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="book-shell">
+    <div class="book-card" data-aos="fade-up" data-aos-delay="100">
+      <p class="step-label">Step 1 — Choose a package</p>
+      <div class="pkg-grid" id="pkg-grid">
+
+        <div class="pkg-card selected"
+             data-pkg="August Umrah 2026"
+             data-price="4200000"
+             data-price-triple="4700000"
+             data-price-double="5400000">
+          <span class="pkg-badge umrah">Umrah</span>
+          <div class="pkg-name">August Umrah 2026</div>
+          <div class="pkg-price">from <strong>₦4,200,000</strong> / person</div>
+        </div>
+
+        <div class="pkg-card"
+             data-pkg="November Umrah with Doha 2026"
+             data-price="4000000"
+             data-price-triple="4500000"
+             data-price-double="5100000">
+          <span class="pkg-badge umrah">Umrah</span>
+          <div class="pkg-name">November Umrah with Doha 2026</div>
+          <div class="pkg-price">from <strong>₦4,000,000</strong> / person</div>
+        </div>
+
+        <div class="pkg-card"
+             data-pkg="December Umrah 2026"
+             data-price="4600000"
+             data-price-triple="5150000"
+             data-price-double="5800000">
+          <span class="pkg-badge umrah">Umrah</span>
+          <div class="pkg-name">December Umrah 2026</div>
+          <div class="pkg-price">from <strong>₦4,600,000</strong> / person</div>
+        </div>
+
+        <div class="pkg-card"
+             data-pkg="Hajj 2027"
+             data-price="9800000"
+             data-price-triple="11000000"
+             data-price-double="13000000">
+          <span class="pkg-badge hajj">Hajj</span>
+          <div class="pkg-name">Hajj 2027</div>
+          <div class="pkg-price">from <strong>₦9,800,000</strong> / person</div>
+        </div>
+
+        <div class="pkg-card"
+             data-pkg="Ramadan Umrah 2027"
+             data-price="5500000"
+             data-price-triple="6100000"
+             data-price-double="7000000">
+          <span class="pkg-badge umrah">Umrah</span>
+          <div class="pkg-name">Ramadan Umrah 2027</div>
+          <div class="pkg-price">from <strong>₦5,500,000</strong> / person</div>
+        </div>
+
+      </div>
+
+      <p class="step-label">Step 2 — Room occupancy</p>
+      <div class="occ-group" id="occ-group">
+        <button type="button" class="occ-btn selected" data-occ="Quad (4 persons)">Quad (4 persons)</button>
+        <button type="button" class="occ-btn" data-occ="Triple (3 persons)">Triple (3 persons)</button>
+        <button type="button" class="occ-btn" data-occ="Double (2 persons)">Double (2 persons)</button>
+      </div>
+
+      <hr class="book-divider">
+
+      <p class="step-label">Step 3 — Passenger details</p>
+      <form id="book-form" novalidate>
+        <div class="form-row-grid">
+          <div class="form-group">
+            <label for="firstName">First name</label>
+            <input type="text" id="firstName" name="firstName" required>
+          </div>
+          <div class="form-group">
+            <label for="lastName">Surname</label>
+            <input type="text" id="lastName" name="lastName" required>
+          </div>
+        </div>
+
+        <div class="form-row-grid">
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone number</label>
+            <input type="tel" id="phone" name="phone" placeholder="+234…" required>
+          </div>
+        </div>
+
+        <div class="form-row-grid">
+          <div class="form-group">
+            <label for="passportType">Passport country</label>
+            <select id="passportType" name="passportType" required>
+              <option value="">Select passport</option>
+              <option value="Nigerian Passport">Nigerian Passport</option>
+              <option value="Canadian Passport">Canadian Passport</option>
+              <option value="UK Passport">UK Passport</option>
+              <option value="US Passport">US Passport</option>
+              <option value="Pakistani Passport">Pakistani Passport</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="travelDate">Preferred travel month</label>
+            <input type="month" id="travelDate" name="travelDate">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="requirements">Other requirements (optional)</label>
+          <textarea id="requirements" name="requirements" rows="3" placeholder="Tell us if you need visa support, family room, wheelchair assistance, etc."></textarea>
+        </div>
+
+        <hr class="book-divider">
+
+        <div class="summary-box">
+          <p class="summary-title">Booking summary</p>
+          <div class="summary-row"><span class="lbl">Package</span><span class="val" id="sum-pkg">August Umrah 2026</span></div>
+          <div class="summary-row"><span class="lbl">Occupancy</span><span class="val" id="sum-occ">Quad (4 persons)</span></div>
+          <div class="summary-row"><span class="lbl">Passenger</span><span class="val" id="sum-name">—</span></div>
+          <div class="summary-row"><span class="lbl">Passport</span><span class="val" id="sum-passport">—</span></div>
+          <div class="summary-row"><span class="lbl">Starting price</span><span class="val" id="sum-price">₦4,200,000 / person</span></div>
+        </div>
+
+        <div id="book-status" class="status-msg" role="status" aria-live="polite"></div>
+        <button type="submit" class="submit-btn" id="book-submit">Book Now</button>
+      </form>
+    </div>
+  </main>
+
+  <div class="site-footer">
+    <div class="inner first">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-lg-4">
+            <div class="widget">
+              <h3 class="heading">About Deen Voyage</h3>
+              <p>Deen Voyage is an international travels and tours company with a presence in Europe, Africa, and North America. We strive to provide the best travel experience — our tagline "Travel with Value" reflects our commitment to exceptional service.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-2 pl-lg-5">
+            <div class="widget">
+              <h3 class="heading">Pages</h3>
+              <ul class="links list-unstyled">
+                <li><a href="/about">About</a></li>
+                <li><a href="/contact">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="widget">
+              <h3 class="heading">Contact</h3>
+              <ul class="list-unstyled quick-info links">
+                <li class="email"><a href="#">hello@deenvoyage.com</a></li>
+                <li class="phone"><a href="#">+1 403 683 1777</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="inner dark">
+      <div class="container">
+        <div class="row text-center">
+          <div class="col-md-8 mb-3 mb-md-0 mx-auto">
+            <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash; Deen Voyage</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/jquery-3.4.1.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/custom.js"></script>
+  <script src="js/aos.js"></script>
+  <script>AOS.init({ duration:700, once:true });</script>
+  <script type="module" src="js/bookings-ng.js"></script>
+</body>
+</html>

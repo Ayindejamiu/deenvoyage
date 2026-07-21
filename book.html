@@ -23,6 +23,29 @@
 
   <title>Book Now | Deen Voyage</title>
 
+  <script>
+    // Geo-redirect: send Nigerian visitors to the Naira pricing page
+    (function () {
+      // Don't redirect if user explicitly chose CAD page (came from the "Switch" link)
+      if (sessionStorage.getItem('dv_force_cad')) return;
+
+      var cached = sessionStorage.getItem('dv_country');
+      if (cached) {
+        if (cached === 'NG') location.replace('book-ng.html');
+        return;
+      }
+
+      fetch('https://ipapi.co/json/', { cache: 'no-store' })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          var country = d && d.country_code ? d.country_code : '';
+          sessionStorage.setItem('dv_country', country);
+          if (country === 'NG') location.replace('book-ng.html');
+        })
+        .catch(function () { /* fail silently — show CAD page */ });
+    })();
+  </script>
+
   <style>
     :root {
       --dv-primary: #0a3d62;
@@ -320,12 +343,14 @@
               <li><a href="/hajj">Hajj</a></li>
               <li><a href="/umrah">Umrah</a></li>
               <li><a href="/ramadan">Ramadan</a></li>
-              <li><a href="/decumrah">December</a></li>
+              <li><a href="/novumrah">November</a></li>
+						<li><a href="/decumrah">December</a></li>
               <li><a href="#">Vacations</a></li>
             </ul>
           </li>
           <li><a href="/about">About Us</a></li>
           <li><a href="/register">Register</a></li>
+          <li><a href="/blog">Blog</a></li>
           <li><a href="/contact">Contact Us</a></li>
         </ul>
 
@@ -358,9 +383,9 @@
           <div class="pkg-name">August Umrah 2026</div>
           <div class="pkg-price">from <strong>$4,200</strong> / person</div>
         </div>
-        <div class="pkg-card" data-pkg="November Umrah 2026" data-price="4700" data-price-triple="5300" data-price-double="6000">
+        <div class="pkg-card" data-pkg="November Umrah with Doha 2026" data-price="4700" data-price-triple="5300" data-price-double="6000">
           <span class="pkg-badge umrah">Umrah</span>
-          <div class="pkg-name">November Umrah 2026</div>
+          <div class="pkg-name">November Umrah with Doha 2026</div>
           <div class="pkg-price">from <strong>$4,700</strong> / person</div>
         </div>
         <div class="pkg-card" data-pkg="December Umrah 2026" data-price="5000" data-price-triple="5600" data-price-double="6400">
@@ -372,6 +397,11 @@
           <span class="pkg-badge hajj">Hajj</span>
           <div class="pkg-name">Hajj 2027</div>
           <div class="pkg-price">from <strong>$8,000</strong> / person</div>
+        </div>
+        <div class="pkg-card" data-pkg="Ramadan Umrah 2027" data-price="5500" data-price-triple="6100" data-price-double="7000">
+          <span class="pkg-badge umrah">Umrah</span>
+          <div class="pkg-name">Ramadan Umrah 2027</div>
+          <div class="pkg-price">from <strong>$5,500</strong> / person</div>
         </div>
       </div>
 

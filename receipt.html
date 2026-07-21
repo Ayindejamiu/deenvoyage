@@ -20,6 +20,63 @@
     }
     body { background:#f0f2f5; font-family:'Segoe UI',sans-serif; min-height:100vh; margin:0; }
 
+    /* ── Login overlay ── */
+    #login-overlay {
+      position: fixed;
+      inset: 0;
+      background: #f0f2f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    .login-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 40px rgba(10,61,98,.15);
+      padding: 44px 40px 36px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+    .login-card img { height: 52px; margin-bottom: 20px; }
+    .login-card h2 { font-size: 1.25rem; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
+    .login-card p  { font-size: .88rem; color: #888; margin-bottom: 28px; }
+    .login-card .form-control {
+      border-radius: 8px;
+      border: 1.5px solid #d0d7de;
+      font-size: .95rem;
+      padding: .6rem .85rem;
+      margin-bottom: 14px;
+    }
+    .login-card .form-control:focus {
+      border-color: var(--navy);
+      box-shadow: 0 0 0 3px rgba(10,61,98,.12);
+      outline: none;
+    }
+    .login-card .btn-login {
+      width: 100%;
+      background: var(--navy);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: .7rem;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+    .login-card .btn-login:hover { background: #083350; }
+    .login-error {
+      font-size: .84rem;
+      color: var(--red);
+      margin-top: 10px;
+      min-height: 20px;
+    }
+
+    /* App hidden until logged in */
+    #app-root { display: none; }
+
     /* ── Top bar ── */
     .top-bar { background:var(--navy); color:#fff; padding:14px 24px; display:flex; align-items:center; gap:14px; box-shadow:0 2px 8px rgba(0,0,0,.2); }
     .top-bar img { height:36px; }
@@ -181,6 +238,22 @@
 </head>
 <body>
 
+<!-- ── Login overlay ── -->
+<div id="login-overlay">
+  <div class="login-card">
+    <img src="images/deen..png" alt="Deen Voyage">
+    <h2>Admin Access</h2>
+    <p>Sign in to access the Receipt &amp; Payments tool</p>
+    <input type="email"    id="login-email"    class="form-control" placeholder="Email address" autocomplete="username">
+    <input type="password" id="login-password" class="form-control" placeholder="Password"      autocomplete="current-password">
+    <button class="btn-login" onclick="doLogin()">Sign In</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<!-- ── App (hidden until logged in) ── -->
+<div id="app-root">
+
 <!-- ── Top bar ── -->
 <div class="top-bar">
   <img src="images/deen..png" alt="Deen Voyage">
@@ -188,6 +261,7 @@
   <div class="top-bar-right">
     <button class="tab-btn active" onclick="showSection('issue')">Issue Receipt</button>
     <button class="tab-btn" onclick="showSection('registrations')">All Registrations</button>
+    <button class="tab-btn" onclick="doLogout()" style="border-color:rgba(255,100,100,.5);color:rgba(255,180,180,1);">Logout</button>
   </div>
 </div>
 
@@ -427,8 +501,48 @@
   </div>
 </div>
 
+</div><!-- /#app-root -->
 
 <script>
+  // ══════════════════════════════════════════════════════════════
+  //  Login
+  // ══════════════════════════════════════════════════════════════
+  const ADMIN_EMAIL    = 'ayindejamiu90@gmail.com';
+  const ADMIN_PASSWORD = 'Kunle4islam';
+
+  function doLogin() {
+    const email    = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    const errEl    = document.getElementById('login-error');
+
+    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+      sessionStorage.setItem('dv_receipt_auth', '1');
+      document.getElementById('login-overlay').style.display = 'none';
+      document.getElementById('app-root').style.display = 'block';
+      errEl.textContent = '';
+    } else {
+      errEl.textContent = 'Incorrect email or password.';
+    }
+  }
+
+  function doLogout() {
+    sessionStorage.removeItem('dv_receipt_auth');
+    location.reload();
+  }
+
+  // Allow pressing Enter to submit
+  ['login-email', 'login-password'].forEach(id => {
+    document.getElementById(id).addEventListener('keydown', e => {
+      if (e.key === 'Enter') doLogin();
+    });
+  });
+
+  // Auto-unlock if already authenticated this session
+  if (sessionStorage.getItem('dv_receipt_auth') === '1') {
+    document.getElementById('login-overlay').style.display = 'none';
+    document.getElementById('app-root').style.display = 'block';
+  }
+
   // ══════════════════════════════════════════════════════════════
   //  Firebase init
   // ══════════════════════════════════════════════════════════════

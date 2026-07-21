@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Accounts — Deen Voyage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/accounts.css">
+</head>
+<body>
+
+<!-- ── Navbar ── -->
+<nav class="acc-nav">
+  <div class="brand">🕌 Deen Voyage <span>Accounts</span></div>
+  <div class="user-chip" id="user-chip">
+    <div class="avatar" id="user-initials">…</div>
+    <span id="user-name"></span> ▾
+  </div>
+</nav>
+<div class="user-dd" id="user-dd">
+  <button onclick="window.location.href='crm.html'">← Back to CRM</button>
+  <button class="logout" id="logout-btn">Sign out</button>
+</div>
+<div id="dd-bd" style="display:none;position:fixed;inset:0;z-index:2999;"></div>
+
+<!-- ── Tab bar ── -->
+<div class="acc-tabs">
+  <button class="acc-tab active" data-tab="overview">📊 Overview</button>
+  <button class="acc-tab" data-tab="income">💰 Income</button>
+  <button class="acc-tab" data-tab="expenses">📤 Expenses</button>
+  <button class="acc-tab" data-tab="reports">📑 Reports</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     OVERVIEW
+══════════════════════════════════════════════════════════ -->
+<div class="acc-section active" id="tab-overview">
+
+  <!-- Currency cards -->
+  <div class="currency-grid" id="currency-grid">
+    <!-- rendered by JS -->
+  </div>
+
+  <!-- Recent transactions -->
+  <div class="recent-section">
+    <h2>Recent Transactions</h2>
+    <div id="recent-list"><p style="color:#94a3b8;font-size:.875rem;">Loading…</p></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     INCOME
+══════════════════════════════════════════════════════════ -->
+<div class="acc-section" id="tab-income">
+
+  <div class="sec-head">
+    <h2>Income</h2>
+    <button class="btn-add" id="btn-add-income">＋ Add Income</button>
+  </div>
+
+  <div class="filters-row">
+    <input type="search" id="inc-search" placeholder="Search description or client…">
+    <select id="inc-cur">
+      <option value="">All Currencies</option>
+      <option value="CAD">CAD</option>
+      <option value="NGN">NGN</option>
+      <option value="GBP">GBP</option>
+      <option value="SAR">SAR</option>
+    </select>
+    <select id="inc-cat">
+      <option value="">All Categories</option>
+      <option>Umrah Package</option>
+      <option>Hajj Package</option>
+      <option>Ramadan Package</option>
+      <option>December Package</option>
+      <option>Islamic Vacation</option>
+      <option>Consultation Fee</option>
+      <option>Deposit</option>
+      <option>Other</option>
+    </select>
+    <select id="inc-source">
+      <option value="">All Sources</option>
+      <option value="receipt">Receipt App</option>
+      <option value="manual">Manual</option>
+    </select>
+    <input type="month" id="inc-month">
+  </div>
+
+  <div class="acc-table-wrap">
+    <table class="acc-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Description</th>
+          <th>Category</th>
+          <th>Source</th>
+          <th>Currency</th>
+          <th class="right">Amount</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="income-body">
+        <tr><td class="empty-td" colspan="7">Loading…</td></tr>
+      </tbody>
+    </table>
+    <div class="pg-row" id="inc-pg-row" style="display:none;">
+      <span id="inc-pg-info"></span>
+      <div class="pg-btns" id="inc-pg-btns"></div>
+    </div>
+  </div>
+
+  <!-- Income totals per currency -->
+  <div id="income-totals" style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     EXPENSES
+══════════════════════════════════════════════════════════ -->
+<div class="acc-section" id="tab-expenses">
+
+  <div class="sec-head">
+    <h2>Expenses</h2>
+    <button class="btn-add" id="btn-add-expense">＋ Add Expense</button>
+  </div>
+
+  <div class="filters-row">
+    <input type="search" id="exp-search" placeholder="Search description…">
+    <select id="exp-cur">
+      <option value="">All Currencies</option>
+      <option value="CAD">CAD</option>
+      <option value="NGN">NGN</option>
+      <option value="GBP">GBP</option>
+      <option value="SAR">SAR</option>
+    </select>
+    <select id="exp-cat">
+      <option value="">All Categories</option>
+      <option>Flights</option>
+      <option>Hotel / Accommodation</option>
+      <option>Visas &amp; Documentation</option>
+      <option>Ground Transport</option>
+      <option>Meals &amp; Catering</option>
+      <option>Marketing &amp; Advertising</option>
+      <option>Office &amp; Admin</option>
+      <option>Staff / Agent Payments</option>
+      <option>Makkah Services</option>
+      <option>Miscellaneous</option>
+    </select>
+    <input type="month" id="exp-month">
+  </div>
+
+  <div class="acc-table-wrap">
+    <table class="acc-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Description</th>
+          <th>Category</th>
+          <th>Currency</th>
+          <th class="right">Amount</th>
+          <th>Notes</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="expense-body">
+        <tr><td class="empty-td" colspan="7">Loading…</td></tr>
+      </tbody>
+    </table>
+    <div class="pg-row" id="exp-pg-row" style="display:none;">
+      <span id="exp-pg-info"></span>
+      <div class="pg-btns" id="exp-pg-btns"></div>
+    </div>
+  </div>
+
+  <!-- Expense totals per currency -->
+  <div id="expense-totals" style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     REPORTS
+══════════════════════════════════════════════════════════ -->
+<div class="acc-section" id="tab-reports">
+
+  <div class="report-period">
+    <label>From</label>
+    <input type="date" id="rpt-from">
+    <label>To</label>
+    <input type="date" id="rpt-to">
+    <select id="rpt-cur">
+      <option value="">All Currencies</option>
+      <option value="CAD">CAD</option>
+      <option value="NGN">NGN</option>
+      <option value="GBP">GBP</option>
+      <option value="SAR">SAR</option>
+    </select>
+    <button class="btn-primary" onclick="renderReports()">Run Report</button>
+  </div>
+
+  <div class="report-grid" id="report-grid">
+    <!-- rendered by JS -->
+  </div>
+</div>
+
+<!-- ══ ADD INCOME MODAL ══════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-income">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Add Income</h3>
+      <button class="modal-close" data-close="modal-income">✕</button>
+    </div>
+    <div class="modal-body">
+      <form class="acc-form" id="income-form">
+        <input type="hidden" id="inc-edit-id">
+        <div class="fg"><label>Description *</label><input type="text" name="description" required placeholder="e.g. Umrah deposit — Brother Ahmed"></div>
+        <div class="form-row-2">
+          <div class="fg"><label>Amount *</label><input type="number" name="amount" min="0" step="0.01" required placeholder="0.00"></div>
+          <div class="fg"><label>Currency *</label>
+            <select name="currency" required>
+              <option value="CAD">CAD — Canadian Dollar</option>
+              <option value="NGN">NGN — Nigerian Naira (₦)</option>
+              <option value="GBP">GBP — British Pound (£)</option>
+              <option value="SAR">SAR — Saudi Riyal (﷼)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="fg"><label>Date *</label><input type="date" name="date" required></div>
+          <div class="fg"><label>Category</label>
+            <select name="category">
+              <option value="Umrah Package">Umrah Package</option>
+              <option value="Hajj Package">Hajj Package</option>
+              <option value="Ramadan Package">Ramadan Package</option>
+              <option value="December Package">December Package</option>
+              <option value="Islamic Vacation">Islamic Vacation</option>
+              <option value="Consultation Fee">Consultation Fee</option>
+              <option value="Deposit">Deposit</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg"><label>Client Name <span style="font-weight:400;color:#94a3b8;">(optional)</span></label><input type="text" name="clientName" placeholder="Client's name"></div>
+        <div class="fg"><label>Notes</label><textarea name="notes" placeholder="Any additional notes…"></textarea></div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" data-close="modal-income">Cancel</button>
+      <button class="btn-primary" id="save-income-btn">Save Income</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ADD EXPENSE MODAL ════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-expense">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Add Expense</h3>
+      <button class="modal-close" data-close="modal-expense">✕</button>
+    </div>
+    <div class="modal-body">
+      <form class="acc-form" id="expense-form">
+        <input type="hidden" id="exp-edit-id">
+        <div class="fg"><label>Description *</label><input type="text" name="description" required placeholder="e.g. Hotel deposit — Makkah"></div>
+        <div class="form-row-2">
+          <div class="fg"><label>Amount *</label><input type="number" name="amount" min="0" step="0.01" required placeholder="0.00"></div>
+          <div class="fg"><label>Currency *</label>
+            <select name="currency" required>
+              <option value="CAD">CAD — Canadian Dollar</option>
+              <option value="NGN">NGN — Nigerian Naira (₦)</option>
+              <option value="GBP">GBP — British Pound (£)</option>
+              <option value="SAR">SAR — Saudi Riyal (﷼)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="fg"><label>Date *</label><input type="date" name="date" required></div>
+          <div class="fg"><label>Category</label>
+            <select name="category">
+              <option value="Flights">✈️ Flights</option>
+              <option value="Hotel / Accommodation">🏨 Hotel / Accommodation</option>
+              <option value="Visas &amp; Documentation">🛂 Visas &amp; Documentation</option>
+              <option value="Ground Transport">🚌 Ground Transport</option>
+              <option value="Meals &amp; Catering">🍱 Meals &amp; Catering</option>
+              <option value="Marketing &amp; Advertising">📢 Marketing &amp; Advertising</option>
+              <option value="Office &amp; Admin">💼 Office &amp; Admin</option>
+              <option value="Staff / Agent Payments">👤 Staff / Agent Payments</option>
+              <option value="Makkah Services">🕌 Makkah Services</option>
+              <option value="Miscellaneous">📦 Miscellaneous</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg"><label>Paid To / Vendor <span style="font-weight:400;color:#94a3b8;">(optional)</span></label><input type="text" name="vendor" placeholder="e.g. Al-Noor Hotel"></div>
+        <div class="fg"><label>Notes</label><textarea name="notes" placeholder="Any additional notes…"></textarea></div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" data-close="modal-expense">Cancel</button>
+      <button class="btn-primary" id="save-expense-btn">Save Expense</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DELETE CONFIRM MODAL ════════════════════════════════ -->
+<div class="modal-overlay" id="modal-delete">
+  <div class="modal-box" style="max-width:400px;">
+    <div class="modal-header"><h3>Confirm Delete</h3><button class="modal-close" data-close="modal-delete">✕</button></div>
+    <div class="modal-body">
+      <p id="delete-msg" style="font-size:.875rem;color:#475569;">Are you sure you want to delete this entry? This cannot be undone.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" data-close="modal-delete">Cancel</button>
+      <button class="btn-danger" id="confirm-delete-btn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="js/accounts.js"></script>
+</body>
+</html>

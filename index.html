@@ -1,19 +1,13 @@
-<!-- /*
-* Template Name: Tour
-* Template Author: Untree.co
-* Tempalte URI: https://untree.co/
-* License: https://creativecommons.org/licenses/by/3.0/
-*/ -->
 <!doctype html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="author" content="Untree.co">
+	<meta name="author" content="Deen Voyage">
 	<link rel="shortcut icon" href="favicon.png">
 
-	<meta name="description" content="" />
-	<meta name="keywords" content="bootstrap, bootstrap4" />
+	<meta name="description" content="Deen Voyage offers premium Umrah, Hajj, and Ramadan travel packages from Canada. Affordable prices, luxury hotels, and expert guidance. Book your spiritual journey today." />
+	<meta name="keywords" content="Umrah packages Canada, Hajj packages, Ramadan Umrah, Deen Voyage, Islamic travel, affordable Umrah, Calgary Umrah" />
 
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,19 +24,86 @@
 	<link rel="stylesheet" href="css/style.css">
 
 	<style>
-		/* Hero CTA adjustments for better contrast */
+		.hero {
+			background: linear-gradient(rgba(19,19,46,0.72), rgba(19,19,46,0.55)),
+				url('images/mecca.png') center center / cover no-repeat;
+			padding: 9rem 0 8rem;
+			margin-bottom: 0;
+			text-align: center;
+		}
+		.hero h1 {
+			font-size: 3.4rem;
+			line-height: 1.15;
+		}
+		@media (max-width: 767px) {
+			.hero { padding: 7rem 0 6rem; }
+			.hero h1 { font-size: 2.2rem; }
+		}
+		.hero-star-badge {
+			display: inline-block;
+			margin-bottom: 1.2rem;
+			font-size: 0.95rem;
+			color: rgba(255,255,255,0.8);
+			letter-spacing: .04em;
+		}
+		.hero-star-badge strong { color: #f5a623; font-size: 1.05rem; }
+		.hero-subtitle {
+			color: rgba(255,255,255,0.82);
+			font-size: 1.15rem;
+			max-width: 560px;
+			margin: 0 auto 2rem;
+			line-height: 1.65;
+		}
+		.hero .btn-primary {
+			padding: .75rem 2.2rem;
+			font-size: 1rem;
+			font-weight: 700;
+			border-radius: 50px;
+		}
 		.hero .btn-outline-light {
+			padding: .75rem 2rem;
+			font-size: 1rem;
+			border-radius: 50px;
+			border-color: rgba(255,255,255,0.6);
 			color: #fff;
-			border-color: rgba(255,255,255,0.7);
 		}
 		.hero .btn-outline-light:hover {
-			background-color: rgba(255,255,255,0.06);
+			background: rgba(255,255,255,0.08);
 			color: #fff;
 		}
-		.hero .lead { font-size: 1.05rem; }
+		.hero-phone {
+			margin-top: 1.4rem;
+			color: rgba(255,255,255,0.6);
+			font-size: 0.9rem;
+		}
+		.hero-phone a {
+			color: #fff;
+			font-weight: 700;
+			text-decoration: none;
+		}
+		.hero-phone a:hover { text-decoration: underline; }
 	</style>
 
-	<title>Deen Voyage: Travel with value | Umrah, Hajj</title>
+	<title>Deen Voyage | Umrah &amp; Hajj Packages from Canada — Travel with Value</title>
+
+	<!-- Canonical -->
+	<link rel="canonical" href="https://www.deenvoyage.com/" />
+
+	<!-- Open Graph -->
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://www.deenvoyage.com/" />
+	<meta property="og:title" content="Deen Voyage | Umrah &amp; Hajj Packages from Canada" />
+	<meta property="og:description" content="Premium Umrah, Hajj, and Ramadan travel packages from Calgary, Canada. Luxury hotels near the Haram, visa, meals, and guided Ziyarah — all included. Book today." />
+	<meta property="og:image" content="https://www.deenvoyage.com/images/deen..png" />
+	<meta property="og:site_name" content="Deen Voyage" />
+	<meta property="og:locale" content="en_CA" />
+
+	<!-- Twitter Card -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="Deen Voyage | Umrah &amp; Hajj Packages from Canada" />
+	<meta name="twitter:description" content="Premium Umrah &amp; Hajj packages from Calgary — luxury hotels, visa, meals, guided Ziyarah included. 5-star rated. Book your journey today." />
+	<meta name="twitter:image" content="https://www.deenvoyage.com/images/deen..png" />
+
 	<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-QY6WP2QBQY"></script>
 <script>
@@ -79,12 +140,14 @@
 							<li><a href="/hajj">Hajj</a></li>
 							<li><a href="/umrah">Umrah</a></li>
 							<li><a href="/ramadan">Ramadan</a></li>
-							<li><a href="/decumrah">December</a></li>
+							<li><a href="/novumrah">November</a></li>
+						<li><a href="/decumrah">December</a></li>
 							<li><a href="#">Vacations</a></li>
 						</ul>
 					</li>
 					<li><a href="/about">About Us</a></li>
 					<li><a href="/register">Register</a></li>
+					<li><a href="/blog">Blog</a></li>
 					<li><a href="/contact">Contact Us</a></li>
 				</ul>
 
@@ -99,218 +162,124 @@
 
 	<div class="hero">
 		<div class="container">
-			<div class="row align-items-center">
-				<div class="col-lg-7">
+			<div class="row justify-content-center">
+				<div class="col-lg-8 col-xl-7">
 					<div class="intro-wrap">
-						<h1 class="mb-5"><span class="d-block">Travel with Value </span>offers on  <span class="typed-words"></span></h1>
-
-						<div class="row mt-4">
-							<div class="col-12 text-center">
-								<p class="lead mb-3" style="color:#fff;">Explore our featured journeys or request a personalised quote.</p>
-								<div class="d-flex justify-content-center gap-3 flex-wrap">
-									<a href="/hajj" class="btn btn-lg btn-outline-light">Hajj Packages</a>
-									<a href="/umrah" class="btn btn-lg btn-outline-light">Umrah Packages</a>
-									<a href="/ramadan" class="btn btn-lg btn-outline-light">Ramadan Packages</a>
-									<a href="#" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#quoteModal">Request a Quote</a>
-								</div>
-							</div>
+						<div class="hero-star-badge">
+							<strong>★★★★★</strong>&nbsp; <span data-ng-text="5-Star Rated &amp;nbsp;&middot;&amp;nbsp; 28+ Happy Pilgrims &amp;nbsp;&middot;&amp;nbsp; Nigeria">5-Star Rated &nbsp;·&nbsp; 28+ Happy Pilgrims &nbsp;·&nbsp; Calgary, Canada</span>
 						</div>
-					</div>
-				</div>
-				<div class="col-lg-5">
-					<div class="slides">
-						<img loading="lazy" src="images/hajj1.png" alt="Hajj image 1" class="img-fluid active">
-						<img loading="lazy" src="images/hajj2.png" alt="Hajj image 2" class="img-fluid">
-						<img loading="lazy" src="images/hajj3.png" alt="Hajj image 3" class="img-fluid">
-						<img loading="lazy" src="images/hajj4.png" alt="Hajj image 4" class="img-fluid">
-						<img loading="lazy" src="images/hajj5.png" alt="Hajj image 5" class="img-fluid">
+						<h1 class="mb-3">
+							<span class="d-block">Travel with Value</span>
+							<span class="d-block">Book your <span class="typed-words"></span></span>
+						</h1>
+						<p class="hero-subtitle" data-ng-text="Premium Umrah &amp; Hajj packages from Nigeria — luxury hotels near the Haram, visa, daily meals, and guided Ziyarah, all taken care of.">Premium Umrah &amp; Hajj packages from Canada — luxury hotels near the Haram, visa, daily meals, and guided Ziyarah, all taken care of.</p>
+						<div class="d-flex justify-content-center flex-wrap">
+							<a href="book.html" class="btn btn-primary mr-3 mb-2" data-ng-href="book-ng.html">Book Now</a>
+							<a href="#packages" class="btn btn-outline-light mb-2">View Packages</a>
+						</div>
+						<p class="hero-phone">Questions? Call us: <a href="tel:+14036831777">+1 403 683 1777</a></p>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-		<!-- Quote Modal -->
-		<div class="modal fade" id="quoteModal" tabindex="-1" role="dialog" aria-labelledby="quoteModalLabel" aria-hidden="true">
-		  <div class="modal-dialog modal-dialog-centered" role="document">
-			<div class="modal-content">
-			  <div class="modal-header">
-				<h5 class="modal-title" id="quoteModalLabel">Request a Quote</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				  <span aria-hidden="true">&times;</span>
-				</button>
-			  </div>
-			  <div class="modal-body">
-				<form id="quote-form">
-				  <div class="form-group">
-					<label for="quote-name">Full name</label>
-					<input type="text" id="quote-name" class="form-control" required>
-				  </div>
-				  <div class="form-group">
-					<label for="quote-email">Email</label>
-					<input type="email" id="quote-email" class="form-control" required>
-				  </div>
-				  <div class="form-group">
-					<label for="quote-phone">Phone</label>
-					<input type="tel" id="quote-phone" class="form-control">
-				  </div>
-				  <div class="form-group">
-					<label for="quote-dest">Destination</label>
-					<select id="quote-dest" class="form-control">
-					  <option value="">Select</option>
-					  <option value="hajj">Hajj</option>
-					  <option value="umrah">Umrah</option>
-					  <option value="ramadan">Ramadan</option>
-					</select>
-				  </div>
-				  <div class="form-group">
-					<label for="quote-message">Message (optional)</label>
-					<textarea id="quote-message" class="form-control" rows="3"></textarea>
-				  </div>
-				  <div class="text-right">
-					<button type="submit" class="btn btn-primary">Send request</button>
-				  </div>
-				</form>
-			  </div>
-			</div>
-		  </div>
-		</div>
 
-		<section id="packages" class="py-5">
-		<div class="container text-center">
-		  <h2 class="section-title mb-4">Special Offers & Packages</h2>
-		  <div class="row">
-					<div class="col-md-4 mb-4">
-				<div class="card h-100">
-				  <img loading="lazy" src="images/hajj2.png" class="card-img-top" alt="Hajj 2025">
-				  <div class="card-body">
-					<h5 class="card-title">November Umrah 2025</h5>
-					<p class="card-text">Starts from $4,100</p>
-					<a href="register.html" class="btn btn-primary">Book Now</a>
-				  </div>
-				</div>
-			  </div>
-  
-			<div class="col-md-4 mb-4">
-			  <div class="card h-100">
-				<img loading="lazy" src="images/mecca.png" class="card-img-top" alt="Ramadan Umrah">
-				<div class="card-body">
-				  <h5 class="card-title">Ramadan Umrah 2026</h5>
-				  <p class="card-text">Starts from $6,500</p>
-				  <a href="register.html" class="btn btn-primary">Book Now</a>
-				</div>
-			  </div>
-			</div>
-			<div class="col-md-4 mb-4">
-			  <div class="card h-100">
-				<img loading="lazy" src="images/hajjnow.png" class="card-img-top" alt="Hajj 2025">
-				<div class="card-body">
-				  <h5 class="card-title">Hajj 2025</h5>
-				  <p class="card-text">Starts from $7,500</p>
-				  <a href="register.html" class="btn btn-primary">Book Now</a>
-				</div>
-			  </div>
-			</div>
-		  </div>
-		</div>
-	  </section>
-	<div class="untree_co-section">
+	<!-- Trust Bar -->
+	<div style="background:#13132e;padding:18px 0;">
 		<div class="container">
-			<div class="row mb-5 justify-content-center">
-				<div class="col-lg-6 text-center">
-					<h2 class="section-title text-center mb-3">Our Services</h2>
-					<p>We are dedicated to offering services that guarantee a serene and tranquil journey to Bait-ul-Allah. Our core values focus on comfort, achievement, and relaxation.</p>
+			<div class="row text-center text-white">
+				<div class="col-6 col-md-3 mb-2 mb-md-0">
+					<div style="font-size:1.6rem;font-weight:700;">5+</div>
+					<div style="font-size:0.82rem;opacity:0.8;text-transform:uppercase;letter-spacing:.05em;">Trips Completed</div>
+				</div>
+				<div class="col-6 col-md-3 mb-2 mb-md-0">
+					<div style="font-size:1.6rem;font-weight:700;">28+</div>
+					<div style="font-size:0.82rem;opacity:0.8;text-transform:uppercase;letter-spacing:.05em;">Happy Pilgrims</div>
+				</div>
+				<div class="col-6 col-md-3">
+					<div style="font-size:1.6rem;font-weight:700;">3</div>
+					<div style="font-size:0.82rem;opacity:0.8;text-transform:uppercase;letter-spacing:.05em;">Countries Served</div>
+				</div>
+				<div class="col-6 col-md-3">
+					<div style="font-size:1.6rem;font-weight:700;">⭐ 5-Star</div>
+					<div style="font-size:0.82rem;opacity:0.8;text-transform:uppercase;letter-spacing:.05em;">Rated Service</div>
 				</div>
 			</div>
-			<div class="row align-items-stretch">
-				<div class="col-lg-4 order-lg-1">
-					<div class="h-100"><div class="frame h-100"><div class="feature-img-bg h-100" style="background-image: url('images/mecca.png');"></div></div></div>
+		</div>
+	</div>
+
+	<section id="packages" class="py-5">
+		<div class="container text-center">
+			<h2 class="section-title mb-2">Upcoming Packages</h2>
+			<p class="text-muted mb-5">All packages include visa, hotel, meals &amp; guided Ziyarah. Spots are limited — reserve early.</p>
+			<div class="row">
+
+				<div class="col-md-6 col-lg-3 mb-4">
+					<div class="card h-100 shadow-sm" style="border-top:4px solid #0a3d62;">
+						<div style="position:relative;">
+							<img loading="lazy" src="images/hajj1.png" class="card-img-top" alt="August Umrah 2026" style="height:180px;object-fit:cover;">
+							<span style="position:absolute;top:10px;left:10px;background:#d4af37;color:#fff;font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.06em;">Filling Fast</span>
+						</div>
+						<div class="card-body d-flex flex-column">
+							<h5 class="card-title" style="color:#0a3d62;">August Umrah 2026</h5>
+							<p class="card-text text-muted small">Hotel near Haram · Breakfast &amp; Dinner · Guided Ziyarah</p>
+							<p class="mt-auto mb-2" style="font-size:1.3rem;font-weight:700;color:#0a3d62;" data-ng-price="From &#x20A6;4,200,000 / person">From $4,200 <span style="font-size:0.8rem;font-weight:400;color:#888;">/ person</span></p>
+							<a href="book.html" class="btn btn-primary btn-block" data-ng-href="book-ng.html">Book Now</a>
+						</div>
+					</div>
 				</div>
 
-				<div class="col-6 col-sm-6 col-lg-4 feature-1-wrap d-md-flex flex-md-column order-lg-1" >
-
-					<div class="feature-1 d-md-flex">
-						<div class="align-self-center">
-							<span class="flaticon-house display-4 text-primary"></span>
-							<h3>Hotel</h3>
-							<p class="mb-0">We offer serene accommodations conveniently located near the Haram.</p>
+				<div class="col-md-6 col-lg-3 mb-4">
+					<div class="card h-100 shadow-sm" style="border-top:4px solid #0a3d62;">
+						<div style="position:relative;">
+							<img loading="lazy" src="images/hajj2.png" class="card-img-top" alt="November Umrah 2026" style="height:180px;object-fit:cover;">
+							<span style="position:absolute;top:10px;left:10px;background:#0a3d62;color:#fff;font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.06em;">Most Popular</span>
+						</div>
+						<div class="card-body d-flex flex-column">
+							<h5 class="card-title" style="color:#0a3d62;">November Umrah 2026</h5>
+							<p class="card-text text-muted small">Istanbul stopover · Hotel near Haram · Full board</p>
+							<p class="mt-auto mb-2" style="font-size:1.3rem;font-weight:700;color:#0a3d62;" data-ng-price="From &#x20A6;4,000,000 / person">From $4,700 <span style="font-size:0.8rem;font-weight:400;color:#888;">/ person</span></p>
+							<a href="book.html" class="btn btn-primary btn-block" data-ng-href="book-ng.html">Book Now</a>
 						</div>
 					</div>
-
-					<div class="feature-1 ">
-						<div class="align-self-center">
-							<span class="flaticon-restaurant display-4 text-primary"></span>
-							<h3>Meals</h3>
-							<p class="mb-0">During your trip, we provide both local and intercontinental dishes based on your preference.</p>
-						</div>
-					</div>
-
 				</div>
 
-				<div class="col-6 col-sm-6 col-lg-4 feature-1-wrap d-md-flex flex-md-column order-lg-3" >
-
-					<div class="feature-1 d-md-flex">
-						<div class="align-self-center">
-							<span class="flaticon-airplane display-4 text-primary"></span>
-							<h3>Amazing Prices</h3>
-							<p class="mb-0">We offer the best value for your money, aiming to provide top-notch services at the lowest possible cost.</p>
+				<div class="col-md-6 col-lg-3 mb-4">
+					<div class="card h-100 shadow-sm" style="border-top:4px solid #0a3d62;">
+						<div style="position:relative;">
+							<img loading="lazy" src="images/mecca.png" class="card-img-top" alt="December Umrah 2026" style="height:180px;object-fit:cover;">
+						</div>
+						<div class="card-body d-flex flex-column">
+							<h5 class="card-title" style="color:#0a3d62;">December Umrah 2026</h5>
+							<p class="card-text text-muted small">Holiday season · Luxury hotel · Ziyarah &amp; visa included</p>
+							<p class="mt-auto mb-2" style="font-size:1.3rem;font-weight:700;color:#0a3d62;" data-ng-price="From &#x20A6;4,600,000 / person">From $5,000 <span style="font-size:0.8rem;font-weight:400;color:#888;">/ person</span></p>
+							<a href="book.html" class="btn btn-primary btn-block" data-ng-href="book-ng.html">Book Now</a>
 						</div>
 					</div>
+				</div>
 
-					<div class="feature-1 d-md-flex">
-						<div class="align-self-center">
-							<span class="flaticon-phone-call display-4 text-primary"></span>
-							<h3>24/7 Support</h3>
-							<p class="mb-0">Our agents are always available to support you throughout your trip.</p>
+				<div class="col-md-6 col-lg-3 mb-4">
+					<div class="card h-100 shadow-sm" style="border-top:4px solid #856404;">
+						<div style="position:relative;">
+							<img loading="lazy" src="images/hajjnow.png" class="card-img-top" alt="Hajj 2027" style="height:180px;object-fit:cover;">
+							<span style="position:absolute;top:10px;left:10px;background:#856404;color:#fff;font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.06em;">Limited Spots</span>
+						</div>
+						<div class="card-body d-flex flex-column">
+							<h5 class="card-title" style="color:#856404;">Hajj 2027</h5>
+							<p class="card-text text-muted small">5★ Pullman Zamzam · Full board · Tent in Mashaer</p>
+							<p class="mt-auto mb-2" style="font-size:1.3rem;font-weight:700;color:#856404;" data-ng-price="From &#x20A6;9,800,000 / person">From $8,000 <span style="font-size:0.8rem;font-weight:400;color:#888;">/ person</span></p>
+							<a href="book.html" class="btn btn-warning btn-block text-white font-weight-bold" data-ng-href="book-ng.html">Reserve Your Spot</a>
 						</div>
 					</div>
-
 				</div>
 
 			</div>
 		</div>
-	</div>
+	</section>
 
 	
 
-	<div class="untree_co-section count-numbers py-5">
-		<div class="container">
-			<div class="row">
-				<div class="col-6 col-sm-6 col-md-6 col-lg-3">
-					<div class="counter-wrap">
-						<div class="counter">
-							<span class="" data-number="140">0</span>
-						</div>
-						<span class="caption">No. of Travels</span>
-					</div>
-				</div>
-				<div class="col-6 col-sm-6 col-md-6 col-lg-3">
-					<div class="counter-wrap">
-						<div class="counter">
-							<span class="" data-number="53">0</span>
-						</div>
-						<span class="caption">No. of Clients</span>
-					</div>
-				</div>
-				<div class="col-6 col-sm-6 col-md-6 col-lg-3">
-					<div class="counter-wrap">
-						<div class="counter">
-							<span class="" data-number="32">0</span>
-						</div>
-						<span class="caption">No. of Employees</span>
-					</div>
-				</div>
-				<div class="col-6 col-sm-6 col-md-6 col-lg-3">
-					<div class="counter-wrap">
-						<div class="counter">
-							<span class="" data-number="5">0</span>
-						</div>
-						<span class="caption">No. of Countries</span>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 
 
 
@@ -325,62 +294,51 @@
 				<div class="item">
 					<a class="media-thumb" href="images/hajjnow.png" data-fancybox="gallery">
 						<div class="media-text">
-							<h3>Masjid Haram</h3>
-							<span class="location">Mecca</span>
+							<h3>Masjid al-Haram</h3>
+							<span class="location">Mecca, Saudi Arabia</span>
 						</div>
-						<img src="images/hajjnow.png" alt="Image" class="img-fluid">
-					</a> 
+						<img src="images/hajjnow.png" alt="Masjid al-Haram" class="img-fluid">
+					</a>
 				</div>
 
 				<div class="item">
 					<a class="media-thumb" href="images/medina.png" data-fancybox="gallery">
 						<div class="media-text">
-							<h3>Masjid Nabawi</h3>
-							<span class="location">Medina</span>
+							<h3>Masjid an-Nabawi</h3>
+							<span class="location">Medina, Saudi Arabia</span>
 						</div>
-						<img src="images/medina.png" alt="Image" class="img-fluid">
-					</a> 
+						<img src="images/medina.png" alt="Masjid an-Nabawi" class="img-fluid">
+					</a>
 				</div>
 
 				<div class="item">
-					<a class="media-thumb" href="images/hero-slider-3.jpg" data-fancybox="gallery">
+					<a class="media-thumb" href="images/mecca.png" data-fancybox="gallery">
 						<div class="media-text">
-							<h3>Perhentian Islands</h3>
-							<span class="location">Malaysia</span>
+							<h3>Grand Mosque</h3>
+							<span class="location">Mecca, Saudi Arabia</span>
 						</div>
-						<img src="images/hero-slider-3.jpg" alt="Image" class="img-fluid">
-					</a> 
+						<img src="images/mecca.png" alt="Grand Mosque Mecca" class="img-fluid">
+					</a>
 				</div>
-
 
 				<div class="item">
 					<a class="media-thumb" href="images/dubai.png" data-fancybox="gallery">
 						<div class="media-text">
-							<h3>Burj Al-Arab</h3>
-							<span class="location">Dubai</span>
+							<h3>Dubai Stopover</h3>
+							<span class="location">Dubai, UAE</span>
 						</div>
-						<img src="images/dubai.png" alt="Image" class="img-fluid">
-					</a> 
+						<img src="images/dubai.png" alt="Dubai" class="img-fluid">
+					</a>
 				</div>
 
 				<div class="item">
-					<a class="media-thumb" href="images/hero-slider-5.jpg" data-fancybox="gallery">
+					<a class="media-thumb" href="images/hajj1.png" data-fancybox="gallery">
 						<div class="media-text">
-							<h3>San Francisco, United States</h3>
-							<span class="location">United States</span>
+							<h3>Hajj Journey</h3>
+							<span class="location">Mina &amp; Arafat, Saudi Arabia</span>
 						</div>
-						<img src="images/hero-slider-5.jpg" alt="Image" class="img-fluid">
-					</a> 
-				</div>
-
-				<div class="item">
-					<a class="media-thumb" href="images/hero-slider-1.jpg" data-fancybox="gallery">
-						<div class="media-text">
-							<h3>Lake Thun</h3>
-							<span class="location">Egypt</span>
-						</div>
-						<img src="images/hero-slider-2.jpg" alt="Image" class="img-fluid">
-					</a> 
+						<img src="images/hajj1.png" alt="Hajj Journey" class="img-fluid">
+					</a>
 				</div>
 
 			</div>
@@ -389,40 +347,43 @@
 	</div>
 
 
-	<!--div class="untree_co-section testimonial-section mt-5">
+	<div class="untree_co-section testimonial-section mt-5 bg-white">
 		<div class="container">
 			<div class="row justify-content-center">
 				<div class="col-lg-7 text-center">
-					<h2 class="section-title text-center mb-5">Testimonials</h2>
+					<h2 class="section-title text-center mb-5">What Our Pilgrims Say</h2>
 
 					<div class="owl-single owl-carousel no-nav">
 						<div class="testimonial mx-auto">
 							<figure class="img-wrap">
-								<img src="images/person_2.jpg" alt="Image" class="img-fluid">
+								<div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#e8302a,#f5a623);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.7rem;font-weight:700;margin:0 auto;font-family:'Inter',sans-serif;">AG</div>
 							</figure>
-							<h3 class="name">Adewale Ibrahim</h3>
+							<h3 class="name">Alimat Giwa <span style="font-size:0.85rem;color:#f5a623;">★★★★★</span></h3>
+							<p style="font-size:0.78rem;color:#aaa;margin-top:-6px;margin-bottom:10px;">Google Review · Local Guide</p>
 							<blockquote>
-								<p>&ldquo;There live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.&rdquo;</p>
+								<p>&ldquo;From leaving Calgary Airport to returning back, I was well taken care of — the food, the boat cruise in Istanbul, then Medina and Mecca to feed the soul. Deen Voyage went above and beyond to accommodate us all. I didn't want to leave.&rdquo;</p>
 							</blockquote>
 						</div>
 
 						<div class="testimonial mx-auto">
 							<figure class="img-wrap">
-								<img src="images/person_3.jpg" alt="Image" class="img-fluid">
+								<div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#e8302a,#f5a623);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.7rem;font-weight:700;margin:0 auto;font-family:'Inter',sans-serif;">HB</div>
 							</figure>
-							<h3 class="name">Akeem Olusola</h3>
+							<h3 class="name">Hassana Bakare <span style="font-size:0.85rem;color:#f5a623;">★★★★★</span></h3>
+							<p style="font-size:0.78rem;color:#aaa;margin-top:-6px;margin-bottom:10px;">Google Review</p>
 							<blockquote>
-								<p>&ldquo;There live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.&rdquo;</p>
+								<p>&ldquo;My November Umrah trip was a blend of spirit, body and soul — spiritually uplifting and rejuvenating. From accurate Umrah rites and site seeing, comfortable accommodation, sumptuous meals, to a genuine touch of care and concern. Seamless and unbeatable!&rdquo;</p>
 							</blockquote>
 						</div>
 
 						<div class="testimonial mx-auto">
 							<figure class="img-wrap">
-								<img src="images/person_4.jpg" alt="Image" class="img-fluid">
+								<div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#e8302a,#f5a623);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.7rem;font-weight:700;margin:0 auto;font-family:'Inter',sans-serif;">M</div>
 							</figure>
-							<h3 class="name">Muhammad Qudus</h3>
+							<h3 class="name">Maisat <span style="font-size:0.85rem;color:#f5a623;">★★★★★</span></h3>
+							<p style="font-size:0.78rem;color:#aaa;margin-top:-6px;margin-bottom:10px;">Google Review</p>
 							<blockquote>
-								<p>&ldquo;There live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.&rdquo;</p>
+								<p>&ldquo;Deen Voyage made excellent arrangements for our sisters trip to Turkey and Umrah. Our guide was knowledgeable and patient, and provided great recommendations for tourist sites. Highly recommend!&rdquo;</p>
 							</blockquote>
 						</div>
 
@@ -431,7 +392,7 @@
 				</div>
 			</div>
 		</div>
-	</div-->
+	</div>
 
 
 	
@@ -449,24 +410,23 @@
 				</div>
 
 				<div class="col-lg-5">
-					<h2 class="section-title text-left mb-4">Performing Umrah</h2>
-					<p></p>
+					<h2 class="section-title text-left mb-4">Performing Umrah with Deen Voyage</h2>
+					<p>We guide you through every step of your spiritual journey — from the moment you book to the day you return home. Our experienced team handles all logistics so you can focus entirely on your worship.</p>
 
-					<p class="mb-4"></p>
+					<p class="mb-4">Every package includes return flights, hotel accommodation near the Haram, Umrah visa, daily meals, and expert-led Ziyarah visits to the blessed sites of Mecca and Medina.</p>
 
 					<ul class="list-unstyled two-col clearfix">
-						<li>What we offer</li>
 						<li>Luxury Accommodation</li>
-						<li>Visa</li>
-						<li>Visitations</li>
+						<li>Umrah / Hajj Visa</li>
+						<li>Guided Ziyarah</li>
 						<li>Competitive Prices</li>
 						<li>Umrah Seminars</li>
-						<li>Travel advice</li>
-						<li>Local/Intercontinetal Dishes</li>
+						<li>Travel Advice</li>
+						<li>Local &amp; International Dishes</li>
 						<li>Guide Books</li>
 					</ul>
 
-					<p><a href="/register.html" class="btn btn-primary">Book Now</a></p>
+					<p><a href="/book.html" class="btn btn-primary">Book Now</a></p>
 
 					
 				</div>
@@ -480,9 +440,10 @@
 		<div class="container">
 			<div class="row text-center">
 				<div class="col-md-12">
-					<h2 class="mb-2 text-white">Lets give you the best travel experience. Contact Us Now</h2>
-					<p class="mb-4 lead text-white text-white-opacity"></p>
-					<p class="mb-0"><a href="/register.html" class="btn btn-outline-white text-white btn-md font-weight-bold">Book Now</a></p>
+					<h2 class="mb-2 text-white">Ready to begin your spiritual journey?</h2>
+					<p class="mb-4 text-white" style="opacity:0.85;font-size:1.05rem;">Speak to our team today — we'll find the right package for you.</p>
+					<a href="/book.html" class="btn btn-outline-white text-white btn-md font-weight-bold mr-2 mb-2">Book Now</a>
+					<a href="tel:+14036831777" class="btn btn-light btn-md font-weight-bold mb-2">Call +1 403 683 1777</a>
 				</div>
 			</div>
 		</div>
@@ -512,23 +473,16 @@
 							</ul>
 						</div>
 					</div>
-					<div class="col-md-6 col-lg-2 pl-lg-5">
+					<div class="col-md-6 col-lg-4 pl-lg-5">
 						<div class="widget">
-							<h3 class="heading">Pages</h3>
+							<h3 class="heading">Quick Links</h3>
 							<ul class="links list-unstyled">
-								<li><a href="#">Blog</a></li>
-								<li><a href="#">About</a></li>
-								<li><a href="#">Contact</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="col-md-6 col-lg-2">
-						<div class="widget">
-							<h3 class="heading">Resources</h3>
-							<ul class="links list-unstyled">
-								<li><a href="#">Blog</a></li>
-								<li><a href="#">About</a></li>
-								<li><a href="#">Contact</a></li>
+								<li><a href="/hajj">Hajj Packages</a></li>
+								<li><a href="/umrah">Umrah Packages</a></li>
+								<li><a href="/ramadan">Ramadan Umrah</a></li>
+								<li><a href="/about">About Us</a></li>
+								<li><a href="/contact">Contact</a></li>
+								<li><a href="/book.html">Book Now</a></li>
 							</ul>
 						</div>
 					</div>
@@ -590,7 +544,7 @@
 			})
 
 			var typed = new Typed('.typed-words', {
-				strings: ["Umrah."," Hajj.","Holidays.", " Flights.", " Vacations."],
+				strings: ["Umrah.", "Hajj.", "Ramadan Umrah.", "December Umrah."],
 				typeSpeed: 80,
 				backSpeed: 80,
 				backDelay: 4000,
@@ -599,7 +553,6 @@
 				showCursor: true,
 				preStringTyped: (arrayPos, self) => {
 					arrayPos++;
-					console.log(arrayPos);
 					$('.slides img').removeClass('active');
 					$('.slides img[data-id="'+arrayPos+'"]').addClass('active');
 				}
@@ -607,10 +560,59 @@
 			});
 		})
 	</script>
-<!-- Firebase Core -->
-
-<!-- Your custom JavaScript files -->
 <script src="js/custom.js"></script>
+<script src="js/geo-ng.js"></script>
+
+<!-- Structured Data: TravelAgency -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TravelAgency",
+  "name": "Deen Voyage",
+  "alternateName": "Deen Voyage Limited",
+  "description": "Premium Umrah, Hajj, and Ramadan travel packages from Calgary, Canada. Luxury hotels, visa, meals, and guided Ziyarah included.",
+  "url": "https://www.deenvoyage.com",
+  "logo": "https://www.deenvoyage.com/images/deen..png",
+  "telephone": "+14036831777",
+  "email": "hello@deenvoyage.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "305 Redstone Boulevard NE",
+    "addressLocality": "Calgary",
+    "addressRegion": "AB",
+    "postalCountry": "CA"
+  },
+  "areaServed": ["Canada", "Nigeria", "United Kingdom"],
+  "priceRange": "$$",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5",
+    "bestRating": "5",
+    "reviewCount": "4"
+  },
+  "review": [
+    {
+      "@type": "Review",
+      "author": { "@type": "Person", "name": "Alimat Giwa" },
+      "reviewRating": { "@type": "Rating", "ratingValue": "5" },
+      "reviewBody": "From leaving Calgary Airport to returning back, I was well taken care of. Deen Voyage went above and beyond to accommodate us all. I didn't want to leave."
+    },
+    {
+      "@type": "Review",
+      "author": { "@type": "Person", "name": "Hassana Bakare" },
+      "reviewRating": { "@type": "Rating", "ratingValue": "5" },
+      "reviewBody": "My November Umrah trip was seamless and unbeatable. From accurate Umrah rites and site seeing to comfortable accommodation, sumptuous meals, and a genuine touch of care."
+    },
+    {
+      "@type": "Review",
+      "author": { "@type": "Person", "name": "Maisat" },
+      "reviewRating": { "@type": "Rating", "ratingValue": "5" },
+      "reviewBody": "Deen Voyage made excellent arrangements for our sisters trip to Turkey and Umrah. Our guide was knowledgeable and patient."
+    }
+  ]
+}
+</script>
+
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js"></script>
 <script type="module" src="app.js"></script>

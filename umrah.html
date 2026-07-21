@@ -298,14 +298,16 @@
             <a href="#">Services</a>
             <ul class="dropdown">
               <li><a href="/hajj">Hajj</a></li>
-              <li><a href="/ramadan">Ramadan</a></li>
-              <li><a href="/decumrah">December</a></li>
               <li><a href="/umrah">Umrah</a></li>
+              <li><a href="/ramadan">Ramadan</a></li>
+              <li><a href="/novumrah">November</a></li>
+						<li><a href="/decumrah">December</a></li>
               <li><a href="#">Vacations</a></li>
             </ul>
           </li>
           <li><a href="/about">About Us</a></li>
           <li><a href="/register">Register</a></li>
+          <li><a href="/blog">Blog</a></li>
           <li><a href="/contact">Contact Us</a></li>
         </ul>
         <a href="#" class="burger ml-auto float-right site-menu-toggle js-menu-toggle d-inline-block d-lg-none light" data-toggle="collapse" data-target="#main-navbar"><span></span></a>
@@ -355,22 +357,22 @@
      <div class="pricing-cards">
   <div class="pricing-card">
     <h3>Quad Room</h3>
-    <div class="pricing-amount">4,500CAD </div>
+    <div class="pricing-amount" data-ng-price="&#x20A6;4,200,000">4,800CAD </div>
     <div class="pricing-details">4 people per room</div>
   </div>
   <div class="pricing-card">
     <h3>Triple Room</h3>
-    <div class="pricing-amount">$5,200 CAD</div>
+    <div class="pricing-amount" data-ng-price="&#x20A6;4,700,000">$5,200 CAD</div>
     <div class="pricing-details">3 people per room</div>
   </div>
   <div class="pricing-card">
     <h3>Double Room</h3>
-    <div class="pricing-amount">$5,700 CAD </div>
+    <div class="pricing-amount" data-ng-price="&#x20A6;5,400,000">$5,600 CAD </div>
     <div class="pricing-details">2 people per room</div>
   </div>
 </div>
 
-      <a href="register.html" class="btn-book">📩 Book Now</a>
+      <a href="book.html" class="btn-book" data-ng-href="book-ng.html">📩 Book Now</a>
 
       <div class="contact-info">
         <p>
@@ -493,6 +495,7 @@
 		}
 	}
 </script>
+<script src="js/geo-ng.js"></script>
 </body>
 </html>
 

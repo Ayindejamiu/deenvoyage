@@ -58,14 +58,16 @@
 						<a href="#">Services</a>
 						<ul class="dropdown">
 							<li><a href="/hajj">Hajj</a></li>
-							<li><a href="/ramadan">Ramadan</a></li>
-							<li><a href="/decumrah">December</a></li>
 							<li><a href="/umrah">Umrah</a></li>
+							<li><a href="/ramadan">Ramadan</a></li>
+							<li><a href="/novumrah">November</a></li>
+						<li><a href="/decumrah">December</a></li>
 							<li><a href="#">Vacations</a></li>
 						</ul>
 					</li>
 					<li><a href="/about">About Us</a></li>
 					<li><a href="/register">Register</a></li>
+					<li><a href="/blog">Blog</a></li>
 					<li><a href="/contact">Contact Us</a></li>
 				</ul>
 
@@ -90,92 +92,363 @@
     </div>
   </div>
 
-<!-- <!doctype html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>Register | Deen Voyage</title>
-	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/style.css">
-</head>
-<body> -->
+<style>
+	/* Tab styling */
+	.reg-tabs {
+		border-bottom: 2px solid #e8e8e8;
+		margin-bottom: 32px;
+		display: flex;
+		gap: 4px;
+	}
+	.reg-tab-btn {
+		background: none;
+		border: none;
+		padding: 12px 28px;
+		font-size: 0.95rem;
+		font-weight: 700;
+		color: #888;
+		border-bottom: 3px solid transparent;
+		margin-bottom: -2px;
+		cursor: pointer;
+		transition: color .2s, border-color .2s;
+		font-family: "Inter", sans-serif;
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		border-radius: 4px 4px 0 0;
+	}
+	.reg-tab-btn:hover { color: #0a3d62; }
+	.reg-tab-btn.active {
+		color: #0a3d62;
+		border-bottom-color: #F59C3B;
+		background: #fff8ef;
+	}
+	.reg-tab-btn .tab-icon {
+		font-size: 1.1rem;
+	}
+	.reg-tab-panel { display: none; }
+	.reg-tab-panel.active { display: block; }
+
+	/* Qatar tab accent */
+	.qatar-badge {
+		display: inline-block;
+		background: linear-gradient(135deg, #8D1B3D, #5C0E27);
+		color: #fff;
+		font-size: 0.7rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: .06em;
+		padding: 2px 10px;
+		border-radius: 999px;
+		vertical-align: middle;
+		margin-left: 4px;
+	}
+	.qatar-info-box {
+		background: #f0f6ff;
+		border-left: 4px solid #0a3d62;
+		border-radius: 0 8px 8px 0;
+		padding: 14px 18px;
+		margin-bottom: 24px;
+		font-size: 0.88rem;
+		color: #444;
+		line-height: 1.6;
+	}
+	.qatar-info-box strong { color: #0a3d62; }
+	.qatar-info-box a { color: #e8302a; }
+</style>
 
 <div class="container py-5">
-	<form id="registration-form">
-		<div class="form-row">
-			<div class="form-group col-md-6">
-				<label for="fname">First Name</label>
-				<input type="text" class="form-control" id="fname" required>
+
+	<!-- Tab buttons -->
+	<div class="reg-tabs">
+		<button class="reg-tab-btn active" onclick="switchTab('umrah-hajj', this)">
+			<span class="tab-icon">🕋</span> Umrah / Hajj
+		</button>
+		<button class="reg-tab-btn" onclick="switchTab('qatar-vacation', this)">
+			<span class="tab-icon">✈️</span> Qatar Vacation <span class="qatar-badge">New</span>
+		</button>
+	</div>
+
+	<!-- ── Tab 1: Umrah / Hajj ── -->
+	<div id="tab-umrah-hajj" class="reg-tab-panel active">
+		<form id="registration-form">
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="fname">First Name</label>
+					<input type="text" class="form-control" id="fname" required>
+				</div>
+				<div class="form-group col-md-6">
+					<label for="lname">Surname</label>
+					<input type="text" class="form-control" id="lname" required>
+				</div>
 			</div>
-			<div class="form-group col-md-6">
-				<label for="lname">Surname</label>
-				<input type="text" class="form-control" id="lname" required>
+			<div class="form-group">
+				<label for="email">Email Address</label>
+				<input type="email" class="form-control" id="email" required>
 			</div>
-		</div>
-		<div class="form-group">
-			<label for="email">Email Address</label>
-			<input type="email" class="form-control" id="email" required>
-		</div>
-		<div class="form-group">
-			<label for="phone">Phone Number</label>
-			<input type="tel" class="form-control" id="phone" required>
-		</div>
-		<div class="form-group">
-			<label for="travelType">Travel Type</label>
-			<select class="form-control" id="travelType" required>
-				<option value="">Select</option>
-				<option>Hajj 2026</option>
-				<option>Ramadan Umrah 2026</option>
-				<option>August/September Umrah 2026</option>
-				<option>December Umrah 2025</option>
-				<option>Other</option>
-			</select>
-			<!-- Date range inputs shown only when user selects Other -->
-			<div id="other-travel-dates" class="mt-3 d-none">
-				<div class="form-row">
-					<div class="form-group col-md-6">
-						<label for="startDate">Start Date</label>
-						<input type="date" class="form-control" id="startDate" />
+			<div class="form-group">
+				<label for="phone">Phone Number</label>
+				<input type="tel" class="form-control" id="phone" required>
+			</div>
+			<div class="form-group">
+				<label for="travelType">Travel Type</label>
+				<select class="form-control" id="travelType" required>
+					<option value="">Select</option>
+					<option>Hajj 2027</option>
+					<option>August Umrah 2026</option>
+					<option>November Umrah with Doha 2026</option>
+					<option>December Umrah 2026</option>
+					<option>Ramadan Umrah 2027</option>
+					<option>Other</option>
+				</select>
+				<!-- Date range inputs shown only when user selects Other -->
+				<div id="other-travel-dates" class="mt-3 d-none">
+					<div class="form-row">
+						<div class="form-group col-md-6">
+							<label for="startDate">Start Date</label>
+							<input type="date" class="form-control" id="startDate" />
+						</div>
+						<div class="form-group col-md-6">
+							<label for="endDate">End Date</label>
+							<input type="date" class="form-control" id="endDate" />
+						</div>
 					</div>
-					<div class="form-group col-md-6">
-						<label for="endDate">End Date</label>
-						<input type="date" class="form-control" id="endDate" />
+					<small class="form-text text-muted">Please choose a start and end date for your travel.</small>
+				</div>
+			</div>
+			<div class="form-group">
+				<label>Do you wish to add a vacation to your Journey?</label>
+				<select class="form-control" id="othervisits" onchange="toggleOtherVacation()" required>
+					<option value="">Select</option>
+					<option>Doha, Qatar</option>
+					<option>Istanbul, Turkey</option>
+					<option>Dubai, UAE</option>
+					<option>Cairo, Egypt</option>
+					<option>Marrakesh, Morocco</option>
+					<option>Others</option>
+				</select>
+				<input type="text" class="form-control mt-2 d-none" id="otherVacation" placeholder="Please specify"/>
+			</div>
+			<div class="form-group">
+				<label>Which passport do you hold?</label>
+				<select class="form-control" id="passportType" onchange="toggleOtherPassport()" required>
+					<option value="">Select</option>
+					<option>Nigeria Passport</option>
+					<option>Canada Passport</option>
+					<option>U.S Passport</option>
+					<option>Australian Passport</option>
+					<option>British Passport</option>
+					<option>Others</option>
+				</select>
+				<input type="text" class="form-control mt-2 d-none" id="otherPassport" placeholder="Please specify"/>
+			</div>
+			<div class="form-group">
+				<label for="requirements">Other Requirements</label>
+				<textarea class="form-control" id="requirements" rows="3"></textarea>
+			</div>
+			<div class="form-group">
+				<label for="roomType">Room Type</label>
+				<select class="form-control" id="roomType" required>
+					<option value="">Select</option>
+					<option>Quad Room</option>
+					<option>Triple Room</option>
+					<option>Double Room</option>
+				</select>
+			</div>
+			<div id="form-status" class="mb-3"></div>
+			<button type="submit" class="btn btn-primary">Submit Registration</button>
+		</form>
+	</div>
+
+	<!-- ── Tab 2: Qatar Vacation ── -->
+	<div id="tab-qatar-vacation" class="reg-tab-panel">
+
+		<div class="qatar-info-box">
+			<strong>Qatar Hayya Visa &amp; Vacation Package</strong><br>
+			Deen Voyage is a <strong>registered Discover Qatar travel partner</strong>. We handle your hotel booking (via the official agent portal), airport transfers, and Hayya Visa submission end-to-end.
+			<a href="/blog-qatar-visa-nigeria-2026" target="_blank">Read our complete Qatar Visa guide &rarr;</a>
+		</div>
+
+		<form id="qatar-form">
+			<!-- Personal details -->
+			<h5 style="font-family:'Source Serif Pro',serif;color:#0a3d62;margin-bottom:16px;">Personal Details</h5>
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="q_fname">First Name</label>
+					<input type="text" class="form-control" id="q_fname" required>
+				</div>
+				<div class="form-group col-md-6">
+					<label for="q_lname">Surname</label>
+					<input type="text" class="form-control" id="q_lname" required>
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="q_email">Email Address</label>
+					<input type="email" class="form-control" id="q_email" required>
+				</div>
+				<div class="form-group col-md-6">
+					<label for="q_phone">Phone Number (WhatsApp preferred)</label>
+					<input type="tel" class="form-control" id="q_phone" required>
+				</div>
+			</div>
+
+			<!-- Travel details -->
+			<h5 style="font-family:'Source Serif Pro',serif;color:#0a3d62;margin:24px 0 16px;">Travel Details</h5>
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="q_arrival">Arrival Date in Qatar</label>
+					<input type="date" class="form-control" id="q_arrival" required>
+				</div>
+				<div class="form-group col-md-6">
+					<label for="q_departure">Departure Date from Qatar</label>
+					<input type="date" class="form-control" id="q_departure" required>
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="q_travellers">Number of Travellers</label>
+					<select class="form-control" id="q_travellers" required>
+						<option value="">Select</option>
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5+</option>
+					</select>
+				</div>
+				<div class="form-group col-md-6">
+					<label for="q_purpose">Purpose of Visit</label>
+					<select class="form-control" id="q_purpose" required>
+						<option value="">Select</option>
+						<option>Tourism / Leisure</option>
+						<option>Transit to Umrah / Hajj</option>
+						<option>Business</option>
+						<option>Stopover (connecting flight)</option>
+					</select>
+				</div>
+			</div>
+
+			<!-- Passport & visa -->
+			<h5 style="font-family:'Source Serif Pro',serif;color:#0a3d62;margin:24px 0 16px;">Passport &amp; Visa</h5>
+			<div class="form-group">
+				<label>Which passport do you hold?</label>
+				<select class="form-control" id="q_passport" onchange="toggleQatarOtherPassport()" required>
+					<option value="">Select</option>
+					<option>Nigeria Passport</option>
+					<option>Canada Passport</option>
+					<option>U.S Passport</option>
+					<option>Australian Passport</option>
+					<option>British Passport</option>
+					<option>Others</option>
+				</select>
+				<input type="text" class="form-control mt-2 d-none" id="q_otherPassport" placeholder="Please specify your passport nationality"/>
+			</div>
+			<div class="form-group">
+				<label>Passport expiry date</label>
+				<input type="date" class="form-control" id="q_passportExpiry" required>
+				<small class="form-text text-muted">Must be valid for at least 6 months from your Qatar arrival date.</small>
+			</div>
+
+			<!-- Accommodation -->
+			<h5 style="font-family:'Source Serif Pro',serif;color:#0a3d62;margin:24px 0 16px;">Accommodation</h5>
+			<div class="form-group">
+				<label>Hotel preference</label>
+				<select class="form-control" id="q_hotelPref" required>
+					<option value="">Select</option>
+					<option>5-Star (luxury)</option>
+					<option>4-Star (superior)</option>
+					<option>3-Star (standard)</option>
+					<option>No preference — best available</option>
+				</select>
+				<small class="form-text text-muted">Deen Voyage will book your hotel through the official Discover Qatar agent portal — required for the Hayya Visa.</small>
+			</div>
+			<div class="form-group">
+				<label>Room type</label>
+				<select class="form-control" id="q_roomType" required>
+					<option value="">Select</option>
+					<option>Single Room</option>
+					<option>Double Room</option>
+					<option>Twin Room</option>
+					<option>Triple Room</option>
+					<option>Family Room</option>
+				</select>
+			</div>
+
+			<!-- Additional Requirements -->
+			<h5 style="font-family:'Source Serif Pro',serif;color:#0a3d62;margin:24px 0 14px;">Additional Requirements</h5>
+			<p style="font-size:0.85rem;color:#666;margin-bottom:16px;">Select all the add-ons you would like included in your Qatar package:</p>
+			<div class="form-group">
+				<div class="row">
+					<div class="col-sm-6 mb-3">
+						<div class="custom-control custom-checkbox" style="background:#f8f9fa;border:1px solid #e5e5e5;border-radius:8px;padding:14px 14px 14px 40px;">
+							<input type="checkbox" class="custom-control-input" id="q_req_flight" name="q_requirements" value="Flight">
+							<label class="custom-control-label" for="q_req_flight" style="font-weight:600;color:#0a3d62;cursor:pointer;">
+								✈️ &nbsp;Flight
+								<div style="font-size:0.78rem;font-weight:400;color:#888;margin-top:2px;">Flight booking assistance to &amp; from Qatar</div>
+							</label>
+						</div>
+					</div>
+					<div class="col-sm-6 mb-3">
+						<div class="custom-control custom-checkbox" style="background:#f8f9fa;border:1px solid #e5e5e5;border-radius:8px;padding:14px 14px 14px 40px;">
+							<input type="checkbox" class="custom-control-input" id="q_req_museum" name="q_requirements" value="Museum Tourism">
+							<label class="custom-control-label" for="q_req_museum" style="font-weight:600;color:#0a3d62;cursor:pointer;">
+								🏛️ &nbsp;Museum Tourism
+								<div style="font-size:0.78rem;font-weight:400;color:#888;margin-top:2px;">Museum of Islamic Art &amp; cultural sites</div>
+							</label>
+						</div>
+					</div>
+					<div class="col-sm-6 mb-3">
+						<div class="custom-control custom-checkbox" style="background:#f8f9fa;border:1px solid #e5e5e5;border-radius:8px;padding:14px 14px 14px 40px;">
+							<input type="checkbox" class="custom-control-input" id="q_req_localdish" name="q_requirements" value="Local Dish Dinner">
+							<label class="custom-control-label" for="q_req_localdish" style="font-weight:600;color:#0a3d62;cursor:pointer;">
+								🍽️ &nbsp;Local Dish Dinner
+								<div style="font-size:0.78rem;font-weight:400;color:#888;margin-top:2px;">Authentic Qatari dining experience</div>
+							</label>
+						</div>
+					</div>
+					<div class="col-sm-6 mb-3">
+						<div class="custom-control custom-checkbox" style="background:#f8f9fa;border:1px solid #e5e5e5;border-radius:8px;padding:14px 14px 14px 40px;">
+							<input type="checkbox" class="custom-control-input" id="q_req_desert" name="q_requirements" value="Desert Tourism">
+							<label class="custom-control-label" for="q_req_desert" style="font-weight:600;color:#0a3d62;cursor:pointer;">
+								🏜️ &nbsp;Desert Tourism
+								<div style="font-size:0.78rem;font-weight:400;color:#888;margin-top:2px;">Inland Sea safari &amp; dune bashing</div>
+							</label>
+						</div>
+					</div>
+					<div class="col-sm-6 mb-3">
+						<div class="custom-control custom-checkbox" style="background:#f8f9fa;border:1px solid #e5e5e5;border-radius:8px;padding:14px 14px 14px 40px;">
+							<input type="checkbox" class="custom-control-input" id="q_req_water" name="q_requirements" value="Water Tourism">
+							<label class="custom-control-label" for="q_req_water" style="font-weight:600;color:#0a3d62;cursor:pointer;">
+								⛵ &nbsp;Water Tourism
+								<div style="font-size:0.78rem;font-weight:400;color:#888;margin-top:2px;">Dhow cruise &amp; waterfront experiences</div>
+							</label>
+						</div>
+					</div>
+					<div class="col-sm-6 mb-3">
+						<div class="custom-control custom-checkbox" style="background:#f8f9fa;border:1px solid #e5e5e5;border-radius:8px;padding:14px 14px 14px 40px;">
+							<input type="checkbox" class="custom-control-input" id="q_req_air" name="q_requirements" value="Air Tourism">
+							<label class="custom-control-label" for="q_req_air" style="font-weight:600;color:#0a3d62;cursor:pointer;">
+								🚁 &nbsp;Air Tourism
+								<div style="font-size:0.78rem;font-weight:400;color:#888;margin-top:2px;">Helicopter or hot air balloon tours</div>
+							</label>
+						</div>
 					</div>
 				</div>
-				<small class="form-text text-muted">Please choose a start and end date for your travel.</small>
 			</div>
-		</div>
-		<div class="form-group">
-			<label>Which passport do you hold?</label>
-			<select class="form-control" id="passportType" onchange="toggleOtherPassport()" required>
-				<option value="">Select</option>
-				<option>Nigeria Passport</option>
-				<option>Canada Passport</option>
-				<option>U.S Passport</option>
-				<option>Australian Passport</option>
-				<option>British Passport</option>
-				<option>Others</option>
-			</select>
-			<input type="text" class="form-control mt-2 d-none" id="otherPassport" placeholder="Please specify"/>
-		</div>
-		<div class="form-group">
-			<label for="requirements">Other Requirements</label>
-			<textarea class="form-control" id="requirements" rows="3"></textarea>
-		</div>
-		<div class="form-group">
-			<label for="roomType">Room Type</label>
-			<select class="form-control" id="roomType" required>
-				<option value="">Select</option>
-				<option>Quad Room</option>
-				<option>Triple Room</option>
-				<option>Double Room</option>
-			</select>
-		</div>
-		<div id="form-status" class="mb-3"></div>
-		<button type="submit" class="btn btn-primary">Submit</button>
-	</form>
-</div>
+
+			<!-- Notes -->
+			<div class="form-group">
+				<label for="q_notes">Other Notes</label>
+				<textarea class="form-control" id="q_notes" rows="3" placeholder="E.g. dietary needs, accessibility requirements, Umrah connection details…"></textarea>
+			</div>
+
+			<div id="qatar-form-status" class="mb-3"></div>
+			<button type="submit" class="btn btn-primary">Submit Qatar Vacation Request</button>
+		</form>
+	</div>
+
+</div><!-- /container -->
 <script src="https://static.elfsight.com/platform/platform.js" async></script>
 <div class="elfsight-app-bd1badfd-3123-4d50-bf51-7f5226ce9c92" data-elfsight-app-lazy></div>
 <div class="site-footer">
@@ -257,10 +530,45 @@
 <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js"></script>
 <script type="module" src="app.js"></script>
 <script>
+	/* Tab switching */
+	function switchTab(tabId, btn) {
+		document.querySelectorAll('.reg-tab-panel').forEach(p => p.classList.remove('active'));
+		document.querySelectorAll('.reg-tab-btn').forEach(b => b.classList.remove('active'));
+		document.getElementById('tab-' + tabId).classList.add('active');
+		btn.classList.add('active');
+	}
+
+	/* Umrah/Hajj tab — passport other field */
 	function toggleOtherPassport() {
 		const passport = document.getElementById("passportType");
 		const otherField = document.getElementById("otherPassport");
 		if (passport.value === "Other") {
+			otherField.classList.remove("d-none");
+			otherField.setAttribute("required", true);
+		} else {
+			otherField.classList.add("d-none");
+			otherField.removeAttribute("required");
+		}
+	}
+
+	/* Umrah/Hajj tab — vacation other field */
+	function toggleOtherVacation() {
+		const sel = document.getElementById("othervisits");
+		const field = document.getElementById("otherVacation");
+		if (sel.value === "Others") {
+			field.classList.remove("d-none");
+			field.setAttribute("required", true);
+		} else {
+			field.classList.add("d-none");
+			field.removeAttribute("required");
+		}
+	}
+
+	/* Qatar tab — passport other field */
+	function toggleQatarOtherPassport() {
+		const passport = document.getElementById("q_passport");
+		const otherField = document.getElementById("q_otherPassport");
+		if (passport.value === "Others") {
 			otherField.classList.remove("d-none");
 			otherField.setAttribute("required", true);
 		} else {
@@ -291,8 +599,69 @@
 	document.addEventListener('DOMContentLoaded', function () {
 		const travelSelect = document.getElementById('travelType');
 		if (travelSelect) travelSelect.addEventListener('change', toggleOtherTravel);
+
+		// Qatar form submission
+		const qatarForm = document.getElementById('qatar-form');
+		if (qatarForm) {
+			qatarForm.addEventListener('submit', async function (e) {
+				e.preventDefault();
+				const statusEl = document.getElementById('qatar-form-status');
+				statusEl.innerHTML = '<div class="alert alert-info">Submitting your request…</div>';
+
+				const arrival = document.getElementById('q_arrival').value;
+				const departure = document.getElementById('q_departure').value;
+				if (arrival && departure && departure <= arrival) {
+					statusEl.innerHTML = '<div class="alert alert-danger">Departure date must be after arrival date.</div>';
+					return;
+				}
+
+				const checkedReqs = Array.from(
+					document.querySelectorAll('input[name="q_requirements"]:checked')
+				).map(cb => cb.value);
+
+				const data = {
+					type: 'Qatar Vacation',
+					firstName:        document.getElementById('q_fname').value.trim(),
+					lastName:         document.getElementById('q_lname').value.trim(),
+					email:            document.getElementById('q_email').value.trim(),
+					phone:            document.getElementById('q_phone').value.trim(),
+					arrivalDate:      arrival,
+					departureDate:    departure,
+					travellers:       document.getElementById('q_travellers').value,
+					purpose:          document.getElementById('q_purpose').value,
+					passport:         document.getElementById('q_passport').value,
+					passportOther:    document.getElementById('q_otherPassport').value.trim(),
+					passportExpiry:   document.getElementById('q_passportExpiry').value,
+					hotelPref:        document.getElementById('q_hotelPref').value,
+					roomType:         document.getElementById('q_roomType').value,
+					requirements:     checkedReqs.join(', ') || 'None selected',
+					notes:            document.getElementById('q_notes').value.trim(),
+					submittedAt:      new Date().toISOString(),
+				};
+
+				try {
+					// Submit to Firebase via the existing app.js handler if available,
+					// otherwise fall back to a mailto link so no lead is lost.
+					if (typeof window.submitQatarRegistration === 'function') {
+						await window.submitQatarRegistration(data);
+					} else {
+						// Fallback: open pre-filled email to the team
+						const body = Object.entries(data).map(([k, v]) => k + ': ' + v).join('\n');
+						window.location.href = 'mailto:hello@deenvoyage.com?subject=Qatar%20Vacation%20Request%20-%20' +
+							encodeURIComponent(data.firstName + ' ' + data.lastName) +
+							'&body=' + encodeURIComponent(body);
+					}
+					statusEl.innerHTML = '<div class="alert alert-success"><strong>Thank you!</strong> Your Qatar vacation request has been received. Our team will contact you within 24 hours.</div>';
+					qatarForm.reset();
+				} catch (err) {
+					statusEl.innerHTML = '<div class="alert alert-danger">Something went wrong. Please email us directly at <a href="mailto:hello@deenvoyage.com">hello@deenvoyage.com</a>.</div>';
+					console.error(err);
+				}
+			});
+		}
 	});
 </script>
+<script src="js/geo-ng.js"></script>
 </body>
 </html>
 

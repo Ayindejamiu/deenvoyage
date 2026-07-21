@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CRM Dashboard — Deen Voyage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/crm.css">
+</head>
+<body>
+
+<!-- ══ Navbar ══════════════════════════════════════════════ -->
+<nav class="crm-navbar">
+  <div class="brand">🕌 Deen Voyage <span>CRM</span></div>
+  <div class="user-menu" id="user-menu-btn">
+    <div class="user-avatar" id="user-initials">…</div>
+    <span id="user-name"></span>
+    <span style="font-size:.7rem;">▾</span>
+  </div>
+</nav>
+<div class="user-dropdown" id="user-dropdown">
+  <span id="user-role-label" style="display:block;padding:8px 16px 4px;font-size:.7rem;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px;"></span>
+  <a href="accounts.html" style="display:block;padding:10px 16px;font-size:.85rem;color:#1e293b;text-decoration:none;">📒 Accounts</a>
+  <a href="savings.html" style="display:block;padding:10px 16px;font-size:.85rem;color:#1e293b;text-decoration:none;">💰 Savings Plans</a>
+  <button class="logout" id="logout-btn">Sign out</button>
+</div>
+<div id="dropdown-bd" style="display:none;position:fixed;inset:0;z-index:2999;"></div>
+
+<!-- ══ Tab bar ══════════════════════════════════════════════ -->
+<div class="crm-tabs">
+  <button class="crm-tab active" data-tab="leads">📋 Leads</button>
+  <button class="crm-tab" data-tab="receipts">🧾 Receipts</button>
+  <button class="crm-tab admin-only" data-tab="staff" style="display:none;">👥 Staff</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB 1 — LEADS
+══════════════════════════════════════════════════════════ -->
+<div class="tab-section active" id="tab-leads">
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="label">Total Leads</div>
+      <div class="value" id="stat-total">—</div>
+      <div class="sub">All time</div>
+    </div>
+    <div class="stat-card paid">
+      <div class="label">Paid Full</div>
+      <div class="value" id="stat-paid">—</div>
+      <div class="sub">Converted</div>
+    </div>
+    <div class="stat-card followup">
+      <div class="label">Follow-up Due</div>
+      <div class="value" id="stat-followup">—</div>
+      <div class="sub">Need attention</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">In Discussion</div>
+      <div class="value" id="stat-discussion">—</div>
+      <div class="sub">Active</div>
+    </div>
+    <div class="stat-card revenue">
+      <div class="label">Revenue (CAD)</div>
+      <div class="value" id="stat-revenue">—</div>
+      <div class="sub">Collected</div>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="crm-toolbar">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="search" id="search-input" placeholder="Search name, email or phone…">
+    </div>
+    <select id="filter-status">
+      <option value="">All Statuses</option>
+      <option value="new">New Lead</option>
+      <option value="in_discussion">In Discussion</option>
+      <option value="deposit_paid">Deposit Paid</option>
+      <option value="paid_full">Paid Full</option>
+      <option value="will_pay">Will Pay</option>
+      <option value="follow_up">Needs Follow-up</option>
+      <option value="competitor">Competitor</option>
+      <option value="diy">DIY</option>
+      <option value="cancelled">Cancelled</option>
+      <option value="completed">Completed</option>
+      <option value="refund">Refund</option>
+    </select>
+    <select id="filter-travel">
+      <option value="">All Types</option>
+      <option value="hajj">Hajj</option>
+      <option value="umrah">Umrah</option>
+      <option value="ramadan">Ramadan Umrah</option>
+      <option value="december">December Umrah</option>
+      <option value="vacation">Islamic Vacation</option>
+    </select>
+    <select id="filter-agent"><option value="">All Agents</option></select>
+    <button class="btn-add-lead" id="btn-add-lead">＋ Add Lead</button>
+  </div>
+
+  <!-- Table -->
+  <div class="leads-table-wrap">
+    <table class="leads-table">
+      <thead>
+        <tr>
+          <th>Client</th>
+          <th>Travel Type</th>
+          <th>Status</th>
+          <th>Follow-up</th>
+          <th>Source</th>
+          <th>Agent</th>
+          <th>Added</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="leads-body">
+        <tr class="loading-row"><td colspan="8">Loading…</td></tr>
+      </tbody>
+    </table>
+    <div class="pagination-row" id="pagination-row" style="display:none;">
+      <span id="pagination-info"></span>
+      <div class="pagination-btns" id="pagination-btns"></div>
+    </div>
+  </div>
+
+</div><!-- /tab-leads -->
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB 2 — RECEIPTS
+══════════════════════════════════════════════════════════ -->
+<div class="tab-section" id="tab-receipts">
+
+  <!-- Sub-toolbar -->
+  <div class="crm-toolbar" style="padding-bottom:0;border-bottom:1px solid #e5e7eb;">
+    <div class="rcp-mode-tabs" style="margin:0;flex-shrink:0;">
+      <button class="rcp-mode-tab active" id="rcp-tab-new" onclick="rcpSwitchMode('new')">New Registration</button>
+      <button class="rcp-mode-tab" id="rcp-tab-add" onclick="rcpSwitchMode('add')">Add Payment</button>
+    </div>
+    <button class="btn-add-lead" onclick="rcpSwitchMode('list')">📋 All Registrations</button>
+  </div>
+
+  <!-- Issue / Add Payment workspace -->
+  <div class="receipt-wrap" id="rcp-workspace">
+    <div class="receipt-workspace">
+
+      <!-- Left form -->
+      <div class="rcp-form-panel">
+
+        <!-- NEW REGISTRATION -->
+        <div id="rcp-form-new">
+          <div class="form-group" style="margin-bottom:13px;">
+            <label>Client Name *</label>
+            <input type="text" id="rn-name" placeholder="e.g. Fatima Al-Hassan">
+          </div>
+          <div class="form-group" style="margin-bottom:13px;">
+            <label>Client Email</label>
+            <input type="email" id="rn-email" placeholder="client@email.com">
+          </div>
+          <div class="form-group" style="margin-bottom:13px;">
+            <label>Package *</label>
+            <select id="rn-package" onchange="rcpOnPackageChange()">
+              <option value="">— Select package —</option>
+              <option value="August Umrah 2026">August Umrah 2026</option>
+              <option value="November Umrah 2026">November Umrah 2026</option>
+              <option value="December Umrah 2026">December Umrah 2026</option>
+              <option value="Hajj 2027">Hajj 2027</option>
+              <option value="Other">Other (specify below)</option>
+            </select>
+          </div>
+          <div id="rn-custom-wrap" style="display:none;margin-bottom:13px;">
+            <label>Custom Package / Description</label>
+            <input type="text" id="rn-custom" placeholder="e.g. Private Umrah Group">
+          </div>
+          <div class="form-group" style="margin-bottom:13px;">
+            <label>Currency</label>
+            <select id="rn-currency" onchange="rcpUpdatePreview()">
+              <option value="CAD">CAD — Canadian Dollar</option>
+              <option value="NGN">NGN — Nigerian Naira (₦)</option>
+              <option value="GBP">GBP — British Pound (£)</option>
+              <option value="USD">USD — US Dollar ($)</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom:13px;">
+            <label>Total Package Amount *</label>
+            <input type="number" id="rn-total" placeholder="0.00" min="0" step="0.01" oninput="rcpUpdatePreview()">
+          </div>
+          <div class="form-group" style="margin-bottom:13px;">
+            <label>Date of Payment</label>
+            <input type="date" id="rn-date">
+          </div>
+          <div class="form-group" style="margin-bottom:13px;">
+            <label>Amount Paid Now</label>
+            <input type="number" id="rn-paid" placeholder="0.00" min="0" step="0.01" oninput="rcpUpdatePreview()">
+          </div>
+          <div class="form-group" style="margin-bottom:13px;">
+            <label>Payment Note <span style="font-weight:400;color:#9ca3af;">(optional)</span></label>
+            <input type="text" id="rn-note" placeholder="e.g. Initial deposit">
+          </div>
+          <div style="margin-bottom:16px;">
+            <label>Balance Remaining</label>
+            <div class="rcp-balance-display" id="rn-balance">—</div>
+          </div>
+          <button class="btn-rcp btn-rcp-navy" onclick="rcpSaveNew()">Save &amp; Issue Receipt</button>
+          <button class="btn-rcp btn-rcp-gold" onclick="rcpSendEmail()">✉ Send to Client</button>
+          <button class="btn-rcp btn-rcp-grey" onclick="window.print()">⬇ Download PDF</button>
+          <div class="rcp-status" id="rn-status"></div>
+        </div>
+
+        <!-- ADD PAYMENT -->
+        <div id="rcp-form-add" style="display:none;">
+          <div style="margin-bottom:13px;">
+            <label>Search Client</label>
+            <div class="rcp-search-wrap">
+              <input type="text" id="ra-search" placeholder="Type name or receipt number…" oninput="rcpSearch(this.value)" autocomplete="off">
+              <div class="rcp-search-results" id="ra-results"></div>
+            </div>
+          </div>
+          <div id="ra-client-card" style="display:none;">
+            <div class="rcp-client-card" id="ra-client-info">
+              <button class="cc-clear" onclick="rcpClearClient()">✕</button>
+              <div class="cc-name" id="ra-cc-name">—</div>
+              <div class="cc-meta" id="ra-cc-meta">—</div>
+            </div>
+            <label>Date of Payment</label>
+            <input type="date" id="ra-date" style="margin-bottom:13px;">
+            <label>Amount Paid Now</label>
+            <input type="number" id="ra-paid" placeholder="0.00" min="0" step="0.01" oninput="rcpUpdateAddPreview()" style="margin-bottom:13px;">
+            <label>Payment Note <span style="font-weight:400;color:#9ca3af;">(optional)</span></label>
+            <input type="text" id="ra-note" placeholder="e.g. Second instalment" style="margin-bottom:13px;">
+            <div style="margin-bottom:16px;">
+              <label>Balance After This Payment</label>
+              <div class="rcp-balance-display" id="ra-balance">—</div>
+            </div>
+            <button class="btn-rcp btn-rcp-navy" style="background:#16a34a;" onclick="rcpAddPayment()">Add Payment &amp; Issue Receipt</button>
+            <button class="btn-rcp btn-rcp-gold" onclick="rcpSendEmail()">✉ Send to Client</button>
+            <button class="btn-rcp btn-rcp-grey" onclick="window.print()">⬇ Download PDF</button>
+            <div class="rcp-status" id="ra-status"></div>
+          </div>
+          <div id="ra-no-client" style="text-align:center;padding:30px 0;color:#9ca3af;font-size:.875rem;">
+            Search for a client above to load their record.
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Receipt Preview -->
+      <div class="rcp-preview-panel">
+        <div class="rcp-preview-toolbar">
+          Receipt Preview &nbsp;·&nbsp; <strong id="rcp-preview-num">—</strong>
+        </div>
+        <div id="rcp-receipt-preview">
+          <div class="rcp-receipt-header">
+            <div class="rcp-receipt-brand">
+              <img src="images/deen..png" alt="Deen Voyage" style="height:46px;">
+              <h2>Deen Voyage</h2>
+              <p>Calgary, Alberta, Canada<br>hello@deenvoyage.com<br>www.deenvoyage.com</p>
+            </div>
+            <div class="rcp-receipt-title">
+              <h3>Receipt</h3>
+              <div class="rcp-receipt-num"  id="rv-number">Receipt #: —</div>
+              <div class="rcp-receipt-date" id="rv-date">Date: —</div>
+            </div>
+          </div>
+          <div class="rcp-issued-to">
+            <div class="label">Issued To</div>
+            <div class="value" id="rv-name">—</div>
+            <div class="sub" id="rv-email"></div>
+          </div>
+          <table class="rcp-payments-table">
+            <thead><tr><th style="width:55%">Description</th><th>Date</th><th>Amount</th></tr></thead>
+            <tbody id="rv-payments-body">
+              <tr><td colspan="3" style="color:#9ca3af;text-align:center;padding:20px;">Fill in the form to preview.</td></tr>
+            </tbody>
+          </table>
+          <div class="rcp-totals">
+            <table>
+              <tr><td>Total Package</td><td id="rv-pkg-total">—</td></tr>
+              <tr><td style="color:#16a34a;">Total Paid</td><td id="rv-total-paid" style="color:#16a34a;">—</td></tr>
+              <tr class="sep"><td></td><td></td></tr>
+              <tr class="bal-row" id="rv-bal-row">
+                <td>Balance Due <span class="rcp-badge" id="rv-badge"></span></td>
+                <td id="rv-balance">—</td>
+              </tr>
+            </table>
+          </div>
+          <div class="rcp-receipt-footer">
+            <div class="note">This receipt is issued by Deen Voyage as confirmation of payment received. For queries contact hello@deenvoyage.com</div>
+            <div class="brand-mark">Deen Voyage<span>Travel with Value</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- All Registrations list -->
+  <div class="rcp-regs-wrap" id="rcp-list" style="display:none;">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding-top:16px;margin-bottom:4px;">
+      <h2 style="margin:0;font-size:1rem;font-weight:700;color:var(--primary);">All Registrations</h2>
+      <button class="btn-add-lead btn-sm" onclick="rcpSwitchMode('new')">+ New Registration</button>
+    </div>
+    <div class="rcp-filters">
+      <input type="text" id="rcp-reg-search" placeholder="Search name or receipt #…" oninput="rcpRenderRegs()">
+      <select id="rcp-reg-pkg" onchange="rcpRenderRegs()">
+        <option value="">All Packages</option>
+        <option>August Umrah 2026</option>
+        <option>November Umrah 2026</option>
+        <option>December Umrah 2026</option>
+        <option>Hajj 2027</option>
+        <option>Other</option>
+      </select>
+      <select id="rcp-reg-status" onchange="rcpRenderRegs()">
+        <option value="">All Statuses</option>
+        <option value="owing">Balance Owing</option>
+        <option value="paid">Paid in Full</option>
+      </select>
+    </div>
+    <div class="rcp-reg-table-wrap">
+    <table class="rcp-reg-table">
+      <thead>
+        <tr>
+          <th>Receipt #</th><th>Client</th><th>Package</th>
+          <th>Total</th><th>Paid</th><th>Balance</th><th>Status</th><th></th>
+        </tr>
+      </thead>
+      <tbody id="rcp-reg-tbody">
+        <tr><td colspan="8" style="text-align:center;padding:30px;color:#9ca3af;">Loading…</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+</div><!-- /tab-receipts -->
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB 3 — STAFF (admin only)
+══════════════════════════════════════════════════════════ -->
+<div class="tab-section" id="tab-staff">
+  <div class="staff-wrap">
+    <div class="staff-header">
+      <h2>Staff Members</h2>
+      <button class="btn-add-lead" id="btn-add-agent">＋ Add Agent</button>
+    </div>
+    <div class="staff-table-wrap">
+    <table class="staff-table">
+      <thead>
+        <tr><th>Name</th><th>Email</th><th>Role</th><th>Added</th><th></th></tr>
+      </thead>
+      <tbody id="staff-body">
+        <tr><td colspan="5" style="text-align:center;padding:30px;color:#9ca3af;">Loading…</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:.78rem;color:#9ca3af;margin-top:12px;">
+      New agents receive a password-setup email automatically. They sign in at <strong>crm-login.html</strong>.
+    </p>
+  </div>
+</div>
+
+<!-- ══ ADD LEAD MODAL ═══════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-add-lead">
+  <div class="modal-box modal-lg">
+    <div class="modal-header">
+      <h3>Add New Lead</h3>
+      <button class="modal-close" data-close="modal-add-lead">✕</button>
+    </div>
+    <div class="modal-body">
+      <form class="crm-form" id="add-lead-form">
+        <div class="form-section-title">Personal Information</div>
+        <div class="form-row">
+          <div class="form-group"><label>First Name *</label><input type="text" name="firstName" required></div>
+          <div class="form-group"><label>Last Name *</label><input type="text" name="lastName" required></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Email</label><input type="email" name="email"></div>
+          <div class="form-group"><label>Phone *</label><input type="tel" name="phone" required></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>WhatsApp (if different)</label><input type="tel" name="whatsapp"></div>
+          <div class="form-group"><label>Country</label>
+            <select name="country">
+              <option value="CA">Canada</option><option value="NG">Nigeria</option>
+              <option value="UK">United Kingdom</option><option value="US">United States</option>
+              <option value="OTHER">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-section-title">Travel Details</div>
+        <div class="form-row">
+          <div class="form-group"><label>Travel Type *</label>
+            <select name="travelType">
+              <option value="">Select…</option>
+              <option value="hajj">🕌 Hajj</option><option value="umrah">🕋 Umrah</option>
+              <option value="ramadan">🌙 Ramadan Umrah</option><option value="december">📅 December Umrah</option>
+              <option value="vacation">✈️ Islamic Vacation</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Travel Month</label><input type="month" name="travelMonth"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Room Type</label>
+            <select name="roomType">
+              <option value="">Not specified</option>
+              <option value="quad">Quad (4 persons)</option><option value="triple">Triple (3 persons)</option>
+              <option value="double">Double (2 persons)</option><option value="single">Single (1 person)</option>
+            </select>
+          </div>
+          <div class="form-group"><label>No. of Travelers</label><input type="number" name="travelersCount" min="1" value="1"></div>
+        </div>
+        <div class="form-group"><label>Package / Programme</label><input type="text" name="packagePreference" placeholder="Economy, Standard, Premium…"></div>
+        <div class="form-section-title">Passport</div>
+        <div class="form-row">
+          <div class="form-group"><label>Passport Type</label>
+            <select name="passportType">
+              <option value="">Not provided</option><option value="canadian">Canadian</option>
+              <option value="nigerian">Nigerian</option><option value="british">British</option><option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Passport Number</label><input type="text" name="passportNumber"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Passport Expiry</label><input type="date" name="passportExpiry"></div>
+          <div class="form-group"><label>Country of Issue</label><input type="text" name="passportCountry"></div>
+        </div>
+        <div class="form-section-title">Status &amp; Assignment</div>
+        <div class="form-row">
+          <div class="form-group"><label>Status *</label>
+            <select name="status" required>
+              <option value="new">New Lead</option><option value="in_discussion">In Discussion</option>
+              <option value="deposit_paid">Deposit Paid</option><option value="paid_full">Paid Full</option>
+              <option value="will_pay">Will Pay</option><option value="follow_up">Needs Follow-up</option>
+              <option value="competitor">Gone to Competitor</option><option value="diy">DIY</option>
+              <option value="cancelled">Cancelled</option>
+              <option value="refund">Refund</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Follow-up Date</label><input type="date" name="followUpDate"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Source</label>
+            <select name="source">
+              <option value="website">Website Form</option><option value="whatsapp">WhatsApp</option>
+              <option value="phone">Phone Call</option><option value="referral">Referral</option>
+              <option value="social">Social Media</option><option value="walk_in">Walk-in</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Assigned Agent</label>
+            <select name="assignedTo" id="add-agent-select"><option value="">Unassigned</option></select>
+          </div>
+        </div>
+        <div class="form-section-title">Financials</div>
+        <div class="form-row">
+          <div class="form-group"><label>Currency</label>
+            <select name="currency">
+              <option value="CAD">CAD ($)</option><option value="NGN">NGN (₦)</option><option value="GBP">GBP (£)</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Quoted Price</label><input type="number" name="quotedPrice" min="0" placeholder="0"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Amount Paid</label><input type="number" name="totalPaid" min="0" placeholder="0"></div>
+          <div class="form-group"><label>Payment Due Date</label><input type="date" name="paymentDueDate"></div>
+        </div>
+        <div class="form-section-title">Notes</div>
+        <div class="form-group"><textarea name="notes" placeholder="Any notes about this lead…"></textarea></div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <div id="lead-save-error" style="color:#dc2626;font-size:.8rem;flex:1;display:none;"></div>
+      <button class="btn-secondary-crm" data-close="modal-add-lead">Cancel</button>
+      <button class="btn-primary-crm" id="save-lead-btn">Save Lead</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ QUICK STATUS MODAL ═══════════════════════════════════ -->
+<div class="modal-overlay" id="modal-status">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Update Status</h3>
+      <button class="modal-close" data-close="modal-status">✕</button>
+    </div>
+    <div class="modal-body">
+      <form class="crm-form">
+        <input type="hidden" id="status-lead-id">
+        <div class="form-group"><label>New Status</label>
+          <select id="status-select">
+            <option value="new">New Lead</option><option value="in_discussion">In Discussion</option>
+            <option value="deposit_paid">Deposit Paid</option><option value="paid_full">Paid Full</option>
+            <option value="will_pay">Will Pay</option><option value="follow_up">Needs Follow-up</option>
+            <option value="competitor">Gone to Competitor</option><option value="diy">DIY</option>
+            <option value="cancelled">Cancelled</option><option value="completed">Completed ✈️</option>
+            <option value="refund">Refund</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Follow-up / Payment Date</label>
+          <input type="date" id="status-followup-date">
+        </div>
+        <div class="form-group">
+          <label>Note (optional)</label>
+          <textarea id="status-note" rows="3" placeholder="Reason for status change…"></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary-crm" data-close="modal-status">Cancel</button>
+      <button class="btn-primary-crm" id="save-status-btn">Update</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ADD AGENT MODAL ══════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-add-agent">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Add Agent</h3>
+      <button class="modal-close" data-close="modal-add-agent">✕</button>
+    </div>
+    <div class="modal-body">
+      <form class="crm-form" id="add-agent-form">
+        <div class="form-group"><label>Full Name *</label><input type="text" id="ag-name" required placeholder="Agent's full name"></div>
+        <div class="form-group"><label>Email Address *</label><input type="email" id="ag-email" required placeholder="agent@email.com"></div>
+        <div class="form-group"><label>Role</label>
+          <select id="ag-role">
+            <option value="agent">Agent</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+        <p style="font-size:.78rem;color:#6b7280;margin:8px 0 0;">
+          A temporary account will be created and a <strong>password setup email</strong> will be sent to the agent automatically.
+        </p>
+        <div class="rcp-status" id="ag-status" style="margin-top:10px;"></div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary-crm" data-close="modal-add-agent">Cancel</button>
+      <button class="btn-primary-crm" id="save-agent-btn">Create Account</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="js/crm.js"></script>
+</body>
+</html>

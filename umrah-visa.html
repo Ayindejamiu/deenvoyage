@@ -1,0 +1,1076 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="author" content="Deen Voyage" />
+  <link rel="shortcut icon" href="favicon.png" />
+  <meta name="description" content="Apply for your Umrah Visa with Deen Voyage. Fast, guided visa processing for all eligible passport holders." />
+  <meta name="keywords" content="Umrah visa, Saudi Arabia visa, Deen Voyage, Umrah application, Nigeria Umrah visa" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Source+Serif+Pro:wght@400;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/aos.css" />
+
+  <script>
+    // Resend OTP server endpoint
+    var SEND_OTP_ENDPOINT = window.DEENVOYAGE_SERVER || 'https://deenvoyage-email-server.onrender.com';
+  </script>
+
+  <title>Umrah Visa Application | Deen Voyage</title>
+
+  <!-- Google tag -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QY6WP2QBQY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-QY6WP2QBQY');
+  </script>
+
+  <style>
+    /* ── Shell ── */
+    .visa-shell {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 48px 16px 80px;
+    }
+
+    /* ── Verification screen ── */
+    #verify-screen {
+      background: #fff;
+      border: 1px solid #e4eaf2;
+      border-radius: 16px;
+      padding: 40px 36px;
+      box-shadow: 0 6px 28px rgba(10,61,98,.08);
+      text-align: center;
+    }
+    #verify-screen .lock-icon { font-size: 3.2rem; margin-bottom: 16px; }
+    #verify-screen h2 {
+      font-family: 'Source Serif Pro', serif;
+      font-size: 1.6rem;
+      color: #0a3d62;
+      margin-bottom: 8px;
+    }
+    #verify-screen p { color: #667085; font-size: .9rem; margin-bottom: 28px; line-height: 1.6; }
+
+    .verify-input {
+      width: 100%;
+      border: 1.5px solid #dce4ee;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 1rem;
+      color: #1d2939;
+      font-family: 'Inter', sans-serif;
+      text-align: center;
+      transition: border-color .2s, box-shadow .2s;
+      margin-bottom: 12px;
+    }
+    .verify-input:focus { outline: none; border-color: #0a3d62; box-shadow: 0 0 0 3px rgba(10,61,98,.1); }
+
+    /* OTP digit boxes */
+    .otp-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+    .otp-box {
+      width: 48px;
+      height: 56px;
+      border: 1.5px solid #dce4ee;
+      border-radius: 10px;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #0a3d62;
+      text-align: center;
+      font-family: 'Inter', sans-serif;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .otp-box:focus { outline: none; border-color: #0a3d62; box-shadow: 0 0 0 3px rgba(10,61,98,.12); }
+    @media (max-width: 400px) { .otp-box { width: 40px; height: 48px; font-size: 1.3rem; } }
+
+    .verify-btn {
+      width: 100%;
+      padding: 13px;
+      background: linear-gradient(135deg, #0a3d62 0%, #1e5a82 100%);
+      color: #fff;
+      font-weight: 700;
+      font-size: .97rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: all .2s;
+      margin-top: 4px;
+    }
+    .verify-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(10,61,98,.22); }
+    .verify-btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+
+    .resend-row { margin-top: 14px; font-size: .83rem; color: #667085; }
+    .resend-row a { color: #0a3d62; font-weight: 700; cursor: pointer; text-decoration: underline; }
+    .resend-row a.disabled { color: #aaa; pointer-events: none; }
+    .countdown { font-weight: 700; color: #e8302a; }
+
+    #otp-step { display: none; }
+
+    .verified-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ecfdf3;
+      color: #1f8a4c;
+      border: 1px solid #abefc6;
+      border-radius: 999px;
+      padding: 4px 14px;
+      font-size: .8rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    /* ── Section cards ── */
+    .form-section {
+      background: #fff;
+      border: 1px solid #e4eaf2;
+      border-radius: 14px;
+      padding: 28px 32px;
+      margin-bottom: 22px;
+      box-shadow: 0 4px 18px rgba(10,61,98,.06);
+    }
+    .form-section h3 {
+      font-family: 'Source Serif Pro', serif;
+      font-size: 1.1rem;
+      color: #0a3d62;
+      font-weight: 700;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #f0f5fb;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* ── Fields ── */
+    .field-group { margin-bottom: 16px; }
+    .field-group label {
+      display: block;
+      font-size: .82rem;
+      font-weight: 700;
+      color: #444;
+      margin-bottom: 6px;
+    }
+    .field-group label .req { color: #e8302a; margin-left: 2px; }
+    .field-group label .opt { color: #888; font-weight: 400; font-size: .78rem; margin-left: 4px; }
+    .field-group input,
+    .field-group select {
+      width: 100%;
+      border: 1.5px solid #dce4ee;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: .95rem;
+      color: #1d2939;
+      background: #fff;
+      font-family: 'Inter', sans-serif;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .field-group input:focus,
+    .field-group select:focus { outline: none; border-color: #0a3d62; box-shadow: 0 0 0 3px rgba(10,61,98,.1); }
+    .field-group input:disabled { background: #f8f9fb; color: #667085; cursor: not-allowed; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 560px) { .field-row { grid-template-columns: 1fr; } }
+
+    /* ── Nigeria visa box ── */
+    #nigeria-visa-section {
+      display: none;
+      background: #f0f6ff;
+      border: 1.5px solid #c3d8f5;
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-top: 14px;
+    }
+    .nv-label { font-weight: 700; color: #0a3d62; font-size: .87rem; margin-bottom: 12px; }
+    .visa-check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    @media (max-width: 480px) { .visa-check-grid { grid-template-columns: 1fr; } }
+    .visa-check-item {
+      display: flex; align-items: center; gap: 9px;
+      background: #fff; border: 1.5px solid #dce4ee;
+      border-radius: 8px; padding: 9px 12px; cursor: pointer; transition: border-color .18s;
+    }
+    .visa-check-item:has(input:checked) { border-color: #0a3d62; background: #eef5fb; }
+    .visa-check-item input[type="radio"] { accent-color: #0a3d62; width: 15px; height: 15px; flex-shrink: 0; }
+    .visa-check-item span { font-size: .86rem; font-weight: 600; color: #1d2939; }
+    .info-note {
+      background: #fff8ef; border-left: 4px solid #F59C3B;
+      border-radius: 0 8px 8px 0; padding: 10px 14px;
+      font-size: .8rem; color: #555; line-height: 1.6; margin-top: 12px;
+    }
+    .info-note strong { color: #0a3d62; }
+
+    /* ── Upload zones ── */
+    .upload-zone {
+      border: 2px dashed #c3d8f5; border-radius: 12px;
+      padding: 22px 18px; text-align: center; cursor: pointer;
+      transition: border-color .2s, background .2s;
+      position: relative; background: #f8fbff;
+    }
+    .upload-zone:hover, .upload-zone.drag-over { border-color: #0a3d62; background: #eef5fb; }
+    .upload-zone.optional-zone { border-color: #d5e3f2; background: #fafcff; }
+    .upload-zone input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+    .upload-icon { font-size: 1.8rem; margin-bottom: 6px; }
+    .upload-zone p { margin: 0; font-size: .82rem; color: #667085; line-height: 1.5; }
+    .upload-zone strong { color: #0a3d62; font-size: .88rem; }
+
+    .file-preview {
+      display: none; margin-top: 10px; align-items: center; gap: 12px;
+      background: #fff; border: 1.5px solid #c3d8f5;
+      border-radius: 10px; padding: 10px 14px; text-align: left;
+    }
+    .file-preview.show { display: flex; }
+    .file-preview img { width: 44px; height: 44px; object-fit: cover; border-radius: 6px; }
+    .file-preview .file-icon { font-size: 1.8rem; line-height: 1; }
+    .file-preview .file-info { flex: 1; min-width: 0; }
+    .file-preview .file-name { font-size: .83rem; font-weight: 700; color: #0a3d62; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .file-preview .file-size { font-size: .73rem; color: #888; }
+    .file-preview .remove-file { font-size: 1.1rem; cursor: pointer; color: #e8302a; background: none; border: none; padding: 0 2px; flex-shrink: 0; }
+
+    .upload-progress { height: 3px; background: #e0e0e0; border-radius: 4px; margin-top: 6px; display: none; }
+    .upload-progress .bar { height: 100%; background: #0a3d62; border-radius: 4px; transition: width .3s; width: 0%; }
+
+    /* ── Package badge ── */
+    .pkg-badge-row {
+      display: flex; align-items: center; gap: 12px;
+      background: #f0f6ff; border: 1.5px solid #c3d8f5;
+      border-radius: 10px; padding: 14px 18px;
+    }
+    .pkg-badge-row .pkg-icon { font-size: 1.5rem; }
+    .pkg-badge-row .pkg-info strong { display: block; color: #0a3d62; font-size: .93rem; }
+    .pkg-badge-row .pkg-info small { color: #667085; font-size: .78rem; }
+    .pkg-badge-row .pkg-check { margin-left: auto; color: #1f8a4c; font-size: 1.2rem; font-weight: 700; }
+
+    /* ── Submit ── */
+    .submit-btn {
+      width: 100%; padding: 14px;
+      background: linear-gradient(135deg, #0a3d62 0%, #1e5a82 100%);
+      color: #fff; font-weight: 700; font-size: 1rem;
+      border: none; border-radius: 12px; cursor: pointer;
+      font-family: 'Inter', sans-serif; transition: all .2s;
+    }
+    .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(10,61,98,.25); }
+    .submit-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+    /* ── Status ── */
+    .status-msg { display: none; border-radius: 10px; padding: 11px 16px; font-size: .88rem; margin-bottom: 14px; border: 1px solid transparent; }
+    .status-msg.show { display: block; }
+    .status-msg.error  { background: #fef3f2; color: #912018; border-color: #fecdca; }
+    .status-msg.info   { background: #eff8ff; color: #175cd3; border-color: #b2d4f7; }
+    .status-msg.verify-err { background: #fef3f2; color: #912018; border-color: #fecdca; margin-top: 12px; }
+
+    /* ── Success ── */
+    #success-screen {
+      display: none; text-align: center; background: #fff;
+      border-radius: 16px; padding: 48px 32px;
+      box-shadow: 0 4px 24px rgba(10,61,98,.1);
+    }
+    #success-screen .success-icon { font-size: 3.8rem; margin-bottom: 16px; }
+    #success-screen h2 { font-family: 'Source Serif Pro', serif; color: #0a3d62; font-size: 1.75rem; margin-bottom: 12px; }
+    #success-screen p { color: #555; font-size: .93rem; line-height: 1.7; }
+    #success-screen .ref-box {
+      background: #f0f6ff; border-radius: 10px; padding: 14px 24px;
+      display: inline-block; margin: 20px 0;
+      font-family: monospace; font-size: 1.4rem;
+      font-weight: 700; color: #0a3d62; letter-spacing: .08em;
+    }
+
+    /* ── Hero ── */
+    .visa-hero {
+      background: linear-gradient(rgba(10,61,98,0.83), rgba(10,61,98,0.73)), url('images/dubai.png') center center/cover no-repeat;
+      padding: 76px 0 56px; text-align: center; color: #fff;
+    }
+    .visa-hero h1 { font-family: 'Source Serif Pro', serif; font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; }
+    .visa-hero p  { font-size: 1rem; opacity: .88; max-width: 500px; margin: 0 auto; }
+    @media (max-width: 600px) { .visa-hero h1 { font-size: 1.8rem; } }
+
+    /* ── Divider ── */
+    .section-divider { border: none; border-top: 1px solid #eef2f8; margin: 6px 0 20px; }
+  </style>
+</head>
+
+<body>
+
+  <div class="site-mobile-menu site-navbar-target">
+    <div class="site-mobile-menu-header">
+      <div class="site-mobile-menu-close"><span class="icofont-close js-menu-toggle"></span></div>
+    </div>
+    <div class="site-mobile-menu-body"></div>
+  </div>
+
+  <nav class="site-nav">
+    <div class="container">
+      <div class="site-navigation">
+        <a href="/" class="logo m-0"><img src="images/deen..png" alt="Deen Voyage Logo" /></a>
+        <ul class="js-clone-nav d-none d-lg-inline-block text-left site-menu float-right">
+          <li><a href="/">Home</a></li>
+          <li class="has-children">
+            <a href="#">Services</a>
+            <ul class="dropdown">
+              <li><a href="/hajj">Hajj</a></li>
+              <li><a href="/umrah">Umrah</a></li>
+              <li><a href="/ramadan">Ramadan</a></li>
+              <li><a href="/novumrah">November</a></li>
+              <li><a href="/decumrah">December</a></li>
+              <li><a href="#">Vacations</a></li>
+            </ul>
+          </li>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/register">Register</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/contact">Contact Us</a></li>
+        </ul>
+        <a href="#" class="burger ml-auto float-right site-menu-toggle js-menu-toggle d-inline-block d-lg-none light"><span></span></a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <div class="visa-hero">
+    <div data-aos="fade-up">
+      <h1>🕋 Umrah Visa Application</h1>
+      <p>Apply for your Umrah Visa through Deen Voyage — we guide you every step of the way.</p>
+    </div>
+  </div>
+
+  <div class="visa-shell">
+
+    <!-- ══ STEP 1: Email Verification ══ -->
+    <div id="verify-screen" data-aos="fade-up">
+      <div class="lock-icon">✉️</div>
+      <h2>Verify Your Email First</h2>
+      <p>Enter your email address. We'll send you a 6-digit verification code before you can begin your application.</p>
+
+      <!-- Email entry step -->
+      <div id="email-step">
+        <input type="email" id="verify-email" class="verify-input" placeholder="your@email.com" autocomplete="email" />
+        <div class="status-msg verify-err" id="email-err"></div>
+        <button type="button" class="verify-btn" id="send-code-btn" onclick="sendOTP()">Send Verification Code</button>
+      </div>
+
+      <!-- OTP entry step -->
+      <div id="otp-step">
+        <p style="font-size:.85rem;color:#0a3d62;font-weight:600;margin-bottom:14px;">
+          Code sent to <span id="otp-sent-to" style="font-weight:700;"></span>
+        </p>
+        <div class="otp-row">
+          <input type="text" maxlength="1" class="otp-box" id="otp0" oninput="otpInput(this,0)" onkeydown="otpBack(event,0)" />
+          <input type="text" maxlength="1" class="otp-box" id="otp1" oninput="otpInput(this,1)" onkeydown="otpBack(event,1)" />
+          <input type="text" maxlength="1" class="otp-box" id="otp2" oninput="otpInput(this,2)" onkeydown="otpBack(event,2)" />
+          <input type="text" maxlength="1" class="otp-box" id="otp3" oninput="otpInput(this,3)" onkeydown="otpBack(event,3)" />
+          <input type="text" maxlength="1" class="otp-box" id="otp4" oninput="otpInput(this,4)" onkeydown="otpBack(event,4)" />
+          <input type="text" maxlength="1" class="otp-box" id="otp5" oninput="otpInput(this,5)" onkeydown="otpBack(event,5)" />
+        </div>
+        <div class="status-msg verify-err" id="otp-err"></div>
+        <button type="button" class="verify-btn" id="verify-btn" onclick="verifyOTP()">Verify &amp; Continue</button>
+        <div class="resend-row">
+          Didn't receive it?
+          <a id="resend-link" class="disabled" onclick="sendOTP()">Resend code</a>
+          <span id="countdown-wrap"> in <span class="countdown" id="countdown">60</span>s</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ STEP 2: Application Form (hidden until verified) ══ -->
+    <div id="application-form-wrap" style="display:none;">
+
+      <!-- Success screen (shown after submit) -->
+      <div id="success-screen">
+        <div class="success-icon">✅</div>
+        <h2>Application Submitted!</h2>
+        <p>Your Umrah Visa application has been received. Our team will review your documents and contact you within <strong>24–48 hours</strong>.</p>
+        <div class="ref-box" id="ref-number">DVV-000000</div>
+        <p style="font-size:.8rem;color:#888;">Keep this reference number for your records.</p>
+        <a href="/register" class="btn btn-primary mt-3" style="border-radius:999px;padding:12px 32px;">Register for a Package</a>
+      </div>
+
+      <form id="visa-form">
+
+        <!-- Package -->
+        <div class="form-section">
+          <h3>📦 Package</h3>
+          <div class="pkg-badge-row">
+            <div class="pkg-icon">🛂</div>
+            <div class="pkg-info">
+              <strong>Umrah Visa Only</strong>
+              <small>Document processing &amp; visa submission — Deen Voyage handles the rest</small>
+            </div>
+            <div class="pkg-check">✓</div>
+          </div>
+        </div>
+
+        <!-- Personal Information -->
+        <div class="form-section">
+          <h3>👤 Personal Information</h3>
+          <div class="field-row">
+            <div class="field-group">
+              <label for="v_fname">First Name <span class="req">*</span></label>
+              <input type="text" id="v_fname" placeholder="e.g. Amina" required />
+            </div>
+            <div class="field-group">
+              <label for="v_lname">Surname <span class="req">*</span></label>
+              <input type="text" id="v_lname" placeholder="e.g. Yusuf" required />
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field-group">
+              <label for="v_email">Email Address <span class="req">*</span></label>
+              <input type="email" id="v_email" disabled />
+            </div>
+            <div class="field-group">
+              <label for="v_phone">Phone / WhatsApp <span class="req">*</span></label>
+              <input type="tel" id="v_phone" placeholder="+1 403 000 0000" required />
+            </div>
+          </div>
+          <div class="verified-badge">✔ Email verified</div>
+        </div>
+
+        <!-- Passport -->
+        <div class="form-section">
+          <h3>🛂 Passport Information</h3>
+          <div class="field-group">
+            <label for="v_passport">Passport Country <span class="req">*</span></label>
+            <select id="v_passport" required onchange="handlePassportChange()">
+              <option value="">— Select your passport country —</option>
+              <option value="Nigeria">🇳🇬 Nigeria</option>
+              <optgroup label="──────────────────">
+                <option>Albania</option>
+                <option>Andorra</option>
+                <option>Australia</option>
+                <option>Austria</option>
+                <option>Azerbaijan</option>
+                <option>Bahamas</option>
+                <option>Barbados</option>
+                <option>Belgium</option>
+                <option>Brunei</option>
+                <option>Bulgaria</option>
+                <option>Canada</option>
+                <option>China</option>
+                <option>Croatia</option>
+                <option>Cyprus</option>
+                <option>Czech Republic</option>
+                <option>Denmark</option>
+                <option>Estonia</option>
+                <option>Finland</option>
+                <option>France</option>
+                <option>Georgia</option>
+                <option>Germany</option>
+                <option>Greece</option>
+                <option>Grenada</option>
+                <option>Hong Kong China</option>
+                <option>Hungary</option>
+                <option>Iceland</option>
+                <option>Ireland</option>
+                <option>Italy</option>
+                <option>Japan</option>
+                <option>Kazakhstan</option>
+                <option>Korea, South</option>
+                <option>Kyrgyzstan</option>
+                <option>Latvia</option>
+                <option>Liechtenstein</option>
+                <option>Lithuania</option>
+                <option>Luxembourg</option>
+                <option>Malaysia</option>
+                <option>Malta</option>
+                <option>Mauritius</option>
+                <option>Monaco</option>
+                <option>Montenegro</option>
+                <option>Netherlands</option>
+                <option>New Zealand</option>
+                <option>North Macedonia</option>
+                <option>Norway</option>
+                <option>Palau</option>
+                <option>Poland</option>
+                <option>Portugal</option>
+                <option>Romania</option>
+                <option>Russia</option>
+                <option>San Marino</option>
+                <option>Seychelles</option>
+                <option>Singapore</option>
+                <option>Slovak Republic</option>
+                <option>Slovenia</option>
+                <option>South Africa</option>
+                <option>Spain</option>
+                <option>Sweden</option>
+                <option>Switzerland</option>
+                <option>Taiwan China</option>
+                <option>Tajikistan</option>
+                <option>Thailand</option>
+                <option>Turkey</option>
+                <option>Ukraine</option>
+                <option>United Kingdom</option>
+                <option>United States</option>
+                <option>Uzbekistan</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <!-- Nigeria only: valid visa question -->
+          <div id="nigeria-visa-section">
+            <div class="nv-label">🇸🇦 Which valid visa do you currently hold? <span class="req">*</span></div>
+            <div class="visa-check-grid">
+              <label class="visa-check-item">
+                <input type="radio" name="ng_visa" value="Schengen" />
+                <span>🇪🇺 Schengen</span>
+              </label>
+              <label class="visa-check-item">
+                <input type="radio" name="ng_visa" value="United Kingdom" />
+                <span>🇬🇧 United Kingdom</span>
+              </label>
+              <label class="visa-check-item">
+                <input type="radio" name="ng_visa" value="Canada" />
+                <span>🇨🇦 Canada</span>
+              </label>
+              <label class="visa-check-item">
+                <input type="radio" name="ng_visa" value="United States" />
+                <span>🇺🇸 United States</span>
+              </label>
+              <label class="visa-check-item">
+                <input type="radio" name="ng_visa" value="Saudi Arabia - Past Umrah/Hajj Visa" />
+                <span>🕋 Past Saudi Visa (Umrah / Hajj)</span>
+              </label>
+              <label class="visa-check-item">
+                <input type="radio" name="ng_visa" value="Other" />
+                <span>🌍 Other</span>
+              </label>
+            </div>
+            <div class="info-note">
+              <strong>Note:</strong> Nigerian passport holders require a valid visa from one of the above countries, or a previous Saudi Umrah/Hajj visa, to be eligible for Umrah visa processing.
+            </div>
+          </div>
+        </div>
+
+        <!-- Document Uploads -->
+        <div class="form-section">
+          <h3>📎 Document Uploads</h3>
+
+          <!-- Passport -->
+          <div class="field-group">
+            <label>Passport — biographical data page <span class="req">*</span></label>
+            <div class="upload-zone" onclick="document.getElementById('file-passport').click()">
+              <input type="file" id="file-passport" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile(this,'passport')" />
+              <div class="upload-icon">🛂</div>
+              <strong>Click or drag to upload</strong>
+              <p>PDF, JPG or PNG &nbsp;·&nbsp; Max 5 MB</p>
+            </div>
+            <div class="upload-progress" id="prog-passport"><div class="bar" id="bar-passport"></div></div>
+            <div class="file-preview" id="prev-passport">
+              <div class="file-icon">📄</div>
+              <div class="file-info">
+                <div class="file-name" id="prev-passport-name"></div>
+                <div class="file-size" id="prev-passport-size"></div>
+              </div>
+              <button type="button" class="remove-file" onclick="removeFile('passport')">✕</button>
+            </div>
+          </div>
+
+          <!-- Visit Visa / Resident Permit / Saudi Visa -->
+          <div class="field-group" style="margin-top:4px;">
+            <label>Visit Visa / Resident Permit / Saudi Visa <span class="req">*</span></label>
+            <div class="upload-zone" onclick="document.getElementById('file-visadoc').click()">
+              <input type="file" id="file-visadoc" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile(this,'visadoc')" />
+              <div class="upload-icon">📋</div>
+              <strong>Click or drag to upload</strong>
+              <p>PDF, JPG or PNG &nbsp;·&nbsp; Max 5 MB</p>
+            </div>
+            <div class="upload-progress" id="prog-visadoc"><div class="bar" id="bar-visadoc"></div></div>
+            <div class="file-preview" id="prev-visadoc">
+              <div class="file-icon">📄</div>
+              <div class="file-info">
+                <div class="file-name" id="prev-visadoc-name"></div>
+                <div class="file-size" id="prev-visadoc-size"></div>
+              </div>
+              <button type="button" class="remove-file" onclick="removeFile('visadoc')">✕</button>
+            </div>
+          </div>
+
+          <!-- Passport Photograph -->
+          <div class="field-group" style="margin-top:4px;">
+            <label>Passport Photograph <span class="req">*</span></label>
+            <div class="upload-zone" onclick="document.getElementById('file-photo').click()">
+              <input type="file" id="file-photo" accept=".jpg,.jpeg,.png" onchange="handleFile(this,'photo')" />
+              <div class="upload-icon">🖼️</div>
+              <strong>Click or drag to upload</strong>
+              <p>JPG or PNG &nbsp;·&nbsp; Max 5 MB &nbsp;·&nbsp; White background preferred</p>
+            </div>
+            <div class="upload-progress" id="prog-photo"><div class="bar" id="bar-photo"></div></div>
+            <div class="file-preview" id="prev-photo">
+              <img id="prev-photo-img" src="" alt="" style="display:none;width:44px;height:44px;object-fit:cover;border-radius:6px;" />
+              <div class="file-icon" id="prev-photo-icon">📄</div>
+              <div class="file-info">
+                <div class="file-name" id="prev-photo-name"></div>
+                <div class="file-size" id="prev-photo-size"></div>
+              </div>
+              <button type="button" class="remove-file" onclick="removeFile('photo')">✕</button>
+            </div>
+          </div>
+
+          <!-- Confirmed Flight Ticket (OPTIONAL) -->
+          <hr class="section-divider" />
+          <div class="field-group" style="margin-top:4px;">
+            <label>Confirmed Flight Ticket <span class="opt">(optional)</span></label>
+            <div class="upload-zone optional-zone" onclick="document.getElementById('file-flight').click()">
+              <input type="file" id="file-flight" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile(this,'flight')" />
+              <div class="upload-icon">✈️</div>
+              <strong>Click or drag to upload</strong>
+              <p>PDF, JPG or PNG &nbsp;·&nbsp; Max 5 MB &nbsp;·&nbsp; Upload if you already have a confirmed ticket</p>
+            </div>
+            <div class="upload-progress" id="prog-flight"><div class="bar" id="bar-flight"></div></div>
+            <div class="file-preview" id="prev-flight">
+              <div class="file-icon">📄</div>
+              <div class="file-info">
+                <div class="file-name" id="prev-flight-name"></div>
+                <div class="file-size" id="prev-flight-size"></div>
+              </div>
+              <button type="button" class="remove-file" onclick="removeFile('flight')">✕</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="status-msg error" id="form-error"></div>
+        <div class="status-msg info" id="form-info">⏳ Uploading your documents, please wait…</div>
+        <button type="submit" class="submit-btn" id="visa-submit">Submit Visa Application →</button>
+
+      </form>
+    </div><!-- /application-form-wrap -->
+
+  </div><!-- /visa-shell -->
+
+  <script src="https://static.elfsight.com/platform/platform.js" async></script>
+  <div class="elfsight-app-bd1badfd-3123-4d50-bf51-7f5226ce9c92" data-elfsight-app-lazy></div>
+
+  <div class="site-footer">
+    <div class="inner first">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-lg-4">
+            <div class="widget">
+              <h3 class="heading">About Deen Voyage</h3>
+              <p>Deen Voyage is an international travels and tours company with a presence in Europe, Africa, and North America. We strive to provide the best travel experience, ensuring every journey is memorable and enriching.</p>
+            </div>
+            <div class="widget">
+              <ul class="list-unstyled social">
+                <li><a href="#"><span class="icon-twitter"></span></a></li>
+                <li><a href="#"><span class="icon-instagram"></span></a></li>
+                <li><a href="#"><span class="icon-facebook"></span></a></li>
+                <li><a href="#"><span class="icon-linkedin"></span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-2 pl-lg-5">
+            <div class="widget">
+              <h3 class="heading">Pages</h3>
+              <ul class="links list-unstyled">
+                <li><a href="/blog">Blog</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/contact">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-2">
+            <div class="widget">
+              <h3 class="heading">Services</h3>
+              <ul class="links list-unstyled">
+                <li><a href="/hajj">Hajj</a></li>
+                <li><a href="/umrah">Umrah</a></li>
+                <li><a href="/ramadan">Ramadan</a></li>
+                <li><a href="/register">Register</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="widget">
+              <h3 class="heading">Contact</h3>
+              <ul class="list-unstyled quick-info links">
+                <li class="email"><a href="#">hello@deenvoyage.com</a></li>
+                <li class="phone"><a href="#">+1 403 837 8813</a></li>
+                <li class="address"><a href="#">305 Redstone Boulevard, NE, Calgary, AB, Canada</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="inner dark">
+      <div class="container">
+        <div class="row text-center">
+          <div class="col-md-8 mb-3 mb-md-0 mx-auto">
+            <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash; Designed by <a href="https://prolific.com.ng" class="link-highlight">Prolific Limited</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ OTP + UI logic ══ -->
+  <script>
+    let _otp = '';
+    let _otpExpiry = 0;
+    let _countdownTimer = null;
+
+    /* ── Send OTP via Resend ── */
+    async function sendOTP() {
+      const emailInput = document.getElementById('verify-email');
+      const email = emailInput.value.trim();
+      const errEl = document.getElementById('email-err');
+      errEl.classList.remove('show');
+
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        errEl.textContent = 'Please enter a valid email address.';
+        errEl.classList.add('show');
+        return;
+      }
+
+      const btn = document.getElementById('send-code-btn');
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+
+      // Generate 6-digit OTP
+      _otp = String(Math.floor(100000 + Math.random() * 900000));
+      _otpExpiry = Date.now() + 10 * 60 * 1000; // 10 minutes
+
+      try {
+        const res = await fetch(SEND_OTP_ENDPOINT + '/send-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, otp: _otp })
+        });
+        const result = await res.json();
+        if (!result.success) throw new Error(result.error || 'Send failed');
+      } catch (e) {
+        console.error('OTP send error:', e);
+        errEl.textContent = 'Failed to send code. Please try again or contact hello@deenvoyage.com.';
+        errEl.classList.add('show');
+        btn.disabled = false;
+        btn.textContent = 'Send Verification Code';
+        return;
+      }
+
+      // Show OTP step
+      document.getElementById('email-step').style.display = 'none';
+      document.getElementById('otp-step').style.display = 'block';
+      document.getElementById('otp-sent-to').textContent = email;
+      document.getElementById('otp0').focus();
+
+      startCountdown();
+
+      btn.disabled = false;
+      btn.textContent = 'Send Verification Code';
+    }
+
+    /* ── Countdown ── */
+    function startCountdown() {
+      const resendLink = document.getElementById('resend-link');
+      const countdownEl = document.getElementById('countdown');
+      const wrapEl = document.getElementById('countdown-wrap');
+      resendLink.classList.add('disabled');
+      let secs = 60;
+      countdownEl.textContent = secs;
+      wrapEl.style.display = 'inline';
+      clearInterval(_countdownTimer);
+      _countdownTimer = setInterval(() => {
+        secs--;
+        countdownEl.textContent = secs;
+        if (secs <= 0) {
+          clearInterval(_countdownTimer);
+          resendLink.classList.remove('disabled');
+          wrapEl.style.display = 'none';
+        }
+      }, 1000);
+    }
+
+    /* ── OTP box auto-focus ── */
+    function otpInput(el, idx) {
+      el.value = el.value.replace(/\D/g, '').slice(-1);
+      if (el.value && idx < 5) document.getElementById('otp' + (idx + 1)).focus();
+      // Auto-verify when all filled
+      const code = getOTPValue();
+      if (code.length === 6) verifyOTP();
+    }
+
+    function otpBack(e, idx) {
+      if (e.key === 'Backspace' && !e.target.value && idx > 0) {
+        document.getElementById('otp' + (idx - 1)).focus();
+      }
+    }
+
+    function getOTPValue() {
+      return [0,1,2,3,4,5].map(i => document.getElementById('otp' + i).value).join('');
+    }
+
+    /* ── Verify OTP ── */
+    function verifyOTP() {
+      const errEl = document.getElementById('otp-err');
+      errEl.classList.remove('show');
+      const entered = getOTPValue();
+
+      if (entered.length < 6) {
+        errEl.textContent = 'Please enter all 6 digits.';
+        errEl.classList.add('show');
+        return;
+      }
+      if (Date.now() > _otpExpiry) {
+        errEl.textContent = 'This code has expired. Please request a new one.';
+        errEl.classList.add('show');
+        return;
+      }
+      if (entered !== _otp) {
+        errEl.textContent = 'Incorrect code. Please try again.';
+        errEl.classList.add('show');
+        [0,1,2,3,4,5].forEach(i => { document.getElementById('otp' + i).value = ''; });
+        document.getElementById('otp0').focus();
+        return;
+      }
+
+      // ✅ Verified — fill email and show form
+      const verifiedEmail = document.getElementById('verify-email').value.trim();
+      document.getElementById('verify-screen').style.display = 'none';
+      document.getElementById('application-form-wrap').style.display = 'block';
+      document.getElementById('v_email').value = verifiedEmail;
+      document.getElementById('application-form-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    /* ── Passport country change ── */
+    function handlePassportChange() {
+      const val = document.getElementById('v_passport').value;
+      document.getElementById('nigeria-visa-section').style.display = val === 'Nigeria' ? 'block' : 'none';
+    }
+
+    /* ── File preview ── */
+    function handleFile(input, key) {
+      const file = input.files[0];
+      if (!file) return;
+      if (file.size > 5 * 1024 * 1024) {
+        alert('File is too large. Maximum size is 5 MB.');
+        input.value = '';
+        return;
+      }
+      document.getElementById('prev-' + key + '-name').textContent = file.name;
+      document.getElementById('prev-' + key + '-size').textContent = (file.size / 1024).toFixed(0) + ' KB';
+      document.getElementById('prev-' + key).classList.add('show');
+
+      if (key === 'photo' && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          document.getElementById('prev-photo-img').src = e.target.result;
+          document.getElementById('prev-photo-img').style.display = 'block';
+          document.getElementById('prev-photo-icon').style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function removeFile(key) {
+      document.getElementById('file-' + key).value = '';
+      document.getElementById('prev-' + key).classList.remove('show');
+      document.getElementById('prog-' + key).style.display = 'none';
+      document.getElementById('bar-' + key).style.width = '0%';
+      if (key === 'photo') {
+        document.getElementById('prev-photo-img').style.display = 'none';
+        document.getElementById('prev-photo-icon').style.display = '';
+      }
+    }
+
+    /* ── Drag & drop ── */
+    document.querySelectorAll('.upload-zone').forEach(zone => {
+      zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+      zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+      zone.addEventListener('drop', e => {
+        e.preventDefault();
+        zone.classList.remove('drag-over');
+        const input = zone.querySelector('input[type="file"]');
+        if (e.dataTransfer.files.length) {
+          input.files = e.dataTransfer.files;
+          input.dispatchEvent(new Event('change'));
+        }
+      });
+    });
+
+    /* ── Allow Enter to trigger Send Code ── */
+    document.getElementById('verify-email').addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); sendOTP(); }
+    });
+  </script>
+
+  <!-- ══ Firebase submit logic ══ -->
+  <script type="module">
+    import { initializeApp }    from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getDatabase, ref, push, set, get } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+    import { getStorage, ref as sRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDK3r2QlBbErNqs0L4DIuzrJi_ue-4z0MA",
+      authDomain: "deenvoyage-f065a.firebaseapp.com",
+      databaseURL: "https://deenvoyage-f065a-default-rtdb.firebaseio.com",
+      projectId: "deenvoyage-f065a",
+      storageBucket: "deenvoyage-f065a.appspot.com",
+      messagingSenderId: "76816405729",
+      appId: "1:76816405729:web:d1db037c0a7c27c6f613a0"
+    };
+
+    const app     = initializeApp(firebaseConfig);
+    const db      = getDatabase(app);
+    const storage = getStorage(app);
+
+    async function generateRef() {
+      const counterRef = ref(db, 'visa_applications_counter');
+      const snap = await get(counterRef);
+      const n = (snap.exists() ? snap.val() : 0) + 1;
+      await set(counterRef, n);
+      return 'DVV-' + String(n).padStart(6, '0');
+    }
+
+    function uploadFile(file, path, barEl, progEl) {
+      return new Promise((resolve, reject) => {
+        progEl.style.display = 'block';
+        const task = uploadBytesResumable(sRef(storage, path), file);
+        task.on('state_changed',
+          s => { barEl.style.width = Math.round((s.bytesTransferred / s.totalBytes) * 100) + '%'; },
+          reject,
+          () => getDownloadURL(task.snapshot.ref).then(resolve).catch(reject)
+        );
+      });
+    }
+
+    document.getElementById('visa-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const errEl    = document.getElementById('form-error');
+      const infoEl   = document.getElementById('form-info');
+      const submitBtn = document.getElementById('visa-submit');
+
+      errEl.classList.remove('show');
+      infoEl.classList.remove('show');
+
+      const fname    = document.getElementById('v_fname').value.trim();
+      const lname    = document.getElementById('v_lname').value.trim();
+      const email    = document.getElementById('v_email').value.trim();
+      const phone    = document.getElementById('v_phone').value.trim();
+      const passport = document.getElementById('v_passport').value;
+
+      const filePassport = document.getElementById('file-passport').files[0];
+      const fileVisadoc  = document.getElementById('file-visadoc').files[0];
+      const filePhoto    = document.getElementById('file-photo').files[0];
+      const fileFlight   = document.getElementById('file-flight').files[0]; // optional
+
+      // Validate
+      if (!fname || !lname || !phone || !passport) {
+        errEl.textContent = 'Please fill in all required fields.';
+        errEl.classList.add('show');
+        return;
+      }
+      if (passport === 'Nigeria') {
+        const ngVisa = document.querySelector('input[name="ng_visa"]:checked');
+        if (!ngVisa) {
+          errEl.textContent = 'Please select your valid visa type for Nigerian passport holders.';
+          errEl.classList.add('show');
+          return;
+        }
+      }
+      if (!filePassport) { errEl.textContent = 'Please upload your passport.'; errEl.classList.add('show'); return; }
+      if (!fileVisadoc)  { errEl.textContent = 'Please upload your visit visa / resident permit / Saudi visa.'; errEl.classList.add('show'); return; }
+      if (!filePhoto)    { errEl.textContent = 'Please upload your passport photograph.'; errEl.classList.add('show'); return; }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Uploading…';
+      infoEl.classList.add('show');
+
+      try {
+        const refNum   = await generateRef();
+        const basePath = `visa_applications/${refNum}`;
+
+        // Upload required files in parallel
+        const uploads = [
+          uploadFile(filePassport, `${basePath}/passport_${filePassport.name}`,
+            document.getElementById('bar-passport'), document.getElementById('prog-passport')),
+          uploadFile(fileVisadoc,  `${basePath}/visadoc_${fileVisadoc.name}`,
+            document.getElementById('bar-visadoc'),  document.getElementById('prog-visadoc')),
+          uploadFile(filePhoto,    `${basePath}/photo_${filePhoto.name}`,
+            document.getElementById('bar-photo'),    document.getElementById('prog-photo')),
+        ];
+
+        // Optional flight ticket
+        if (fileFlight) {
+          uploads.push(uploadFile(fileFlight, `${basePath}/flight_${fileFlight.name}`,
+            document.getElementById('bar-flight'), document.getElementById('prog-flight')));
+        }
+
+        const urls = await Promise.all(uploads);
+        const [passportURL, visadocURL, photoURL] = urls;
+        const flightURL = fileFlight ? urls[3] : null;
+
+        const ngVisa = passport === 'Nigeria'
+          ? (document.querySelector('input[name="ng_visa"]:checked') || {}).value || ''
+          : '';
+
+        // Save to Firebase
+        const appRef = push(ref(db, 'visa_applications'));
+        await set(appRef, {
+          referenceNumber:  refNum,
+          firstName:        fname,
+          lastName:         lname,
+          email:            email,
+          phone:            phone,
+          passportCountry:  passport,
+          validVisaType:    ngVisa,
+          package:          'Umrah Visa Only',
+          passportURL:      passportURL,
+          visaDocURL:       visadocURL,
+          photoURL:         photoURL,
+          flightTicketURL:  flightURL,
+          submittedAt:      new Date().toISOString()
+        });
+
+        // Mirror to registrations (admin dashboard)
+        const regRef = push(ref(db, 'registrations'));
+        await set(regRef, {
+          firstName:         fname,
+          lastName:          lname,
+          email:             email,
+          phone:             phone,
+          travelType:        'Umrah Visa Only',
+          passportType:      passport + (ngVisa ? ` (${ngVisa})` : ''),
+          otherRequirements: `Ref: ${refNum}`,
+          roomType:          'N/A',
+          source:            'umrah-visa.html'
+        });
+
+        // Show success
+        infoEl.classList.remove('show');
+        document.getElementById('visa-form').style.display = 'none';
+        const successEl = document.getElementById('success-screen');
+        successEl.style.display = 'block';
+        document.getElementById('ref-number').textContent = refNum;
+        successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      } catch (err) {
+        console.error(err);
+        infoEl.classList.remove('show');
+        errEl.textContent = 'Something went wrong. Please try again or email us at hello@deenvoyage.com.';
+        errEl.classList.add('show');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Visa Application →';
+      }
+    });
+  </script>
+
+  <script src="js/jquery-3.4.1.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/aos.js"></script>
+  <script>AOS.init({ duration: 800, easing: 'ease-in-out', once: true });</script>
+  <script src="js/custom.js"></script>
+  <script src="js/geo-ng.js"></script>
+</body>
+</html>

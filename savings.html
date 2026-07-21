@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Savings Plans — Deen Voyage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/crm.css">
+  <link rel="stylesheet" href="css/savings.css">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     STAFF DASHBOARD  (shown when no ?id= param)
+     ══════════════════════════════════════════════════════════ -->
+<div id="staff-app" style="display:none;">
+
+  <nav class="crm-navbar">
+    <div class="brand">🕌 Deen Voyage <span>CRM</span></div>
+    <div class="user-menu" id="user-menu-btn">
+      <div class="user-avatar" id="user-initials">…</div>
+      <span id="user-name"></span>
+    </div>
+  </nav>
+  <div class="user-dropdown" id="user-dropdown">
+    <button onclick="window.location.href='crm.html'"
+      style="background:none;border:none;cursor:pointer;padding:10px 16px;width:100%;text-align:left;font-size:.875rem;">
+      ← Back to CRM
+    </button>
+    <button class="logout" id="logout-btn">Sign out</button>
+  </div>
+  <div id="dropdown-bd" style="display:none;position:fixed;inset:0;z-index:2999;"></div>
+
+  <div class="sv-shell">
+
+    <div class="sv-page-header">
+      <div>
+        <h1>💰 Savings Plans</h1>
+        <p>Track Umrah &amp; Hajj savings goals for clients</p>
+      </div>
+      <button class="btn-primary-crm" id="btn-new-plan">＋ New Savings Plan</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row" style="padding:0 0 20px;">
+      <div class="stat-card">
+        <div class="label">Total Plans</div>
+        <div class="value" id="stat-total">—</div>
+      </div>
+      <div class="stat-card paid">
+        <div class="label">Active</div>
+        <div class="value" id="stat-active">—</div>
+      </div>
+      <div class="stat-card revenue">
+        <div class="label">Completed</div>
+        <div class="value" id="stat-completed">—</div>
+      </div>
+      <div class="stat-card followup">
+        <div class="label">Total Saved (CAD)</div>
+        <div class="value" id="stat-saved">—</div>
+      </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="crm-toolbar" style="padding:0 0 16px;">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="search" id="sv-search" placeholder="Search client name…">
+      </div>
+      <select id="sv-status">
+        <option value="">All Statuses</option>
+        <option value="active">Active</option>
+        <option value="paused">Paused</option>
+        <option value="completed">Completed</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+      <select id="sv-travel">
+        <option value="">All Types</option>
+        <option value="umrah">🕋 Umrah</option>
+        <option value="hajj">🕌 Hajj</option>
+      </select>
+    </div>
+
+    <!-- Plans table -->
+    <div class="leads-table-wrap">
+      <table class="leads-table">
+        <thead>
+          <tr>
+            <th>Client</th>
+            <th>Package</th>
+            <th>Target</th>
+            <th>Saved</th>
+            <th>Progress</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="plans-body">
+          <tr><td colspan="7"><div class="empty-state"><div class="icon">💰</div><p>Loading…</p></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── NEW PLAN MODAL ──────────────────────────────────────── -->
+  <div class="modal-overlay" id="modal-new-plan">
+    <div class="modal-box modal-lg">
+      <div class="modal-header">
+        <h3>💰 New Savings Plan</h3>
+        <button class="modal-close" data-close="modal-new-plan">✕</button>
+      </div>
+      <div class="modal-body">
+        <form class="crm-form" id="new-plan-form" onsubmit="return false">
+          <div class="form-section-title">Client Information</div>
+          <div class="form-row">
+            <div class="form-group"><label>Full Name *</label><input type="text" id="np-name" required></div>
+            <div class="form-group"><label>Email</label><input type="email" id="np-email"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Phone / WhatsApp</label><input type="tel" id="np-phone"></div>
+            <div class="form-group"><label>Link to CRM Lead (optional)</label>
+              <select id="np-lead"><option value="">— None —</option></select>
+            </div>
+          </div>
+
+          <div class="form-section-title">Package &amp; Goal</div>
+          <div class="form-row">
+            <div class="form-group"><label>Package *</label>
+              <select id="np-package" required>
+                <option value="">— Select package —</option>
+                <option value="August Umrah 2026">August Umrah 2026</option>
+                <option value="November Umrah 2026">November Umrah 2026</option>
+                <option value="December Umrah 2026">December Umrah 2026</option>
+                <option value="Hajj 2027">Hajj 2027</option>
+                <option value="Other">Other (specify below)</option>
+              </select>
+              <div id="np-custom-wrap" style="display:none;margin-top:6px;">
+                <input type="text" id="np-custom" placeholder="Package name">
+              </div>
+            </div>
+            <div class="form-group"><label>Travel Type *</label>
+              <select id="np-travel" required>
+                <option value="">Select…</option>
+                <option value="umrah">🕋 Umrah</option>
+                <option value="hajj">🕌 Hajj</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Currency *</label>
+              <select id="np-currency">
+                <option value="CAD">CAD ($)</option>
+                <option value="NGN">NGN (₦)</option>
+                <option value="GBP">GBP (£)</option>
+                <option value="USD">USD ($)</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Target Amount *</label>
+              <input type="number" id="np-target" min="0" step="0.01" required placeholder="0.00">
+            </div>
+          </div>
+
+          <div class="form-section-title">Plan Type</div>
+          <div class="form-group">
+            <label>Type</label>
+            <select id="np-type">
+              <option value="flexible">Flexible — client pays any amount, any time</option>
+              <option value="fixed">Fixed Installments — set recurring amount</option>
+            </select>
+          </div>
+          <div id="np-fixed-wrap" style="display:none;">
+            <div class="form-row">
+              <div class="form-group"><label>Installment Amount</label>
+                <input type="number" id="np-installment" min="0" step="0.01" placeholder="0.00">
+              </div>
+              <div class="form-group"><label>Frequency</label>
+                <select id="np-frequency">
+                  <option value="monthly">Monthly</option>
+                  <option value="biweekly">Bi-weekly</option>
+                  <option value="weekly">Weekly</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section-title">Timeline</div>
+          <div class="form-row">
+            <div class="form-group"><label>Start Date</label><input type="date" id="np-start"></div>
+            <div class="form-group"><label>Target Completion</label><input type="date" id="np-deadline"></div>
+          </div>
+
+          <div class="form-section-title">Client Portal Access</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>4-Digit PIN *</label>
+              <input type="text" id="np-pin" maxlength="4" pattern="[0-9]{4}" placeholder="e.g. 4821" required>
+              <small style="color:#6b7280;">Client uses this PIN to access their savings portal.</small>
+            </div>
+            <div class="form-group" style="display:flex;align-items:flex-end;">
+              <button type="button" class="btn-secondary-crm" id="btn-gen-pin">🎲 Generate PIN</button>
+            </div>
+          </div>
+          <div class="form-group"><label>Notes (internal)</label>
+            <textarea id="np-notes" rows="3" placeholder="Any internal notes…"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div id="np-status" class="rcp-status" style="flex:1;"></div>
+        <button class="btn-secondary-crm" data-close="modal-new-plan">Cancel</button>
+        <button class="btn-primary-crm" id="save-plan-btn">Create Plan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── RECORD PAYMENT MODAL ───────────────────────────────── -->
+  <div class="modal-overlay" id="modal-deposit">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>💸 Record Payment</h3>
+        <button class="modal-close" data-close="modal-deposit">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="dep-plan-info" class="sv-info-banner"></div>
+        <form class="crm-form" onsubmit="return false">
+          <div class="form-row">
+            <div class="form-group"><label>Amount *</label>
+              <input type="number" id="dep-amount" min="0.01" step="0.01" required placeholder="0.00">
+            </div>
+            <div class="form-group"><label>Date</label>
+              <input type="date" id="dep-date">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Payment Method</label>
+              <select id="dep-method">
+                <option value="Cash">Cash</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+                <option value="E-Transfer">E-Transfer</option>
+                <option value="Cheque">Cheque</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Note</label>
+              <input type="text" id="dep-note" placeholder="e.g. Monthly installment…">
+            </div>
+          </div>
+        </form>
+        <div id="dep-status" class="rcp-status"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary-crm" data-close="modal-deposit">Cancel</button>
+        <button class="btn-primary-crm" id="save-deposit-btn">Record Payment</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PLAN DETAIL MODAL ──────────────────────────────────── -->
+  <div class="modal-overlay" id="modal-plan-detail">
+    <div class="modal-box modal-lg">
+      <div class="modal-header">
+        <h3 id="detail-title">Plan Detail</h3>
+        <button class="modal-close" data-close="modal-plan-detail">✕</button>
+      </div>
+      <div class="modal-body" id="plan-detail-body" style="min-height:200px;"></div>
+      <div class="modal-footer">
+        <button class="btn-danger-crm" id="detail-cancel-btn">Cancel Plan</button>
+        <button class="btn-secondary-crm" data-close="modal-plan-detail">Close</button>
+        <button class="btn-secondary-crm" id="detail-target-btn">✎ Edit Target</button>
+        <button class="btn-secondary-crm" id="detail-link-btn">🔗 Copy Client Link</button>
+        <button class="btn-secondary-crm" id="detail-deposit-btn">+ Record Payment</button>
+        <button class="btn-primary-crm" id="detail-complete-btn">✓ Mark Complete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── EDIT TARGET MODAL ──────────────────────────────────── -->
+  <div class="modal-overlay" id="modal-edit-target">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>✎ Edit Savings Target</h3>
+        <button class="modal-close" data-close="modal-edit-target">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="et-plan-info" class="sv-info-banner" style="margin-bottom:16px;"></div>
+        <form class="crm-form" onsubmit="return false">
+          <div class="form-row">
+            <div class="form-group"><label>New Target Amount *</label>
+              <input type="number" id="et-amount" min="0" step="0.01" required placeholder="0.00">
+            </div>
+            <div class="form-group"><label>Target Completion Date</label>
+              <input type="date" id="et-deadline">
+            </div>
+          </div>
+        </form>
+        <div id="et-status" class="rcp-status"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary-crm" data-close="modal-edit-target">Cancel</button>
+        <button class="btn-primary-crm" id="save-target-btn">Update Target</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /#staff-app -->
+
+
+<!-- ══════════════════════════════════════════════════════════
+     CLIENT PORTAL  (shown when ?id= param is present)
+     ══════════════════════════════════════════════════════════ -->
+<div id="client-portal" style="display:none;">
+
+  <header class="portal-header">
+    <div class="portal-brand">🕌 Deen Voyage</div>
+    <div class="portal-tagline">Savings Tracker</div>
+  </header>
+
+  <!-- PIN Entry -->
+  <div id="pin-screen" class="portal-screen">
+    <div class="portal-card pin-card">
+      <div class="pin-icon">🔒</div>
+      <h2>Enter Your PIN</h2>
+      <p>Enter the 4-digit PIN provided by your Deen Voyage consultant to view your savings progress.</p>
+      <div class="pin-inputs" id="pin-inputs">
+        <input type="text" class="pin-digit" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+        <input type="text" class="pin-digit" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+        <input type="text" class="pin-digit" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+        <input type="text" class="pin-digit" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+      </div>
+      <div id="pin-error" class="pin-error" style="display:none;"></div>
+      <button class="portal-btn" id="pin-submit-btn">View My Savings</button>
+    </div>
+  </div>
+
+  <!-- Savings View -->
+  <div id="savings-screen" class="portal-screen" style="display:none;">
+    <div class="portal-card">
+
+      <div class="sv-portal-header">
+        <div class="sv-portal-greeting" id="portal-greeting">Welcome back!</div>
+        <div class="sv-portal-package" id="portal-package">—</div>
+        <div id="portal-status-badge"></div>
+      </div>
+
+      <!-- Progress ring -->
+      <div class="sv-portal-progress">
+        <div class="sv-ring-wrap">
+          <svg viewBox="0 0 120 120" class="sv-ring">
+            <circle cx="60" cy="60" r="52" fill="none" stroke="#e2e8f0" stroke-width="12"/>
+            <circle cx="60" cy="60" r="52" fill="none" stroke="#059669" stroke-width="12"
+              stroke-linecap="round" stroke-dasharray="326.7"
+              stroke-dashoffset="326.7" id="ring-progress"
+              transform="rotate(-90 60 60)"/>
+          </svg>
+          <div class="sv-ring-label">
+            <div class="sv-ring-pct" id="ring-pct">0%</div>
+            <div class="sv-ring-sub">saved</div>
+          </div>
+        </div>
+        <div class="sv-portal-amounts">
+          <div class="sv-amount-item">
+            <div class="sv-amount-val green" id="portal-saved">—</div>
+            <div class="sv-amount-lbl">Saved</div>
+          </div>
+          <div class="sv-amount-divider"></div>
+          <div class="sv-amount-item">
+            <div class="sv-amount-val" id="portal-target">—</div>
+            <div class="sv-amount-lbl">Target</div>
+          </div>
+          <div class="sv-amount-divider"></div>
+          <div class="sv-amount-item">
+            <div class="sv-amount-val red" id="portal-remaining">—</div>
+            <div class="sv-amount-lbl">Remaining</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sv-portal-meta" id="portal-meta"></div>
+
+      <!-- Client submit payment -->
+      <div class="sv-client-pay-wrap" id="client-pay-section">
+        <button class="portal-btn sv-pay-btn" id="client-pay-toggle">＋ Submit a Payment</button>
+        <div id="client-pay-form" style="display:none;">
+          <div class="sv-client-form">
+            <div class="sv-cf-row">
+              <div class="sv-cf-group">
+                <label>Amount *</label>
+                <input type="number" id="cp-amount" min="0.01" step="0.01" placeholder="0.00" inputmode="decimal">
+              </div>
+              <div class="sv-cf-group">
+                <label>Date</label>
+                <input type="date" id="cp-date">
+              </div>
+            </div>
+            <div class="sv-cf-row">
+              <div class="sv-cf-group">
+                <label>Payment Method</label>
+                <select id="cp-method">
+                  <option value="Cash">Cash</option>
+                  <option value="Bank Transfer">Bank Transfer</option>
+                  <option value="E-Transfer">E-Transfer</option>
+                  <option value="Cheque">Cheque</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="sv-cf-group">
+                <label>Note (optional)</label>
+                <input type="text" id="cp-note" placeholder="e.g. Etransfer sent">
+              </div>
+            </div>
+            <div id="cp-status" class="sv-client-status"></div>
+            <button class="portal-btn" id="cp-submit-btn">Submit Payment</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment history -->
+      <div class="sv-portal-history">
+        <h3>Payment History</h3>
+        <div id="portal-history-list">
+          <p class="sv-muted">No payments recorded yet.</p>
+        </div>
+      </div>
+
+      <p class="sv-portal-footer">Your submitted payments will be verified and confirmed by your consultant.</p>
+    </div>
+  </div>
+
+  <!-- Not Found -->
+  <div id="notfound-screen" class="portal-screen" style="display:none;">
+    <div class="portal-card" style="padding:40px;text-align:center;">
+      <div style="font-size:3rem;margin-bottom:16px;">🔍</div>
+      <h2 style="color:#1b3f6e;">Plan Not Found</h2>
+      <p style="color:#64748b;">This savings link may be invalid or expired.<br>Please contact your Deen Voyage consultant.</p>
+    </div>
+  </div>
+
+</div><!-- /#client-portal -->
+
+<script type="module" src="js/savings.js"></script>
+</body>
+</html>

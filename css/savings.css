@@ -1,0 +1,362 @@
+/* ── Savings Portal — client-facing UI ── */
+/* Portal-specific tokens scoped so they don't bleed into the staff dashboard */
+#client-portal {
+  --primary: #1b3f6e;
+  --gold:    #c8a84b;
+  --green:   #059669;
+  --red:     #ef4444;
+  --bg:      #f0f4f8;
+  --card:    #ffffff;
+  --text:    #1e293b;
+  --muted:   #64748b;
+  --border:  #e2e8f0;
+  --shadow:  0 4px 24px rgba(0,0,0,.10);
+}
+
+* { box-sizing: border-box; }
+
+#client-portal {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Header ── */
+.portal-header {
+  background: var(--primary);
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.portal-brand {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #fff;
+}
+.portal-tagline {
+  font-size: .78rem;
+  color: var(--gold);
+  font-weight: 600;
+  background: rgba(200,168,75,.15);
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+/* ── Screens ── */
+.portal-screen {
+  display: flex;
+  justify-content: center;
+  padding: 32px 16px 48px;
+}
+
+/* ── Card ── */
+.portal-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  width: 100%;
+  max-width: 500px;
+  overflow: hidden;
+}
+
+/* ── PIN Entry ── */
+.pin-card {
+  padding: 40px 32px;
+  text-align: center;
+}
+.pin-icon {
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+}
+.pin-card h2 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--primary);
+  margin: 0 0 10px;
+}
+.pin-card p {
+  color: var(--muted);
+  font-size: .9rem;
+  margin: 0 0 28px;
+  line-height: 1.5;
+}
+.pin-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.pin-digit {
+  width: 56px;
+  height: 64px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--primary);
+  outline: none;
+  transition: border-color .2s;
+  -moz-appearance: textfield;
+}
+.pin-digit::-webkit-outer-spin-button,
+.pin-digit::-webkit-inner-spin-button { -webkit-appearance: none; }
+.pin-digit:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(27,63,110,.12); }
+.pin-error {
+  color: var(--red);
+  font-size: .85rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.portal-btn {
+  width: 100%;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .2s;
+  margin-top: 8px;
+}
+.portal-btn:hover { background: #143155; }
+.portal-btn:disabled { opacity: .6; cursor: not-allowed; }
+
+/* ── Savings view ── */
+.sv-portal-header {
+  background: linear-gradient(135deg, var(--primary) 0%, #2a5298 100%);
+  padding: 28px 24px 24px;
+  color: #fff;
+}
+.sv-portal-greeting {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.sv-portal-package {
+  font-size: .9rem;
+  color: rgba(255,255,255,.75);
+  margin-bottom: 10px;
+}
+
+/* Status badge (reuse same classes as staff side) */
+.sv-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: .73rem;
+  font-weight: 600;
+}
+.sv-s-active    { background: rgba(255,255,255,.2); color: #fff; }
+.sv-s-paused    { background: rgba(200,168,75,.25); color: var(--gold); }
+.sv-s-completed { background: rgba(255,255,255,.2); color: #86efac; }
+.sv-s-cancelled { background: rgba(255,255,255,.1); color: rgba(255,255,255,.6); }
+
+/* ── Progress ring ── */
+.sv-portal-progress {
+  padding: 28px 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
+}
+.sv-ring-wrap {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+}
+.sv-ring { width: 120px; height: 120px; }
+.sv-ring-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.sv-ring-pct {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1;
+}
+.sv-ring-sub {
+  font-size: .68rem;
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+/* Amounts beside ring */
+.sv-portal-amounts {
+  flex: 1;
+  display: flex;
+  gap: 0;
+  min-width: 180px;
+}
+.sv-amount-item {
+  flex: 1;
+  text-align: center;
+  padding: 8px 4px;
+}
+.sv-amount-val {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.1;
+}
+.sv-amount-val.green { color: var(--green); }
+.sv-amount-val.red   { color: var(--red); }
+.sv-amount-lbl {
+  font-size: .7rem;
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-top: 4px;
+}
+.sv-amount-divider {
+  width: 1px;
+  background: var(--border);
+  align-self: stretch;
+  margin: 8px 0;
+}
+
+/* Meta strip */
+.sv-portal-meta {
+  padding: 12px 24px;
+  font-size: .82rem;
+  color: var(--muted);
+  background: #f8fafc;
+  border-bottom: 1px solid var(--border);
+  min-height: 36px;
+}
+
+/* ── Payment history ── */
+.sv-portal-history {
+  padding: 20px 24px;
+}
+.sv-portal-history h3 {
+  font-size: .9rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0 0 14px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.sv-payment-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.sv-payment-row:last-child { border-bottom: none; }
+.sv-pay-note {
+  font-size: .875rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.sv-pay-date {
+  font-size: .75rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.sv-pay-amount {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--green);
+  white-space: nowrap;
+}
+.sv-muted {
+  color: var(--muted);
+  font-size: .875rem;
+  text-align: center;
+  padding: 20px 0;
+}
+
+/* Footer */
+.sv-portal-footer {
+  text-align: center;
+  font-size: .78rem;
+  color: var(--muted);
+  padding: 16px 24px 24px;
+  border-top: 1px solid var(--border);
+  margin: 0;
+}
+
+/* ── Client submit payment ── */
+.sv-client-pay-wrap {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+}
+.sv-pay-btn {
+  background: var(--primary);
+  font-size: .9rem;
+  padding: 12px;
+}
+.sv-client-form {
+  margin-top: 14px;
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 16px;
+}
+.sv-cf-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.sv-cf-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.sv-cf-group label {
+  font-size: .75rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.sv-cf-group input,
+.sv-cf-group select {
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: .875rem;
+  font-family: inherit;
+  background: #fff;
+  color: var(--text);
+  outline: none;
+}
+.sv-cf-group input:focus,
+.sv-cf-group select:focus { border-color: var(--primary); }
+.sv-client-status {
+  font-size: .83rem;
+  font-weight: 600;
+  padding: 8px 0;
+  display: none;
+}
+.sv-client-status.error   { display: block; color: #ef4444; }
+.sv-client-status.success { display: block; color: #059669; }
+.sv-client-status.info    { display: block; color: #2563eb; }
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .pin-card { padding: 32px 20px; }
+  .pin-digit { width: 48px; height: 56px; font-size: 1.5rem; }
+  .sv-portal-progress { flex-direction: column; align-items: center; }
+  .sv-portal-amounts { width: 100%; }
+  .sv-amount-val { font-size: 1rem; }
+  .sv-cf-row { flex-direction: column; }
+}

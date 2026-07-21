@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CRM Login — Deen Voyage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/crm.css">
+</head>
+<body>
+
+<div class="login-wrap">
+  <div class="login-card">
+    <div class="logo">
+      <div class="crescent">🕌</div>
+      <h1>Deen Voyage CRM</h1>
+      <p>Staff portal — sign in to continue</p>
+    </div>
+    <form id="login-form">
+      <div class="form-group">
+        <label for="login-email">Email address</label>
+        <input type="email" id="login-email" placeholder="you@deenvoyage.com" required autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn-login" id="login-btn">Sign in</button>
+      <p class="login-error" id="login-error"></p>
+    </form>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+const app = initializeApp({
+  apiKey: "AIzaSyDK3r2QlBbErNqs0L4DIuzrJi_ue-4z0MA",
+  authDomain: "deenvoyage-f065a.firebaseapp.com",
+  databaseURL: "https://deenvoyage-f065a-default-rtdb.firebaseio.com",
+  projectId: "deenvoyage-f065a",
+  storageBucket: "deenvoyage-f065a.appspot.com",
+  messagingSenderId: "76816405729",
+  appId: "1:76816405729:web:d1db037c0a7c27c6f613a0"
+});
+const auth = getAuth(app);
+
+// Safe returnTo: only allow relative paths (no http/https)
+const rawReturn = new URLSearchParams(location.search).get('returnTo') || '';
+const returnTo  = rawReturn && !rawReturn.startsWith('http') ? rawReturn : 'crm.html';
+
+// Redirect if already signed in
+onAuthStateChanged(auth, user => {
+  if (user) window.location.href = returnTo;
+});
+
+const form     = document.getElementById('login-form');
+const emailEl  = document.getElementById('login-email');
+const passEl   = document.getElementById('login-password');
+const btn      = document.getElementById('login-btn');
+const errorEl  = document.getElementById('login-error');
+
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  errorEl.textContent = '';
+  btn.textContent = 'Signing in…';
+  btn.disabled = true;
+  try {
+    await signInWithEmailAndPassword(auth, emailEl.value.trim(), passEl.value);
+    window.location.href = returnTo;
+  } catch (err) {
+    const msgs = {
+      'auth/user-not-found':   'No account found with this email.',
+      'auth/wrong-password':   'Incorrect password.',
+      'auth/invalid-email':    'Invalid email address.',
+      'auth/invalid-credential': 'Email or password is incorrect.',
+      'auth/too-many-requests':'Too many attempts. Try again later.',
+    };
+    errorEl.textContent = msgs[err.code] || 'Sign-in failed. Please try again.';
+    btn.textContent = 'Sign in';
+    btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>

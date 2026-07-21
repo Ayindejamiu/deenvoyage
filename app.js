@@ -260,6 +260,49 @@ function loadRegistrations() {
 }
 
 
+// QATAR VACATION REGISTRATION HANDLER
+window.submitQatarRegistration = async function(data) {
+  const registrationRef = ref(database, 'registrations');
+  const newRegRef = push(registrationRef);
+
+  await set(newRegRef, {
+    firstName:      data.firstName,
+    lastName:       data.lastName,
+    email:          data.email,
+    phone:          data.phone,
+    travelType:     'Qatar Vacation',
+    travelStartDate: data.arrivalDate || null,
+    travelEndDate:   data.departureDate || null,
+    passportType:   data.passport === 'Others' ? `Others - ${data.passportOther}` : data.passport,
+    passportExpiry:  data.passportExpiry || null,
+    travellers:      data.travellers,
+    purpose:         data.purpose,
+    hotelPref:       data.hotelPref,
+    roomType:        data.roomType,
+    otherRequirements: data.requirements,
+    notes:           data.notes || '',
+    submittedAt:     data.submittedAt
+  });
+
+  try {
+    await emailjs.send("service_rmrqml1", "template_psg9tfp", {
+      to_email:         'hello@deenvoyage.com',
+      first_name:       data.firstName,
+      last_name:        data.lastName,
+      email:            data.email,
+      phone:            data.phone,
+      travel_type:      'Qatar Vacation',
+      travel_start_date: data.arrivalDate || '',
+      travel_end_date:   data.departureDate || '',
+      passport_type:    data.passport === 'Others' ? `Others - ${data.passportOther}` : data.passport,
+      requirements:     data.requirements,
+      room_type:        data.roomType
+    });
+  } catch (emailErr) {
+    console.error('EmailJS Qatar notification error:', emailErr);
+  }
+};
+
 // SHARED MESSAGE DISPLAY FUNCTION
 function showMessage(text, isError = false, form) {
   let msgEl = form.querySelector("#form-status");
