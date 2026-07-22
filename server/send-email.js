@@ -98,6 +98,59 @@ app.post('/send-otp', async (req, res) => {
   }
 });
 
+app.post('/send-visa-notification', async (req, res) => {
+  const { referenceNumber, firstName, lastName, email, phone, passportCountry, validVisaType, submittedAt } = req.body;
+  if (!referenceNumber || !email) return res.status(400).json({ success: false, error: 'Missing fields' });
+
+  const date = new Date(submittedAt || Date.now()).toLocaleString('en-GB', { dateStyle: 'full', timeStyle: 'short' });
+  const html = `
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<style>
+  body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;margin:0;padding:24px;color:#333}
+  .card{max-width:560px;margin:0 auto;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1)}
+  .header{background:#0a3d62;padding:24px 32px;color:#fff}
+  .header h1{margin:0;font-size:1.2rem} .header p{margin:4px 0 0;opacity:.7;font-size:.85rem}
+  .body{padding:28px 32px}
+  .row{display:flex;border-bottom:1px solid #f0f0f0;padding:10px 0;font-size:.9rem}
+  .row:last-child{border:none}
+  .label{color:#888;width:160px;flex-shrink:0;font-weight:600}
+  .val{color:#222}
+  .ref{font-family:monospace;background:#f0f6ff;border:1px solid #cce0ff;padding:3px 10px;border-radius:4px;font-weight:700;color:#0a3d62;font-size:1rem}
+  .footer{border-top:1px solid #eef0f3;padding:16px 32px;font-size:.78rem;color:#aaa;text-align:center}
+</style></head><body>
+<div class="card">
+  <div class="header">
+    <h1>🕋 New Umrah Visa Application</h1>
+    <p>Submitted via deenvoyage.com</p>
+  </div>
+  <div class="body">
+    <div class="row"><span class="label">Reference</span><span class="val"><span class="ref">${referenceNumber}</span></span></div>
+    <div class="row"><span class="label">Applicant</span><span class="val">${firstName} ${lastName}</span></div>
+    <div class="row"><span class="label">Email</span><span class="val">${email}</span></div>
+    <div class="row"><span class="label">Phone</span><span class="val">${phone || '—'}</span></div>
+    <div class="row"><span class="label">Passport Country</span><span class="val">${passportCountry || '—'}</span></div>
+    <div class="row"><span class="label">Valid Visa Type</span><span class="val">${validVisaType || 'N/A'}</span></div>
+    <div class="row"><span class="label">Submitted</span><span class="val">${date}</span></div>
+  </div>
+  <div class="footer">Log in to the admin dashboard to view uploaded documents.</div>
+</div>
+</body></html>`;
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: 'Deen Voyage <hello@deenvoyage.com>',
+      to: ['jamiu@deenvoyage.com'],
+      subject: `New Visa Application — ${referenceNumber} (${firstName} ${lastName})`,
+      html
+    });
+    if (error) return res.status(500).json({ success: false, error: error.message });
+    res.json({ success: true, id: data.id });
+  } catch (error) {
+    console.error('Visa notification error:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 app.post('/send-lecture-emails', async (req, res) => {
   const { firstName, lastName, email, phone, attendees, registrationNumber } = req.body;
 
