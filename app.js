@@ -226,6 +226,7 @@ window.manualLogin = function () {
     document.getElementById("login-section").classList.add("d-none");
     document.getElementById("dashboard-section").classList.remove("d-none");
     loadRegistrations();
+    loadVisaApplications();
   } else {
     document.getElementById("login-error").innerText = "Invalid email or password.";
   }
@@ -259,6 +260,49 @@ function loadRegistrations() {
     .catch(console.error);
 }
 
+
+function loadVisaApplications() {
+  const tbody = document.getElementById("visa-table-body");
+  if (!tbody) return;
+  tbody.innerHTML = "";
+
+  get(ref(database, "visa_applications"))
+    .then(snapshot => {
+      if (!snapshot.exists()) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:#999;">No visa applications yet.</td></tr>';
+        return;
+      }
+      const entries = Object.values(snapshot.val()).reverse();
+      entries.forEach(v => {
+        const date = v.submittedAt ? new Date(v.submittedAt).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' }) : '—';
+        const docLinks = [
+          v.passportURL              ? `<a href="${v.passportURL}" target="_blank">📄 Passport</a>` : '',
+          v.flightTicketURL          ? `<a href="${v.flightTicketURL}" target="_blank">✈️ Flight</a>` : '',
+          v.meccaHotelReservationURL  ? `<a href="${v.meccaHotelReservationURL}" target="_blank">🕋 Mecca Hotel</a>` : '',
+          v.medinaHotelReservationURL ? `<a href="${v.medinaHotelReservationURL}" target="_blank">🕌 Medina Hotel</a>` : '',
+          v.hotelReservationURL      ? `<a href="${v.hotelReservationURL}" target="_blank">🏨 Hotel</a>` : '',
+        ].filter(Boolean).join('');
+        const flightInfo = v.flightOption === 'book_dv' ? 'Booking via DV' : (v.flightTicketURL ? 'Has ticket' : (v.flightOption || '—'));
+        const hotelInfo  = v.meccaHotel ? `🕋 ${v.meccaHotel} / 🕌 ${v.medinaHotel || '—'}` : (v.hotel || '—');
+        const dates      = v.travelFrom ? `${v.travelFrom} → ${v.travelTo}` : '—';
+
+        tbody.innerHTML += `<tr>
+          <td><span class="ref-badge">${v.referenceNumber || '—'}</span></td>
+          <td>${v.firstName || ''} ${v.lastName || ''}</td>
+          <td>${v.email || '—'}</td>
+          <td>${v.phone || '—'}</td>
+          <td>${v.passportCountry || '—'}</td>
+          <td>${v.validVisaType || '—'}</td>
+          <td>${flightInfo}</td>
+          <td>${hotelInfo}</td>
+          <td>${dates}</td>
+          <td>${date}</td>
+          <td class="doc-links">${docLinks || '—'}</td>
+        </tr>`;
+      });
+    })
+    .catch(console.error);
+}
 
 // QATAR VACATION REGISTRATION HANDLER
 window.submitQatarRegistration = async function(data) {
@@ -453,7 +497,7 @@ document.getElementById("signOutBtn").addEventListener("click", () => {
 
 // saving Dashboard Logic
 auth.onAuthStateChanged(user => {
-  if (user && location.pathname.includes("dashboard")) {
+  if (user && document.getElementById("userEmail")) {
     const uid = user.uid;
     document.getElementById("userEmail").textContent = user.email;
 
@@ -464,17 +508,15 @@ auth.onAuthStateChanged(user => {
     // Fetch and display user's full name
     onValue(userRef, snapshot => {
       const data = snapshot.val();
-      if (data && data.firstName && data.surname) {
-        document.getElementById("userName").textContent = `${data.firstName} ${data.surname}`;
-      } else {
-        document.getElementById("userName").textContent = "User";
-      }
+      const nameEl = document.getElementById("userName");
+      if (nameEl) nameEl.textContent = (data && data.firstName && data.surname) ? `${data.firstName} ${data.surname}` : "User";
     });
 
     // Goal
     onValue(goalRef, (snapshot) => {
       const goal = snapshot.val() || 0;
-      document.getElementById("goalDisplay").textContent = goal;
+      const goalEl = document.getElementById("goalDisplay");
+      if (goalEl) goalEl.textContent = goal;
     });
 
     // Savings
@@ -487,12 +529,15 @@ auth.onAuthStateChanged(user => {
         }
       });
 
-      document.getElementById("totalSaved").textContent = total;
-
-      const goal = parseFloat(document.getElementById("goalDisplay").textContent);
+      const totalEl   = document.getElementById("totalSaved");
+      const goalEl    = document.getElementById("goalDisplay");
+      const barEl     = document.getElementById("progressBar");
+      if (!totalEl || !goalEl || !barEl) return;
+      totalEl.textContent = total;
+      const goal = parseFloat(goalEl.textContent);
       const percent = goal > 0 ? Math.min((total / goal) * 100, 100) : 0;
-      document.getElementById("progressBar").style.width = percent + "%";
-      document.getElementById("progressBar").textContent = Math.round(percent) + "%";
+      barEl.style.width = percent + "%";
+      barEl.textContent = Math.round(percent) + "%";
     });
 
     // Set Goal

@@ -298,6 +298,111 @@
 
     /* ── Divider ── */
     .section-divider { border: none; border-top: 1px solid #eef2f8; margin: 6px 0 20px; }
+
+    /* ── Option cards (flight / hotel) ── */
+    .option-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+    @media (max-width: 480px) { .option-cards { grid-template-columns: 1fr; } }
+    .option-card {
+      display: flex; align-items: center; gap: 10px;
+      background: #fff; border: 1.5px solid #dce4ee;
+      border-radius: 10px; padding: 12px 14px; cursor: pointer; transition: border-color .18s, background .18s;
+    }
+    .option-card:has(input:checked) { border-color: #0a3d62; background: #eef5fb; }
+    .option-card input[type="radio"] { accent-color: #0a3d62; width: 16px; height: 16px; flex-shrink: 0; }
+    .option-card span { font-size: .88rem; font-weight: 600; color: #1d2939; line-height: 1.4; }
+    .option-label { font-size: .82rem; font-weight: 700; color: #444; margin-bottom: 8px; }
+    .option-label .req { color: #e8302a; }
+
+    /* ── Requirements / instructions ── */
+    .req-block {
+      background: #fff;
+      border: 1px solid #e4eaf2;
+      border-radius: 14px;
+      padding: 24px 28px;
+      margin-bottom: 18px;
+      text-align: left;
+      box-shadow: 0 3px 14px rgba(10,61,98,.06);
+    }
+    .req-block h4 {
+      font-family: 'Source Serif Pro', serif;
+      font-size: 1rem;
+      color: #0a3d62;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .req-block ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .req-block ul li {
+      font-size: .87rem;
+      color: #444;
+      padding: 5px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      line-height: 1.5;
+    }
+    .req-block ul li::before { content: "•"; color: #0a3d62; font-weight: 700; flex-shrink: 0; }
+    .req-block ul li .dv-handle { color: #1f8a4c; font-weight: 700; }
+
+    .payment-block {
+      background: #fff;
+      border: 1px solid #e4eaf2;
+      border-radius: 14px;
+      padding: 22px 28px;
+      margin-bottom: 24px;
+      text-align: left;
+      box-shadow: 0 3px 14px rgba(10,61,98,.06);
+    }
+    .payment-block h4 {
+      font-family: 'Source Serif Pro', serif;
+      font-size: 1rem;
+      color: #0a3d62;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .pay-group { margin-bottom: 16px; }
+    .pay-group:last-child { margin-bottom: 0; }
+    .pay-group .pay-label {
+      font-size: .82rem;
+      font-weight: 700;
+      color: #0a3d62;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      margin-bottom: 8px;
+    }
+    .pay-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 14px;
+      background: #f8fbff;
+      border: 1px solid #e0ecf8;
+      border-radius: 9px;
+      margin-bottom: 6px;
+      font-size: .86rem;
+    }
+    .pay-row .pay-icon { font-size: 1.1rem; flex-shrink: 0; }
+    .pay-row strong { color: #0a3d62; }
+    .pay-row .pay-detail { color: #555; }
+    .pay-or { text-align: center; font-size: .78rem; color: #aaa; font-weight: 700; margin: 6px 0; }
+    .req-section-label {
+      font-size: .75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: #0a3d62;
+      background: #e8f0fb;
+      border-radius: 999px;
+      padding: 3px 12px;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
   </style>
 </head>
 
@@ -349,8 +454,67 @@
 
     <!-- ══ STEP 1: Email Verification ══ -->
     <div id="verify-screen" data-aos="fade-up">
+
+      <!-- Requirements -->
+      <div class="req-block">
+        <h4>🇳🇬 Nigerian Passport Holders <span style="font-weight:400;font-size:.8rem;color:#667085;">(with Western visa/residency)</span></h4>
+        <ul>
+          <li>Valid Nigerian passport <span style="color:#888;">(minimum 6 months validity)</span></li>
+         
+          <li>Confirmed flight tickets— <span class="dv-handle">✅ Deen Voyage can handle this</span></li>
+          <li>Nusuk-approved hotel booking — <span class="dv-handle">✅ Deen Voyage can handle this</span></li>
+          <li>Ground transportation — <span style="color:#c0392b;font-weight:700;">✅ Deen Voyage MUST arrange this</span></li>
+          <li>Visa fee payment</li>
+        </ul>
+      </div>
+
+      <div class="req-block">
+        <h4>🌍 Other Passport Holders <span style="font-weight:400;font-size:.8rem;color:#667085;">(eVisa-eligible, e.g. Canadian passport)</span></h4>
+        <ul>
+          <li>Upload passport</li>
+          <li>Pay visa fee</li>
+        </ul>
+      </div>
+
+      <!-- Payment -->
+      <div class="payment-block">
+        <h4>💳 Visa Fee Payment</h4>
+
+        <div class="pay-group">
+          <div class="pay-label">🇳🇬 Nigerian Passport Holders</div>
+          <div class="pay-row">
+            <span class="pay-icon">🏦</span>
+            <div>
+              <div><strong>550,000 NGN</strong></div>
+              <div class="pay-detail">Account Name: DEEN VOYAGE VENTURES</div>
+              <div class="pay-detail">Account Number: <strong>3815060425</strong></div>
+              <div class="pay-detail">Bank: Ethical MFB</div>
+            </div>
+          </div>
+          <div class="pay-or">— or —</div>
+          <div class="pay-row">
+            <span class="pay-icon">📧</span>
+            <div>
+              <div><strong>570 CAD</strong> via Interac</div>
+              <div class="pay-detail">hello@deenvoyage.com</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pay-group">
+          <div class="pay-label">🌍 Other Passport Holders</div>
+          <div class="pay-row">
+            <span class="pay-icon">📧</span>
+            <div>
+              <div><strong>200 CAD</strong> via Interac</div>
+              <div class="pay-detail">hello@deenvoyage.com</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="lock-icon">✉️</div>
-      <h2>Verify Your Email First</h2>
+      <h2>Verify Your Email to Begin</h2>
       <p>Enter your email address. We'll send you a 6-digit verification code before you can begin your application.</p>
 
       <!-- Email entry step -->
@@ -366,12 +530,12 @@
           Code sent to <span id="otp-sent-to" style="font-weight:700;"></span>
         </p>
         <div class="otp-row">
-          <input type="text" maxlength="1" class="otp-box" id="otp0" oninput="otpInput(this,0)" onkeydown="otpBack(event,0)" />
-          <input type="text" maxlength="1" class="otp-box" id="otp1" oninput="otpInput(this,1)" onkeydown="otpBack(event,1)" />
-          <input type="text" maxlength="1" class="otp-box" id="otp2" oninput="otpInput(this,2)" onkeydown="otpBack(event,2)" />
-          <input type="text" maxlength="1" class="otp-box" id="otp3" oninput="otpInput(this,3)" onkeydown="otpBack(event,3)" />
-          <input type="text" maxlength="1" class="otp-box" id="otp4" oninput="otpInput(this,4)" onkeydown="otpBack(event,4)" />
-          <input type="text" maxlength="1" class="otp-box" id="otp5" oninput="otpInput(this,5)" onkeydown="otpBack(event,5)" />
+          <input type="text" inputmode="numeric" maxlength="1" class="otp-box" id="otp0" oninput="otpInput(this,0)" onkeydown="otpBack(event,0)" onpaste="otpPaste(event)" />
+          <input type="text" inputmode="numeric" maxlength="1" class="otp-box" id="otp1" oninput="otpInput(this,1)" onkeydown="otpBack(event,1)" onpaste="otpPaste(event)" />
+          <input type="text" inputmode="numeric" maxlength="1" class="otp-box" id="otp2" oninput="otpInput(this,2)" onkeydown="otpBack(event,2)" onpaste="otpPaste(event)" />
+          <input type="text" inputmode="numeric" maxlength="1" class="otp-box" id="otp3" oninput="otpInput(this,3)" onkeydown="otpBack(event,3)" onpaste="otpPaste(event)" />
+          <input type="text" inputmode="numeric" maxlength="1" class="otp-box" id="otp4" oninput="otpInput(this,4)" onkeydown="otpBack(event,4)" onpaste="otpPaste(event)" />
+          <input type="text" inputmode="numeric" maxlength="1" class="otp-box" id="otp5" oninput="otpInput(this,5)" onkeydown="otpBack(event,5)" onpaste="otpPaste(event)" />
         </div>
         <div class="status-msg verify-err" id="otp-err"></div>
         <button type="button" class="verify-btn" id="verify-btn" onclick="verifyOTP()">Verify &amp; Continue</button>
@@ -517,39 +681,6 @@
             </select>
           </div>
 
-          <!-- Nigeria only: valid visa question -->
-          <div id="nigeria-visa-section">
-            <div class="nv-label">🇸🇦 Which valid visa do you currently hold? <span class="req">*</span></div>
-            <div class="visa-check-grid">
-              <label class="visa-check-item">
-                <input type="radio" name="ng_visa" value="Schengen" />
-                <span>🇪🇺 Schengen</span>
-              </label>
-              <label class="visa-check-item">
-                <input type="radio" name="ng_visa" value="United Kingdom" />
-                <span>🇬🇧 United Kingdom</span>
-              </label>
-              <label class="visa-check-item">
-                <input type="radio" name="ng_visa" value="Canada" />
-                <span>🇨🇦 Canada</span>
-              </label>
-              <label class="visa-check-item">
-                <input type="radio" name="ng_visa" value="United States" />
-                <span>🇺🇸 United States</span>
-              </label>
-              <label class="visa-check-item">
-                <input type="radio" name="ng_visa" value="Saudi Arabia - Past Umrah/Hajj Visa" />
-                <span>🕋 Past Saudi Visa (Umrah / Hajj)</span>
-              </label>
-              <label class="visa-check-item">
-                <input type="radio" name="ng_visa" value="Other" />
-                <span>🌍 Other</span>
-              </label>
-            </div>
-            <div class="info-note">
-              <strong>Note:</strong> Nigerian passport holders require a valid visa from one of the above countries, or a previous Saudi Umrah/Hajj visa, to be eligible for Umrah visa processing.
-            </div>
-          </div>
         </div>
 
         <!-- Document Uploads -->
@@ -576,65 +707,188 @@
             </div>
           </div>
 
-          <!-- Visit Visa / Resident Permit / Saudi Visa -->
-          <div class="field-group" style="margin-top:4px;">
-            <label>Visit Visa / Resident Permit / Saudi Visa <span class="req">*</span></label>
-            <div class="upload-zone" onclick="document.getElementById('file-visadoc').click()">
-              <input type="file" id="file-visadoc" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile(this,'visadoc')" />
-              <div class="upload-icon">📋</div>
-              <strong>Click or drag to upload</strong>
-              <p>PDF, JPG or PNG &nbsp;·&nbsp; Max 5 MB</p>
-            </div>
-            <div class="upload-progress" id="prog-visadoc"><div class="bar" id="bar-visadoc"></div></div>
-            <div class="file-preview" id="prev-visadoc">
-              <div class="file-icon">📄</div>
-              <div class="file-info">
-                <div class="file-name" id="prev-visadoc-name"></div>
-                <div class="file-size" id="prev-visadoc-size"></div>
-              </div>
-              <button type="button" class="remove-file" onclick="removeFile('visadoc')">✕</button>
-            </div>
-          </div>
+          <!-- Nigeria-only section -->
+          <div id="nigeria-uploads" style="display:none;">
 
-          <!-- Passport Photograph -->
-          <div class="field-group" style="margin-top:4px;">
-            <label>Passport Photograph <span class="req">*</span></label>
-            <div class="upload-zone" onclick="document.getElementById('file-photo').click()">
-              <input type="file" id="file-photo" accept=".jpg,.jpeg,.png" onchange="handleFile(this,'photo')" />
-              <div class="upload-icon">🖼️</div>
-              <strong>Click or drag to upload</strong>
-              <p>JPG or PNG &nbsp;·&nbsp; Max 5 MB &nbsp;·&nbsp; White background preferred</p>
-            </div>
-            <div class="upload-progress" id="prog-photo"><div class="bar" id="bar-photo"></div></div>
-            <div class="file-preview" id="prev-photo">
-              <img id="prev-photo-img" src="" alt="" style="display:none;width:44px;height:44px;object-fit:cover;border-radius:6px;" />
-              <div class="file-icon" id="prev-photo-icon">📄</div>
-              <div class="file-info">
-                <div class="file-name" id="prev-photo-name"></div>
-                <div class="file-size" id="prev-photo-size"></div>
+            <!-- Flight ticket -->
+            <div class="field-group" style="margin-top:12px;">
+              <div class="option-label">✈️ Flight Ticket <span class="req">*</span></div>
+              <div class="option-cards">
+                <label class="option-card">
+                  <input type="radio" name="flight_opt" value="have_ticket" onchange="toggleFlightUpload()" />
+                  <span>I have a flight ticket</span>
+                </label>
+                <label class="option-card">
+                  <input type="radio" name="flight_opt" value="book_dv" onchange="toggleFlightUpload()" />
+                  <span>I am booking from Deen Voyage</span>
+                </label>
               </div>
-              <button type="button" class="remove-file" onclick="removeFile('photo')">✕</button>
+              <div id="flight-upload-wrap" style="display:none;">
+                <div class="upload-zone" onclick="document.getElementById('file-flight').click()">
+                  <input type="file" id="file-flight" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile(this,'flight')" />
+                  <div class="upload-icon">✈️</div>
+                  <strong>Click or drag to upload</strong>
+                  <p>PDF, JPG or PNG &nbsp;·&nbsp; Max 5 MB</p>
+                </div>
+                <div class="upload-progress" id="prog-flight"><div class="bar" id="bar-flight"></div></div>
+                <div class="file-preview" id="prev-flight">
+                  <div class="file-icon">📄</div>
+                  <div class="file-info">
+                    <div class="file-name" id="prev-flight-name"></div>
+                    <div class="file-size" id="prev-flight-size"></div>
+                  </div>
+                  <button type="button" class="remove-file" onclick="removeFile('flight')">✕</button>
+                </div>
+              </div>
             </div>
-          </div>
 
-          <!-- Confirmed Flight Ticket (OPTIONAL) -->
-          <hr class="section-divider" />
-          <div class="field-group" style="margin-top:4px;">
-            <label>Confirmed Flight Ticket <span class="opt">(optional)</span></label>
-            <div class="upload-zone optional-zone" onclick="document.getElementById('file-flight').click()">
-              <input type="file" id="file-flight" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile(this,'flight')" />
-              <div class="upload-icon">✈️</div>
-              <strong>Click or drag to upload</strong>
-              <p>PDF, JPG or PNG &nbsp;·&nbsp; Max 5 MB &nbsp;·&nbsp; Upload if you already have a confirmed ticket</p>
-            </div>
-            <div class="upload-progress" id="prog-flight"><div class="bar" id="bar-flight"></div></div>
-            <div class="file-preview" id="prev-flight">
-              <div class="file-icon">📄</div>
-              <div class="file-info">
-                <div class="file-name" id="prev-flight-name"></div>
-                <div class="file-size" id="prev-flight-size"></div>
+            <!-- Hotel -->
+            <div class="field-group" style="margin-top:4px;">
+              <div class="option-label">🏨 Hotel <span class="req">*</span></div>
+              <div class="option-cards">
+                <label class="option-card">
+                  <input type="radio" name="hotel_opt" value="book_dv" onchange="toggleHotelSelect()" />
+                  <span>I will book from Deen Voyage</span>
+                </label>
+                <label class="option-card">
+                  <input type="radio" name="hotel_opt" value="have_hotel" onchange="toggleHotelSelect()" />
+                  <span>I have a hotel</span>
+                </label>
               </div>
-              <button type="button" class="remove-file" onclick="removeFile('flight')">✕</button>
+              <div id="hotel-select-wrap" style="display:none;">
+                <!-- Mecca Hotel -->
+                <div class="field-group">
+                  <label style="font-size:.82rem;font-weight:700;color:#444;display:block;margin-bottom:6px;">🕋 Mecca Hotel <span style="color:#e8302a;">*</span></label>
+                  <select id="v_hotel_mecca" onchange="toggleHotelOther('mecca')">
+                    <option value="">— Select Mecca hotel —</option>
+                    <optgroup label="5-Star">
+                      <option>ANJUM HOTELS</option>
+                      <option>Jabal Omar Hyatt Regency</option>
+                      <option>Infinity Hotel</option>
+                      <option>Hilton Jabal Omar Hilton</option>
+                      <option>Dar Al Tawhid Intercontinental Hotel</option>
+                      <option>Al Ghufran Safwah</option>
+                      <option>Makarem Ajyad Makkah Hotel</option>
+                      <option>Jabal Omar Jumeirah Hotel</option>
+                      <option>Tilal Hotel</option>
+                      <option>Raffles Makkah Palace</option>
+                      <option>Jabal Omar Conrad</option>
+                      <option>Jabal Omar Marriott Hotel</option>
+                      <option>Makkah Clock Royal Tower (Fairmont)</option>
+                      <option>Jabal Omar Address Hotel</option>
+                      <option>Swissotel Makkah</option>
+                      <option>Rotana Jabal Omar</option>
+                    </optgroup>
+                    <optgroup label="4-Star">
+                      <option>Novotel Thakher Hotel</option>
+                      <option>Hajar Tower Hotel</option>
+                      <option>Maather Aldiyafa</option>
+                      <option>Jabal Omar Hilton Suite</option>
+                      <option>Ramada by Wyndham Makkah Zad Plus</option>
+                      <option>Doubletree By Hilton Jabal Omar Makkah</option>
+                      <option>Four Points by Sheraton Hotel</option>
+                      <option>Zamzam Pullman Makkah Hotel</option>
+                      <option>Makarem Al-Bayt Hotel</option>
+                      <option>Park Inn Thakher Hotel East</option>
+                      <option>Park Inn Thakher West</option>
+                      <option>Elaf Kinda Hotel</option>
+                      <option>Wirgan Alnoor Hotel</option>
+                      <option>Elaf Qinwan</option>
+                      <option>Al Dana Diamond Hotel</option>
+                      <option>Al Marwa Rayhaan by Rotana</option>
+                      <option>Swissotel Al Maqam Makkah</option>
+                      <option>Wirgan Al Aziziyah Hotel</option>
+                      <option>Sheraton Makkah Jabal Al Kaaba Hotel</option>
+                      <option>Courtyard By Marriott Makkah</option>
+                      <option>Arak Al Shariah Hotel</option>
+                    </optgroup>
+                    <option value="Other">Other 4 or 5-Star Hotel</option>
+                  </select>
+                  <div id="hotel-other-mecca" style="display:none;margin-top:8px;">
+                    <input type="text" id="v_hotel_mecca_other" placeholder="Enter Mecca hotel name" style="width:100%;border:1.5px solid #dce4ee;border-radius:10px;padding:10px 14px;font-size:.95rem;" />
+                  </div>
+                </div>
+                <!-- Mecca reservation upload -->
+                <div class="field-group" style="margin-top:4px;">
+                  <label style="font-size:.82rem;font-weight:700;color:#444;display:block;margin-bottom:6px;">📄 Mecca Hotel Reservation <span style="color:#e8302a;">*</span></label>
+                  <div class="upload-zone" onclick="document.getElementById('file-hotel-mecca').click()">
+                    <input type="file" id="file-hotel-mecca" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile(this,'hotel-mecca')" />
+                    <div class="upload-icon">🕋</div>
+                    <strong>Click or drag to upload</strong>
+                    <p>PDF, JPG or PNG &nbsp;·&nbsp; Max 5 MB</p>
+                  </div>
+                  <div class="upload-progress" id="prog-hotel-mecca"><div class="bar" id="bar-hotel-mecca"></div></div>
+                  <div class="file-preview" id="prev-hotel-mecca">
+                    <div class="file-icon">📄</div>
+                    <div class="file-info">
+                      <div class="file-name" id="prev-hotel-mecca-name"></div>
+                      <div class="file-size" id="prev-hotel-mecca-size"></div>
+                    </div>
+                    <button type="button" class="remove-file" onclick="removeFile('hotel-mecca')">✕</button>
+                  </div>
+                </div>
+
+                <!-- Medina Hotel -->
+                <div class="field-group" style="margin-top:12px;">
+                  <label style="font-size:.82rem;font-weight:700;color:#444;display:block;margin-bottom:6px;">🕌 Medina Hotel <span style="color:#e8302a;">*</span></label>
+                  <select id="v_hotel_medina" onchange="toggleHotelOther('medina'); toggleMedinaUpload()">
+                    <option value="">— Select Medina hotel —</option>
+                    <option value="No stay in Medina">No stay in Medina</option>
+                    <optgroup label="5-Star">
+                      <option>Sofitel Shahd Almadinah</option>
+                      <option>Saja Almadinah Hotel</option>
+                    </optgroup>
+                    <optgroup label="4-Star">
+                      <option>Millennium Alaqeeq</option>
+                      <option>Maden Hotel</option>
+                      <option>Dallah Taibah Hotel</option>
+                      <option>Millennium Taiba</option>
+                      <option>Elaf Taiba Hotel</option>
+                      <option>The Executive Sunrise</option>
+                      <option>The House of Faith</option>
+                    </optgroup>
+                    <option value="Other">Other 4 or 5-Star Hotel</option>
+                  </select>
+                  <div id="hotel-other-medina" style="display:none;margin-top:8px;">
+                    <input type="text" id="v_hotel_medina_other" placeholder="Enter Medina hotel name" style="width:100%;border:1.5px solid #dce4ee;border-radius:10px;padding:10px 14px;font-size:.95rem;" />
+                  </div>
+                </div>
+
+                <!-- Medina reservation upload (hidden if "No stay in Medina") -->
+                <div class="field-group" id="medina-hotel-upload" style="margin-top:4px;">
+                  <label style="font-size:.82rem;font-weight:700;color:#444;display:block;margin-bottom:6px;">📄 Medina Hotel Reservation <span style="color:#e8302a;">*</span></label>
+                  <div class="upload-zone" onclick="document.getElementById('file-hotel-medina').click()">
+                    <input type="file" id="file-hotel-medina" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile(this,'hotel-medina')" />
+                    <div class="upload-icon">🕌</div>
+                    <strong>Click or drag to upload</strong>
+                    <p>PDF, JPG or PNG &nbsp;·&nbsp; Max 5 MB</p>
+                  </div>
+                  <div class="upload-progress" id="prog-hotel-medina"><div class="bar" id="bar-hotel-medina"></div></div>
+                  <div class="file-preview" id="prev-hotel-medina">
+                    <div class="file-icon">📄</div>
+                    <div class="file-info">
+                      <div class="file-name" id="prev-hotel-medina-name"></div>
+                      <div class="file-size" id="prev-hotel-medina-size"></div>
+                    </div>
+                    <button type="button" class="remove-file" onclick="removeFile('hotel-medina')">✕</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /nigeria-uploads -->
+
+          <!-- Non-Nigeria: travel dates -->
+          <div id="non-nigeria-extras" style="display:none;margin-top:12px;">
+            <div class="field-row">
+              <div class="field-group">
+                <label for="v_travel_from">Travel From <span class="req">*</span></label>
+                <input type="date" id="v_travel_from" />
+              </div>
+              <div class="field-group">
+                <label for="v_travel_to">Travel To <span class="req">*</span></label>
+                <input type="date" id="v_travel_to" />
+              </div>
             </div>
           </div>
         </div>
@@ -806,6 +1060,19 @@
       }
     }
 
+    function otpPaste(e) {
+      e.preventDefault();
+      const digits = (e.clipboardData.getData('text') || '').replace(/\D/g, '').slice(0, 6);
+      if (!digits) return;
+      digits.split('').forEach((d, i) => {
+        const box = document.getElementById('otp' + i);
+        if (box) box.value = d;
+      });
+      const last = Math.min(digits.length - 1, 5);
+      document.getElementById('otp' + last).focus();
+      if (digits.length === 6) verifyOTP();
+    }
+
     function getOTPValue() {
       return [0,1,2,3,4,5].map(i => document.getElementById('otp' + i).value).join('');
     }
@@ -845,7 +1112,29 @@
     /* ── Passport country change ── */
     function handlePassportChange() {
       const val = document.getElementById('v_passport').value;
-      document.getElementById('nigeria-visa-section').style.display = val === 'Nigeria' ? 'block' : 'none';
+      const isNg = val === 'Nigeria';
+      document.getElementById('nigeria-uploads').style.display    = isNg ? 'block' : 'none';
+      document.getElementById('non-nigeria-extras').style.display = (!isNg && val) ? 'block' : 'none';
+    }
+
+    function toggleFlightUpload() {
+      const val = document.querySelector('input[name="flight_opt"]:checked');
+      document.getElementById('flight-upload-wrap').style.display = (val && val.value === 'have_ticket') ? 'block' : 'none';
+    }
+
+    function toggleHotelSelect() {
+      const val = document.querySelector('input[name="hotel_opt"]:checked');
+      document.getElementById('hotel-select-wrap').style.display = (val && val.value === 'have_hotel') ? 'block' : 'none';
+    }
+
+    function toggleHotelOther(city) {
+      const sel = document.getElementById('v_hotel_' + city);
+      document.getElementById('hotel-other-' + city).style.display = sel.value === 'Other' ? 'block' : 'none';
+    }
+
+    function toggleMedinaUpload() {
+      const sel = document.getElementById('v_hotel_medina');
+      document.getElementById('medina-hotel-upload').style.display = sel.value === 'No stay in Medina' ? 'none' : 'block';
     }
 
     /* ── File preview ── */
@@ -915,7 +1204,7 @@
       authDomain: "deenvoyage-f065a.firebaseapp.com",
       databaseURL: "https://deenvoyage-f065a-default-rtdb.firebaseio.com",
       projectId: "deenvoyage-f065a",
-      storageBucket: "deenvoyage-f065a.appspot.com",
+      storageBucket: "deenvoyage-f065a.firebasestorage.app",
       messagingSenderId: "76816405729",
       appId: "1:76816405729:web:d1db037c0a7c27c6f613a0"
     };
@@ -959,28 +1248,51 @@
       const phone    = document.getElementById('v_phone').value.trim();
       const passport = document.getElementById('v_passport').value;
 
+      const isNigeria    = passport === 'Nigeria';
       const filePassport = document.getElementById('file-passport').files[0];
-      const fileVisadoc  = document.getElementById('file-visadoc').files[0];
-      const filePhoto    = document.getElementById('file-photo').files[0];
-      const fileFlight   = document.getElementById('file-flight').files[0]; // optional
+      const flightOptEl  = isNigeria ? document.querySelector('input[name="flight_opt"]:checked') : null;
+      const flightOpt    = flightOptEl ? flightOptEl.value : null;
+      const fileFlight   = (isNigeria && flightOpt === 'have_ticket') ? document.getElementById('file-flight').files[0] : null;
+      const hotelOptEl   = isNigeria ? document.querySelector('input[name="hotel_opt"]:checked') : null;
+      const hotelOpt     = hotelOptEl ? hotelOptEl.value : null;
+      const getMeccaHotel = () => {
+        const sel = document.getElementById('v_hotel_mecca');
+        return sel.value === 'Other' ? document.getElementById('v_hotel_mecca_other').value.trim() : sel.value;
+      };
+      const getMedinaHotel = () => {
+        const sel = document.getElementById('v_hotel_medina');
+        return sel.value === 'Other' ? document.getElementById('v_hotel_medina_other').value.trim() : sel.value;
+      };
+      const meccaHotel  = (isNigeria && hotelOpt === 'have_hotel') ? getMeccaHotel()  : null;
+      const medinaHotel = (isNigeria && hotelOpt === 'have_hotel') ? getMedinaHotel() : null;
+
+      const travelFrom = !isNigeria ? document.getElementById('v_travel_from').value : null;
+      const travelTo   = !isNigeria ? document.getElementById('v_travel_to').value   : null;
 
       // Validate
       if (!fname || !lname || !phone || !passport) {
         errEl.textContent = 'Please fill in all required fields.';
-        errEl.classList.add('show');
-        return;
-      }
-      if (passport === 'Nigeria') {
-        const ngVisa = document.querySelector('input[name="ng_visa"]:checked');
-        if (!ngVisa) {
-          errEl.textContent = 'Please select your valid visa type for Nigerian passport holders.';
-          errEl.classList.add('show');
-          return;
-        }
+        errEl.classList.add('show'); return;
       }
       if (!filePassport) { errEl.textContent = 'Please upload your passport.'; errEl.classList.add('show'); return; }
-      if (!fileVisadoc)  { errEl.textContent = 'Please upload your visit visa / resident permit / Saudi visa.'; errEl.classList.add('show'); return; }
-      if (!filePhoto)    { errEl.textContent = 'Please upload your passport photograph.'; errEl.classList.add('show'); return; }
+      if (!isNigeria && (!travelFrom || !travelTo)) {
+        errEl.textContent = 'Please select your travel dates.'; errEl.classList.add('show'); return;
+      }
+      if (isNigeria) {
+        if (!flightOpt) { errEl.textContent = 'Please select your flight ticket option.'; errEl.classList.add('show'); return; }
+        if (flightOpt === 'have_ticket' && !fileFlight) { errEl.textContent = 'Please upload your flight ticket.'; errEl.classList.add('show'); return; }
+        if (!hotelOpt) { errEl.textContent = 'Please select your hotel option.'; errEl.classList.add('show'); return; }
+        if (hotelOpt === 'have_hotel') {
+          if (!meccaHotel) { errEl.textContent = 'Please select your Mecca hotel.'; errEl.classList.add('show'); return; }
+          const fileMeccaHotel = document.getElementById('file-hotel-mecca').files[0];
+          if (!fileMeccaHotel) { errEl.textContent = 'Please upload your Mecca hotel reservation.'; errEl.classList.add('show'); return; }
+          const medinaVal = document.getElementById('v_hotel_medina').value;
+          if (medinaVal && medinaVal !== 'No stay in Medina') {
+            const fileMedinaHotel = document.getElementById('file-hotel-medina').files[0];
+            if (!fileMedinaHotel) { errEl.textContent = 'Please upload your Medina hotel reservation.'; errEl.classList.add('show'); return; }
+          }
+        }
+      }
 
       submitBtn.disabled = true;
       submitBtn.textContent = 'Uploading…';
@@ -990,49 +1302,62 @@
         const refNum   = await generateRef();
         const basePath = `visa_applications/${refNum}`;
 
-        // Upload required files in parallel
+        const fileMeccaHotel  = (isNigeria && hotelOpt === 'have_hotel') ? document.getElementById('file-hotel-mecca').files[0]  : null;
+        const medinaSelectVal = (isNigeria && hotelOpt === 'have_hotel') ? document.getElementById('v_hotel_medina').value : null;
+        const fileMedinaHotel = (isNigeria && hotelOpt === 'have_hotel' && medinaSelectVal && medinaSelectVal !== 'No stay in Medina')
+          ? document.getElementById('file-hotel-medina').files[0] : null;
+
         const uploads = [
           uploadFile(filePassport, `${basePath}/passport_${filePassport.name}`,
             document.getElementById('bar-passport'), document.getElementById('prog-passport')),
-          uploadFile(fileVisadoc,  `${basePath}/visadoc_${fileVisadoc.name}`,
-            document.getElementById('bar-visadoc'),  document.getElementById('prog-visadoc')),
-          uploadFile(filePhoto,    `${basePath}/photo_${filePhoto.name}`,
-            document.getElementById('bar-photo'),    document.getElementById('prog-photo')),
         ];
-
-        // Optional flight ticket
         if (fileFlight) {
           uploads.push(uploadFile(fileFlight, `${basePath}/flight_${fileFlight.name}`,
             document.getElementById('bar-flight'), document.getElementById('prog-flight')));
         }
+        if (fileMeccaHotel) {
+          uploads.push(uploadFile(fileMeccaHotel, `${basePath}/hotel_mecca_${fileMeccaHotel.name}`,
+            document.getElementById('bar-hotel-mecca'), document.getElementById('prog-hotel-mecca')));
+        }
+        if (fileMedinaHotel) {
+          uploads.push(uploadFile(fileMedinaHotel, `${basePath}/hotel_medina_${fileMedinaHotel.name}`,
+            document.getElementById('bar-hotel-medina'), document.getElementById('prog-hotel-medina')));
+        }
 
-        const urls = await Promise.all(uploads);
-        const [passportURL, visadocURL, photoURL] = urls;
-        const flightURL = fileFlight ? urls[3] : null;
+        const urls        = await Promise.all(uploads);
+        const passportURL = urls[0];
+        let idx = 1;
+        const flightURL       = fileFlight      ? (urls[idx++] || null) : null;
+        const meccaHotelURL   = fileMeccaHotel  ? (urls[idx++] || null) : null;
+        const medinaHotelURL  = fileMedinaHotel ? (urls[idx]   || null) : null;
 
-        const ngVisa = passport === 'Nigeria'
-          ? (document.querySelector('input[name="ng_visa"]:checked') || {}).value || ''
-          : '';
+        const hotelSummary = hotelOpt === 'have_hotel'
+          ? `Mecca: ${meccaHotel} | Medina: ${medinaHotel || 'No stay'}`
+          : 'Booking from Deen Voyage';
 
         // Save to Firebase
         const appRef = push(ref(db, 'visa_applications'));
         await set(appRef, {
-          referenceNumber:  refNum,
-          firstName:        fname,
-          lastName:         lname,
-          email:            email,
-          phone:            phone,
-          passportCountry:  passport,
-          validVisaType:    ngVisa,
-          package:          'Umrah Visa Only',
-          passportURL:      passportURL,
-          visaDocURL:       visadocURL,
-          photoURL:         photoURL,
-          flightTicketURL:  flightURL,
-          submittedAt:      new Date().toISOString()
+          referenceNumber: refNum,
+          firstName:       fname,
+          lastName:        lname,
+          email:           email,
+          phone:           phone,
+          passportCountry: passport,
+          package:         'Umrah Visa Only',
+          flightOption:    flightOpt || null,
+          meccaHotel:      meccaHotel  || (isNigeria ? 'Booking from Deen Voyage' : null),
+          medinaHotel:     medinaHotel || (isNigeria ? 'Booking from Deen Voyage' : null),
+          travelFrom:      travelFrom || null,
+          travelTo:        travelTo   || null,
+          passportURL:             passportURL,
+          flightTicketURL:         flightURL,
+          meccaHotelReservationURL: meccaHotelURL || null,
+          medinaHotelReservationURL: medinaHotelURL || null,
+          submittedAt:     new Date().toISOString()
         });
 
-        // Mirror to registrations (admin dashboard)
+        // Mirror to registrations
         const regRef = push(ref(db, 'registrations'));
         await set(regRef, {
           firstName:         fname,
@@ -1040,11 +1365,28 @@
           email:             email,
           phone:             phone,
           travelType:        'Umrah Visa Only',
-          passportType:      passport + (ngVisa ? ` (${ngVisa})` : ''),
+          passportType:      passport,
           otherRequirements: `Ref: ${refNum}`,
           roomType:          'N/A',
           source:            'umrah-visa.html'
         });
+
+        // Notify admin
+        fetch(SEND_OTP_ENDPOINT + '/send-visa-notification', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            referenceNumber: refNum,
+            firstName: fname, lastName: lname,
+            email, phone,
+            passportCountry: passport,
+            hotel: hotelSummary,
+            flightOption: flightOpt || null,
+            travelFrom: travelFrom || null,
+            travelTo: travelTo || null,
+            submittedAt: new Date().toISOString()
+          })
+        }).catch(() => {});
 
         // Show success
         infoEl.classList.remove('show');
@@ -1057,7 +1399,7 @@
       } catch (err) {
         console.error(err);
         infoEl.classList.remove('show');
-        errEl.textContent = 'Something went wrong. Please try again or email us at hello@deenvoyage.com.';
+        errEl.textContent = 'Something went wrong: ' + (err.message || err.code || err) + ' — or email hello@deenvoyage.com';
         errEl.classList.add('show');
         submitBtn.disabled = false;
         submitBtn.textContent = 'Submit Visa Application →';
