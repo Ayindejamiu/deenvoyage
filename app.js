@@ -276,11 +276,12 @@ function loadVisaApplications() {
       entries.forEach(v => {
         const date = v.submittedAt ? new Date(v.submittedAt).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' }) : '—';
         const docLinks = [
-          v.passportURL              ? `<a href="${v.passportURL}" target="_blank">📄 Passport</a>` : '',
-          v.flightTicketURL          ? `<a href="${v.flightTicketURL}" target="_blank">✈️ Flight</a>` : '',
+          v.passportURL               ? `<a href="${v.passportURL}" target="_blank">📄 Passport</a>` : '',
+          v.flightTicketURL           ? `<a href="${v.flightTicketURL}" target="_blank">✈️ Flight</a>` : '',
           v.meccaHotelReservationURL  ? `<a href="${v.meccaHotelReservationURL}" target="_blank">🕋 Mecca Hotel</a>` : '',
           v.medinaHotelReservationURL ? `<a href="${v.medinaHotelReservationURL}" target="_blank">🕌 Medina Hotel</a>` : '',
-          v.hotelReservationURL      ? `<a href="${v.hotelReservationURL}" target="_blank">🏨 Hotel</a>` : '',
+          v.hotelReservationURL       ? `<a href="${v.hotelReservationURL}" target="_blank">🏨 Hotel</a>` : '',
+          v.priorVisaURL              ? `<a href="${v.priorVisaURL}" target="_blank">🛂 Prior Visa</a>` : '',
         ].filter(Boolean).join('');
         const flightInfo = v.flightOption === 'book_dv' ? 'Booking via DV' : (v.flightTicketURL ? 'Has ticket' : (v.flightOption || '—'));
         const hotelInfo  = v.meccaHotel ? `🕋 ${v.meccaHotel} / 🕌 ${v.medinaHotel || '—'}` : (v.hotel || '—');

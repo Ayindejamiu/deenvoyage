@@ -876,6 +876,38 @@
               </div>
             </div>
 
+            <!-- Prior visa (optional) -->
+            <div class="field-group" style="margin-top:12px;">
+              <div class="option-label">🛂 Do you have a UK, USA, Canada or Europe valid visa, or a previous Umrah / Hajj visa? <span style="font-size:.8rem;color:#888;">(Optional)</span></div>
+              <div class="option-cards">
+                <label class="option-card">
+                  <input type="radio" name="prior_visa" value="yes" onchange="togglePriorVisaUpload()" />
+                  <span>Yes</span>
+                </label>
+                <label class="option-card">
+                  <input type="radio" name="prior_visa" value="no" onchange="togglePriorVisaUpload()" />
+                  <span>No</span>
+                </label>
+              </div>
+              <div id="prior-visa-upload-wrap" style="display:none;margin-top:10px;">
+                <div class="upload-zone" onclick="document.getElementById('file-prior-visa').click()">
+                  <input type="file" id="file-prior-visa" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile(this,'prior-visa')" />
+                  <div class="upload-icon">🛂</div>
+                  <strong>Click or drag to upload visa copy</strong>
+                  <p>PDF, JPG or PNG &nbsp;·&nbsp; Max 5 MB</p>
+                </div>
+                <div class="upload-progress" id="prog-prior-visa"><div class="bar" id="bar-prior-visa"></div></div>
+                <div class="file-preview" id="prev-prior-visa">
+                  <div class="file-icon">📄</div>
+                  <div class="file-info">
+                    <div class="file-name" id="prev-prior-visa-name"></div>
+                    <div class="file-size" id="prev-prior-visa-size"></div>
+                  </div>
+                  <button type="button" class="remove-file" onclick="removeFile('prior-visa')">✕</button>
+                </div>
+              </div>
+            </div>
+
           </div><!-- /nigeria-uploads -->
 
           <!-- Non-Nigeria: travel dates -->
@@ -1137,6 +1169,11 @@
       document.getElementById('medina-hotel-upload').style.display = sel.value === 'No stay in Medina' ? 'none' : 'block';
     }
 
+    function togglePriorVisaUpload() {
+      const val = document.querySelector('input[name="prior_visa"]:checked');
+      document.getElementById('prior-visa-upload-wrap').style.display = (val && val.value === 'yes') ? 'block' : 'none';
+    }
+
     /* ── File preview ── */
     function handleFile(input, key) {
       const file = input.files[0];
@@ -1306,6 +1343,8 @@
         const medinaSelectVal = (isNigeria && hotelOpt === 'have_hotel') ? document.getElementById('v_hotel_medina').value : null;
         const fileMedinaHotel = (isNigeria && hotelOpt === 'have_hotel' && medinaSelectVal && medinaSelectVal !== 'No stay in Medina')
           ? document.getElementById('file-hotel-medina').files[0] : null;
+        const priorVisaOptEl = isNigeria ? document.querySelector('input[name="prior_visa"]:checked') : null;
+        const filePriorVisa  = (priorVisaOptEl && priorVisaOptEl.value === 'yes') ? document.getElementById('file-prior-visa').files[0] : null;
 
         const uploads = [
           uploadFile(filePassport, `${basePath}/passport_${filePassport.name}`,
@@ -1323,13 +1362,18 @@
           uploads.push(uploadFile(fileMedinaHotel, `${basePath}/hotel_medina_${fileMedinaHotel.name}`,
             document.getElementById('bar-hotel-medina'), document.getElementById('prog-hotel-medina')));
         }
+        if (filePriorVisa) {
+          uploads.push(uploadFile(filePriorVisa, `${basePath}/prior_visa_${filePriorVisa.name}`,
+            document.getElementById('bar-prior-visa'), document.getElementById('prog-prior-visa')));
+        }
 
         const urls        = await Promise.all(uploads);
         const passportURL = urls[0];
         let idx = 1;
         const flightURL       = fileFlight      ? (urls[idx++] || null) : null;
         const meccaHotelURL   = fileMeccaHotel  ? (urls[idx++] || null) : null;
-        const medinaHotelURL  = fileMedinaHotel ? (urls[idx]   || null) : null;
+        const medinaHotelURL  = fileMedinaHotel ? (urls[idx++] || null) : null;
+        const priorVisaURL    = filePriorVisa   ? (urls[idx]   || null) : null;
 
         const hotelSummary = hotelOpt === 'have_hotel'
           ? `Mecca: ${meccaHotel} | Medina: ${medinaHotel || 'No stay'}`
@@ -1350,10 +1394,11 @@
           medinaHotel:     medinaHotel || (isNigeria ? 'Booking from Deen Voyage' : null),
           travelFrom:      travelFrom || null,
           travelTo:        travelTo   || null,
-          passportURL:             passportURL,
-          flightTicketURL:         flightURL,
-          meccaHotelReservationURL: meccaHotelURL || null,
+          passportURL:              passportURL,
+          flightTicketURL:          flightURL,
+          meccaHotelReservationURL:  meccaHotelURL  || null,
           medinaHotelReservationURL: medinaHotelURL || null,
+          priorVisaURL:             priorVisaURL   || null,
           submittedAt:     new Date().toISOString()
         });
 
