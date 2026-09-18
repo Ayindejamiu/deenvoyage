@@ -1,0 +1,70 @@
+{
+  "rules": {
+    "crm_leads": {
+      ".read":  "auth != null && root.child('crm_staff').child(auth.uid).exists()",
+      ".write": "auth != null && root.child('crm_staff').child(auth.uid).exists()"
+    },
+    "crm_staff": {
+      ".read": "auth != null",
+      "$uid": {
+        ".write": "auth != null && (auth.uid === $uid || root.child('crm_staff').child(auth.uid).child('role').val() === 'admin')"
+      }
+    },
+    "crm_interactions": {
+      ".read":  "auth != null && root.child('crm_staff').child(auth.uid).exists()",
+      ".write": "auth != null && root.child('crm_staff').child(auth.uid).exists()"
+    },
+    "receipts": {
+      ".read":  "auth != null && root.child('crm_staff').child(auth.uid).exists()",
+      ".write": "auth != null && root.child('crm_staff').child(auth.uid).exists()"
+    },
+    "registrations": {
+      ".read":  "auth != null && root.child('crm_staff').child(auth.uid).exists()",
+      ".write": true
+    },
+    "bookings": {
+      ".read":  "auth != null && root.child('crm_staff').child(auth.uid).exists()",
+      ".write": true
+    },
+    "receiptCounter": {
+      ".read":  "auth != null && root.child('crm_staff').child(auth.uid).exists()",
+      ".write": "auth != null && root.child('crm_staff').child(auth.uid).exists()"
+    },
+    "accounts_income": {
+      ".read":  "auth != null && root.child('crm_staff').child(auth.uid).exists()",
+      ".write": "auth != null && root.child('crm_staff').child(auth.uid).exists()"
+    },
+    "accounts_expenses": {
+      ".read":  "auth != null && root.child('crm_staff').child(auth.uid).exists()",
+      ".write": "auth != null && root.child('crm_staff').child(auth.uid).exists()"
+    },
+    "accounts_synced": {
+      ".read":  "auth != null && root.child('crm_staff').child(auth.uid).exists()",
+      ".write": "auth != null && root.child('crm_staff').child(auth.uid).exists()"
+    },
+    "savings_plans": {
+      ".read":  "auth != null && root.child('crm_staff').child(auth.uid).exists()",
+      ".write": "auth != null && root.child('crm_staff').child(auth.uid).exists()"
+    },
+    "savings_deposits": {
+      ".read":  "auth != null && root.child('crm_staff').child(auth.uid).exists()",
+      ".write": "auth != null && root.child('crm_staff').child(auth.uid).exists()"
+    },
+    "savings_portal": {
+      ".read":  true,
+      ".write": "auth != null && root.child('crm_staff').child(auth.uid).exists()"
+    },
+    "visa_applications": {
+      ".read":  true,
+      ".write": true
+    },
+    "visa_applications_counter": {
+      ".read":  true,
+      ".write": true
+    },
+    "contactMessages": {
+      ".read":  "auth != null && root.child('crm_staff').child(auth.uid).exists()",
+      ".write": true
+    }
+  }
+}

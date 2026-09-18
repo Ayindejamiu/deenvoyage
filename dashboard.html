@@ -2,42 +2,154 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Dashboard - Registrations</title>
- <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Dashboard - Deen Voyage</title>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    body { background: #f4f6f9; }
+    .dashboard-header {
+      background: #0a3d62;
+      color: #fff;
+      padding: 18px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 30px;
+    }
+    .dashboard-header h4 { margin: 0; font-weight: 700; letter-spacing: .5px; }
+    .nav-tabs .nav-link { color: #0a3d62; font-weight: 600; }
+    .nav-tabs .nav-link.active { background: #0a3d62; color: #fff; border-color: #0a3d62; }
+    .table th { background: #0a3d62; color: #fff; font-size: .85rem; white-space: nowrap; }
+    .table td { font-size: .88rem; vertical-align: middle; }
+    .badge-visa { background: #17a2b8; color: #fff; padding: 3px 8px; border-radius: 4px; font-size: .75rem; }
+    .doc-links a {
+      display: inline-block;
+      margin: 2px 3px;
+      padding: 3px 9px;
+      border-radius: 4px;
+      font-size: .78rem;
+      font-weight: 600;
+      text-decoration: none;
+      background: #e8f4fd;
+      color: #0a3d62;
+      border: 1px solid #b8d9f0;
+    }
+    .doc-links a:hover { background: #0a3d62; color: #fff; }
+    .ref-badge {
+      font-family: monospace;
+      background: #f0f6ff;
+      border: 1px solid #cce0ff;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: .82rem;
+      color: #0a3d62;
+      font-weight: 700;
+    }
+    .login-card {
+      max-width: 380px;
+      margin: 100px auto;
+      background: #fff;
+      border-radius: 12px;
+      padding: 40px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.1);
+    }
+    .login-card h3 { color: #0a3d62; font-weight: 700; margin-bottom: 24px; }
+    .empty-state { text-align: center; padding: 50px; color: #999; font-size: 1rem; }
+  </style>
 </head>
-<body class="container mt-5">
+<body>
 
-  <!-- Login Form -->
+  <!-- Login -->
   <div id="login-section">
-    <h3>Admin Login</h3>
-    <input id="email" class="form-control mb-2" type="email" placeholder="Email">
-    <input id="password" class="form-control mb-2" type="password" placeholder="Password">
-    <button class="btn btn-primary" onclick="manualLogin()">Login</button>
-    <p id="login-error" class="text-danger mt-2"></p>
+    <div class="login-card">
+      <h3>🕋 Admin Login</h3>
+      <input id="email" class="form-control mb-3" type="email" placeholder="Email">
+      <input id="password" class="form-control mb-3" type="password" placeholder="Password">
+      <button class="btn btn-primary w-100 fw-bold" onclick="manualLogin()">Login</button>
+      <p id="login-error" class="text-danger mt-2 mb-0"></p>
+    </div>
   </div>
 
   <!-- Dashboard -->
   <div id="dashboard-section" class="d-none">
-    <h3>All Registrations</h3>
-    <button class="btn btn-danger mb-3" onclick="manualLogout()">Logout</button>
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>Travel Type</th>
-          <th>Passport</th>
-          <th>Room Type</th>
-          <th>Requirements</th>
-        </tr>
-      </thead>
-      <tbody id="registrations-table-body"></tbody>
-    </table>
+    <div class="dashboard-header">
+      <h4>🕋 Deen Voyage — Admin Dashboard</h4>
+      <button class="btn btn-outline-light btn-sm" onclick="manualLogout()">Logout</button>
+    </div>
+
+    <div class="container-fluid px-4">
+
+      <!-- Tabs -->
+      <ul class="nav nav-tabs mb-4" id="dashTabs">
+        <li class="nav-item">
+          <button class="nav-link active" id="tab-reg" onclick="switchTab('registrations')">Registrations</button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" id="tab-visa" onclick="switchTab('visa')">Umrah Visa Applications</button>
+        </li>
+      </ul>
+
+      <!-- Registrations Tab -->
+      <div id="pane-registrations">
+        <div class="table-responsive bg-white rounded shadow-sm">
+          <table class="table table-bordered mb-0">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Travel Type</th>
+                <th>Passport</th>
+                <th>Room Type</th>
+                <th>Requirements</th>
+              </tr>
+            </thead>
+            <tbody id="registrations-table-body">
+              <tr><td colspan="7" class="empty-state">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Umrah Visa Tab -->
+      <div id="pane-visa" class="d-none">
+        <div class="table-responsive bg-white rounded shadow-sm">
+          <table class="table table-bordered mb-0">
+            <thead>
+              <tr>
+                <th>Ref #</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Passport Country</th>
+                <th>Valid Visa</th>
+                <th>Flight</th>
+                <th>Hotel</th>
+                <th>Travel Dates</th>
+                <th>Submitted</th>
+                <th>Documents</th>
+              </tr>
+            </thead>
+            <tbody id="visa-table-body">
+              <tr><td colspan="8" class="empty-state">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
   </div>
 
   <script type="module" src="app.js"></script>
+  <script>
+    function switchTab(tab) {
+      document.getElementById('pane-registrations').classList.toggle('d-none', tab !== 'registrations');
+      document.getElementById('pane-visa').classList.toggle('d-none', tab !== 'visa');
+      document.getElementById('tab-reg').classList.toggle('active', tab === 'registrations');
+      document.getElementById('tab-visa').classList.toggle('active', tab === 'visa');
+    }
+  </script>
 </body>
 </html>
