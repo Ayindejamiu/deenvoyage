@@ -335,7 +335,7 @@ function setupUserMenu() {
 }
 
 // ── Receipt creation ──────────────────────────────────────────
-const KNOWN_PACKAGES = ['August Umrah 2026','November Umrah 2026','December Umrah 2026','Hajj 2027'];
+const KNOWN_PACKAGES = ['August Umrah 2027','November Umrah 2026','December Umrah 2026','Hajj 2027'];
 
 window._openReceiptModal = function() {
   const name = `${lead.firstName||''} ${lead.lastName||''}`.trim();

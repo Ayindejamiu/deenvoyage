@@ -53,7 +53,7 @@ function formatNaira(amount) {
 }
 
 let selectedPackage = {
-  name:  selectedCard ? selectedCard.dataset.pkg : "August Umrah 2026",
+  name:  selectedCard ? selectedCard.dataset.pkg : "August Umrah 2027",
   price: selectedCard ? priceForOccupancy(selectedCard, selectedOccupancy) : 4200000
 };
 
